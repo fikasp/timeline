@@ -1364,6 +1364,7 @@
       window.addEventListener('keyup', (e) => this.checkKeys(e))
       window.addEventListener('resize', (e) => this.changeMargin(e))
       window.addEventListener('wheel', (e) => this.checkWheel(e))
+      window.addEventListener('popstate', (e) => e.preventDefault())
 
       // Initialize the application
       this.init()
