@@ -62,6 +62,12 @@
       box-shadow: 0 0 10px 0 black;
       gap: 5px;
     }
+    @media (max-width: 600px) {
+      .header {
+        display:  grid;
+        grid-template-columns: auto auto;
+      }
+    }
     .header.hide {
       transform: translateY(-120%);
     }
@@ -73,6 +79,14 @@
       width: 100%;
       max-width: 250px;
     } 
+    @media (max-width: 600px) {
+      .header_pair:first-child {
+        grid-column: span 2;
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+    
     .header_label {
       flex-grow: 0;
       min-width: 85px;
@@ -170,22 +184,33 @@
       top: var(--marginTop)
     }
     .gallery_year-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(var(--gridSize),1fr));
+      display: flex;
+      flex-direction: column;
       grid-column-gap: 2px;
-      grid-row-gap: 10px;
+      grid-row-gap: 5px;
       background-color: #111;
       flex-grow: 1;
     }
     .gallery_year-content--hidden {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
       height: 45px;
       overflow: hidden;
       filter: sepia(1);
     }
+    .gallery_year-content--hidden .gallery_month-timeline {
+      display: none;
+    }
+    .gallery_year-content--hidden .gallery_month-content {
+      display: flex;
+      flex-direction: column;
+    }
+
     /* gallery month */
     .gallery_month {
       display: flex;
-      background: linear-gradient(to bottom, #222, #151515);
+      width: 100%;
+      background: #161616;
       padding: 0px;
     }
     .gallery_month-timeline {
@@ -203,8 +228,9 @@
       position: sticky;
     }
     .gallery_month-content {
-      display: flex;
-      flex-direction: column;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--gridSize),1fr));
       gap: 2px;
     }
     /* gallery grid */
@@ -1307,7 +1333,7 @@
         filterCategory: this.filters.all, 
         filterMonth: this.filters.all,
         filterYear: this.filters.compact,
-        grid: this.grid.M,
+        grid: this.grid.S,
         time: this.time.T1
       }
 
