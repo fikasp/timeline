@@ -265,7 +265,7 @@
       align-items: center;
       height: 100%;
       position: absolute;
-      font-size: 30px;
+      font-size: 35px;
       color: #888;
       transition: 1s;
       z-index: 3;
@@ -275,13 +275,13 @@
         text-shadow: 0 0 20px var(--accent);
       }
     .photo_next {
-      padding: 0 25px 0 100px;
-      right: 0;
+      padding: 0 10px 0 90px;
+      right: -40px;
       top: 0;
     }
     .photo_previous {
-      padding: 0 100px 0 25px;
-      left: 0;
+      padding: 0 90px 0 10px;
+      left: -40px;
       top: 0;
     }
     .photo_group {
@@ -310,7 +310,7 @@
       width: 100%;
       text-align: center;
       left: 0px;
-      bottom: 20px;
+      bottom: 15px;
       text-shadow: 0 0 5px #000;
       color: #fff;
       z-index: 3;
@@ -336,6 +336,25 @@
         opacity: 1
       } to {
         opacity: 0
+      }
+    }
+    @media (max-width: 900px) {
+      .photo_group {
+        max-width: 100vw;
+      }
+      .photo_image {
+        max-width: 100vw;
+      }
+      .photo_arrow {
+        font-size: 30px;
+      }
+    }
+    @media (max-width: 1400px) {
+      .photo_next {
+        right: 0px;
+      }
+      .photo_previous {
+        left: 0px;
       }
     }
 
@@ -381,6 +400,7 @@
 
   <!-- @sub PHOTO -->
   <div class="photo none">
+    <div class="photo_group">
       <!-- Arrow previous -->
       <div class="photo_arrow photo_previous">
         <i class="fa-solid fa-angle-left"></i>
@@ -389,12 +409,10 @@
       <div class="photo_arrow photo_next">
         <i class="fa-solid fa-angle-right"></i>
       </div>
-    <!-- Image, name -->
-    <div class="photo_group">
-        <div class="photo_name"></div>
-        <img class="photo_image">
+      <!-- Image, name -->
+      <div class="photo_name"></div>
+      <img class="photo_image">
     </div>
-
   </div>
 
   <script>
