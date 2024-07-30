@@ -79,8 +79,11 @@
       width: 100%;
       max-width: 250px;
     } 
+    .header_pair-span {
+      max-width: 400px;
+    }
     @media (max-width: 600px) {
-      .header_pair:first-child {
+      .header_pair-span {
         grid-column: span 2;
         max-width: 100%;
         width: 100%;
@@ -89,22 +92,24 @@
         flex-wrap: nowrap;
       }
     }
-    
     .header_label {
       flex-grow: 0;
       min-width: 85px;
       text-align: center;
       padding: 5px;
     }
+    .header_buttons {
+      display: flex;
+      flex-grow: 1;
+    }
     .header_button {
-      padding: 5px 10px;
-      transition: color 0.2s;
+      padding: 3px;
+      font-family: verdana;
       text-align: center;
       cursor: pointer;
+      flex-grow: 1;
+      width: 45px;
     }
-      .header_button:hover {
-        color: gray;
-      }
     .header_select {
       flex-grow: 1;
       text-align: center;
@@ -401,7 +406,7 @@
   </div>
   <div class="header hide" tabindex="1">
     <!-- Category -->
-    <div class="header_pair">
+    <div class="header_pair header_pair-span">
       <label class="header_label" for="category">Kategoria:</label>
       <select class="header_select" id="category"></select>
     </div>
@@ -420,11 +425,19 @@
       <label class="header_label" for="grid">Siatka:</label>
       <select class="header_select" id="grid"></select>
     </div>
-      <!-- Time -->
-      <div class="header_pair">
-        <label class="header_label" for="time">Czas:</label>
-        <select class="header_select" id="time"></select>
+    <!-- Time -->
+    <div class="header_pair">
+      <label class="header_label" for="time">Czas:</label>
+      <select class="header_select" id="time"></select>
+    </div>
+    <!-- Presentation -->
+    <div class="header_pair header_pair-span">
+      <label class="header_label" for="time">Pokaz:</label>
+      <div class="header_buttons">
+        <button class="header_button" id="time">Wstecz&nbsp;(F8)</button>
+        <button class="header_button" id="time">Wprzód&nbsp;(F9)</button>
       </div>
+    </div>
   </div>
 
   <!-- @sub GALLERY -->
