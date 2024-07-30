@@ -98,17 +98,24 @@
       text-align: center;
       padding: 5px;
     }
+    @media (max-width: 600px) {
+      .header_label-sm {
+        min-width: 50px;
+      }
+    }
     .header_buttons {
       display: flex;
       flex-grow: 1;
     }
     .header_button {
-      padding: 3px;
-      font-family: verdana;
-      text-align: center;
-      cursor: pointer;
-      flex-grow: 1;
       width: 45px;
+      padding: 4px;
+      flex-grow: 1;
+    }
+    .header_button div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .header_select {
       flex-grow: 1;
@@ -417,7 +424,7 @@
     </div>
     <!-- Year -->
     <div class="header_pair">
-      <label class="header_label" for="year">Rok:</label>
+      <label class="header_label header_label-sm" for="year">Rok:</label>
       <select class="header_select" id="year"></select>
     </div>
     <!-- Grid -->
@@ -427,15 +434,19 @@
     </div>
     <!-- Time -->
     <div class="header_pair">
-      <label class="header_label" for="time">Czas:</label>
+      <label class="header_label header_label-sm" for="time">Czas:</label>
       <select class="header_select" id="time"></select>
     </div>
     <!-- Presentation -->
     <div class="header_pair header_pair-span">
       <label class="header_label" for="time">Pokaz:</label>
       <div class="header_buttons">
-        <button class="header_button" id="backward">&lt;(F8)</button>
-        <button class="header_button" id="forward">(F9)&gt;</button>
+        <button class="header_button" id="backward">
+          <div><i class="fa-solid fa-angle-left"></i></div>
+        </button>
+        <button class="header_button" id="forward">
+          <div><i class="fa-solid fa-angle-right"></i></div>
+        </button>
       </div>
     </div>
   </div>
