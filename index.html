@@ -434,8 +434,8 @@
     <div class="header_pair header_pair-span">
       <label class="header_label" for="time">Pokaz:</label>
       <div class="header_buttons">
-        <button class="header_button" id="time">&lt;(F8)</button>
-        <button class="header_button" id="time">(F9)&gt;</button>
+        <button class="header_button" id="backward">&lt;(F8)</button>
+        <button class="header_button" id="forward">(F9)&gt;</button>
       </div>
     </div>
   </div>
@@ -610,6 +610,8 @@
       this.selectYear = document.querySelector('#year') // Year select list
       this.selectGrid = document.querySelector('#grid') // Grid size select list
       this.selectTime = document.querySelector('#time') // Time select list
+      this.buttonBackward = document.querySelector('#backward') // Button for backward presentation
+      this.buttonForward = document.querySelector('#forward') // Button for forward presentation
 
       // listeners
       this.headerBars.addEventListener('click', () => this.showHideMenu()) // Click event for menu button
@@ -1191,12 +1193,25 @@
       const imgBox = document.getElementById(id) // Get the image box element
       this.photoImage.setAttribute("src", imgBox.dataset.src) // Set the source attribute of the photo image
 
-      // Set the description text of the photo
-      this.photoName.textContent = "Ładowanie zdjęcia..."
-      this.photoImage.addEventListener("error", 
-      () => this.photoName.textContent = "Zdjęcie jest niedostępne.")
-      this.photoImage.addEventListener("load", 
-      () => this.photoName.textContent = imgBox.dataset.desc)
+      // Timer for showing loading message
+      let loadingTimeout
+
+      // Show loading message if image loading takes more than 500ms
+      loadingTimeout = setTimeout(() => {
+        this.photoName.textContent = "Ładowanie zdjęcia..."
+      }, 500)
+
+      // Clear timer and update photo name on image load
+      this.photoImage.addEventListener("load", () => {
+        clearTimeout(loadingTimeout) // Clear the loading timer
+        this.photoName.textContent = imgBox.dataset.desc // Update photo name with description
+      });
+
+      // Handle image load error
+      this.photoImage.addEventListener("error", () => {
+        clearTimeout(loadingTimeout) // Clear the loading timer
+        this.photoName.textContent = "Zdjęcie jest niedostępne." // Update photo name on error
+      });
     }
     
     /**
@@ -1411,7 +1426,8 @@
       window.addEventListener('keyup', (e) => this.checkKeys(e))
       window.addEventListener('resize', (e) => this.changeMargin(e))
       window.addEventListener('wheel', (e) => this.checkWheel(e))
-
+      this.header.buttonBackward.addEventListener('click', (e) => this.gallery.showBackward(e))
+      this.header.buttonForward.addEventListener('click', (e) => this.gallery.showForward(e))
       // Initialize the application
       this.init()
     }
