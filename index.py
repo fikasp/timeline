@@ -3,7 +3,7 @@ from encodings import utf_8
 
 # Path
 inputPath = 'B:/Prywatne/Lifebook/Timeline'
-outputPath = 'B:/Prywatne/Lifebook/Timeline/Time.js'
+outputPath = 'B:/Prywatne/Lifebook/Timeline/index.js'
 
 # Category
   # @sup Categories

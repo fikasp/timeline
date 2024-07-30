@@ -1057,7 +1057,7 @@ const data = [
 {date: '2024-04-06', catg: ['Miasta'], name: '4 Oleśnica'},
 {date: '2024-04-07', catg: ['Rowery'], name: 'Rower Wały wiślane'},
 {date: '2024-04-13', catg: ['Spacery'], name: 'Spacer Łąki nowohuckie'},
-{date: '2024-04-14', catg: ['Wyjazdy'], name: 'Wyjazd Krzywy Grunt'},
+{date: '2024-04-14', catg: ['Spacery'], name: 'Spacer Krzywy Grunt'},
 {date: '2024-04-26', catg: ['Koncerty'], name: 'Filharmonia'},
 {date: '2024-04-27', catg: ['Uroczystości'], name: 'Wesele Ani i Szymona'},
 ]

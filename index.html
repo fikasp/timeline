@@ -85,6 +85,9 @@
         max-width: 100%;
         width: 100%;
       }
+      .header_pair {
+        flex-wrap: nowrap;
+      }
     }
     
     .header_label {
@@ -313,7 +316,7 @@
     .photo_group {
       position: relative;
       max-width: calc(100vw - 40px);
-      max-height: calc(100vh - 40px);
+      max-height: calc(100vh - 80px);
       min-width: 280px;
       min-height: 210px;
       object-fit: cover;
@@ -323,7 +326,7 @@
     .photo_image {
       position: relative;
       max-width: calc(100vw - 40px);
-      max-height: calc(100vh - 40px);
+      max-height: calc(100vh - 80px);
       min-width: 280;
       min-height: 210;
       object-fit: cover;
@@ -336,7 +339,7 @@
       width: 100%;
       text-align: center;
       left: 0px;
-      bottom: 15px;
+      bottom: -30px;
       text-shadow: 0 0 5px #000;
       color: #fff;
       z-index: 3;
@@ -375,12 +378,15 @@
         font-size: 30px;
       }
     }
-    @media (max-width: 1400px) {
+    @media (max-width: 1900px) {
       .photo_next {
         right: 0px;
       }
       .photo_previous {
         left: 0px;
+      }
+      .photo_name {
+        bottom: 15px;
       }
     }
 
@@ -822,6 +828,8 @@
       this.marginTop = 0
       this.interval
       this.time
+      this.touchStartX 
+      this.touchEndX
 
       // Handles
       this.photo = document.querySelector('.photo')
@@ -834,12 +842,38 @@
       
       // Listeners
       this.photo.addEventListener("click", (e) => this.hidePhoto(e))
+      this.photo.addEventListener("touchstart", (e) => this.touchstart(e))
+      this.photo.addEventListener("touchmove", (e) => this.touchmove(e))
+      this.photo.addEventListener("touchend", (e) => this.touchend(e))
       this.photoPrevious.addEventListener("click", (e) => this.setPreviousPhoto(e))
       this.photoNext.addEventListener("click", (e) => this.setNextPhoto(e))
       this.gallery.addEventListener("scroll", (e) => this.updateVisibility())
 
     }
     
+    /**
+     * Touch event handlers for swiping left and right.
+    */
+   // Touch start event handler
+    touchstart = (e) => {
+      this.touchStartX = e.touches[0].pageX
+      this.touchEndX = this.touchStartX
+    }
+    // Touch move event handler
+    touchmove = (e) => {
+      this.touchEndX = e.touches[0].pageX
+    }
+    // Touch end event handler
+    touchend = (e) => {
+      const deltaX = this.touchEndX - this.touchStartX
+      console.log("touch:", deltaX)
+      if (deltaX > 50) {
+         this.setNextPhoto(e)
+      } else if (deltaX < -50) {
+         this.setPreviousPhoto(e)
+      }
+    }
+
     /**
      * Prepares the gallery with the provided data and state.
      * @param {Array} data - The gallery data.
@@ -1145,7 +1179,7 @@
       this.photoImage.setAttribute("src", imgBox.dataset.src) // Set the source attribute of the photo image
 
       // Set the description text of the photo
-      // this.photoName.textContent = "Ładowanie zdjęcia..."
+      this.photoName.textContent = "Ładowanie zdjęcia..."
       this.photoImage.addEventListener("error", 
       () => this.photoName.textContent = "Zdjęcie jest niedostępne.")
       this.photoImage.addEventListener("load", 
@@ -1364,7 +1398,6 @@
       window.addEventListener('keyup', (e) => this.checkKeys(e))
       window.addEventListener('resize', (e) => this.changeMargin(e))
       window.addEventListener('wheel', (e) => this.checkWheel(e))
-      window.addEventListener('popstate', (e) => e.preventDefault())
 
       // Initialize the application
       this.init()
