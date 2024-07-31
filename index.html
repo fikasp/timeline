@@ -1377,7 +1377,7 @@
       this.setState({isPhotoOpen : false}) // Update the state to indicate that the photo is closed     
       clearInterval(this.interval) // Clear any ongoing interval
 
-      this.photoName.textContent = "" // Clear the photo name
+      this.photoName.textContent = "Ładowanie zdjęcia..."
       this.photo.classList.add("hide") // Add 'hide' class to animate hiding the photo
       setTimeout(() => {
         this.photo.classList.add("none") // Add 'none' class to remove visibility of the photo
