@@ -77,8 +77,8 @@
       flex-wrap: wrap;
       justify-content: center;
       padding: 5px 0px;
-      width: 100%;
       max-width: 250px;
+      width: 100%;
     } 
     .header_pair-span {
       max-width: 400px;
@@ -215,7 +215,7 @@
     }
     .gallery_year-content {
       display: flex;
-      flex-direction: column;
+      flex-direction: column-reverse;
       grid-column-gap: 2px;
       grid-row-gap: 5px;
       background-color: #111;
@@ -933,59 +933,60 @@
 
       // Clear gallery
       this.gallery.innerHTML = ""
+      this.gallery.classList.remove("gallery_grid")
+ 
+      // Get years from 1986 to the current year
+      const startYear = 2005
+      const currentYear = new Date().getFullYear()
+      const years = Array.from({ length: currentYear - startYear + 1 }, (_, i) => (startYear + i).toString())
+      const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'))
 
-      // Helper variables to check for new year and month
-      let lastYear 
-      let lastMonth
-      let currentYearBox
-      let currentMonthBox
+      // Prepare data by year and month
+      const dataByYear = data.reduce((acc, item) => {
+        if (!acc[item.year]) acc[item.year] = {}
+        if (!acc[item.year][item.month]) acc[item.year][item.month] = []
+        acc[item.year][item.month].push(item)
+        return acc
+      }, {})
+      console.log(dataByYear)
 
-      // Helper functions to check for new year and month
-      function isNewYear(item) {
-        if(item.year != lastYear) {
-          lastYear = item.year
-          lastMonth = null
-          return true
-        } else return false
-      }
-      function isNewMonth(item) {
-        if(item.month != lastMonth) {
-          lastMonth = item.month
-          return true
-        } else return false
-      }
+      // Iterate over all years
+      years.reverse().forEach(year => {
+        let yearContainer
 
-      // Create gallery
-      data.forEach(item => {
-        // Prepare description and path
-        const desc = `${item.date} \n${item.name}`
-        const path = `${item.year}/${item.date} - ${item.name}.jpg`
-
-        // Years visible
-        if(this.isYearsVisible) {
-          if(isNewYear(item)) {
-            this.gallery.classList.remove("gallery_grid")
-            currentYearBox = this.buildYearBox(this.gallery, item.year)
-          }
-          // Months visible
-          if(this.isMonthsVisible) {
-            if(isNewMonth(item)) {
-              currentMonthBox = this.buildMonthBox(currentYearBox, item.month, item.year)
-            } 
-            this.buildGalleryBox(currentMonthBox, desc, path, item.id)
-
-          // Months invisible
-          } else {
-            currentYearBox.classList.add("gallery_grid")
-            this.buildGalleryBox(currentYearBox, desc, path, item.id)
-          }
-
-        // Years invisible
+        if (this.isYearsVisible) {
+          yearContainer = this.buildYearBox(this.gallery, year)
         } else {
-          this.buildGalleryBox(this.gallery, desc, path, item.id)
-          this.gallery.classList.add("gallery_grid")
+          yearContainer = this.gallery
         }
+
+        // Iterate over all months
+        months.forEach(month => {
+          const items = dataByYear[year]?.[month] || []
+          let monthContainer
+
+          if (this.isMonthsVisible & this.isYearsVisible) {
+            if (items.length > 0) {
+              monthContainer = this.buildMonthBox(yearContainer, month)
+            } else {
+              monthContainer = this.buildMonthBox(yearContainer)
+            }
+          } else {
+            monthContainer = yearContainer
+            yearContainer.classList.add("gallery_grid")
+          }
+
+          // Add items to the month container
+          if (items.length > 0) {
+            items.forEach(item => {
+              const desc = `${item.date} \n${item.name}`;
+              const path = `${item.year}/${item.date} - ${item.name}.jpg`;
+              this.buildGalleryBox(monthContainer, desc, path, item.id);
+            })
+          } 
+        })
       })
+
       // Get all boxex, years and months
       this.boxes = document.querySelectorAll(".gallery_box")
       this.monthValues = document.querySelectorAll(".gallery_month-value");
@@ -1084,7 +1085,7 @@
      * @param {string} year - The year value of the box.
      * @returns {HTMLElement} - The right content element of the month box.
      *
-    @func */ buildMonthBox = (parent, month, year) =>
+    @func */ buildMonthBox = (parent, month) =>
 		{
       const monthTimeline = ARW.createElement({
         class: "gallery_month-timeline",
@@ -1094,7 +1095,6 @@
           dataset: {
             open: "true"
           },
-          id: year
         })
       })
       const monthContent = ARW.createElement({
@@ -1217,7 +1217,7 @@
       }
 
       const imgBox = document.getElementById(id) // Get the image box element
-      this.photoImage.setAttribute("src", imgBox.dataset.src) // Set the source attribute of the photo image
+      this.photoImage.setAttribute("src", imgBox?.dataset.src) // Set the source attribute of the photo image
 
       // Timer for showing loading message
       let loadingTimeout
@@ -1230,7 +1230,7 @@
       // Clear timer and update photo name on image load
       this.photoImage.addEventListener("load", () => {
         clearTimeout(loadingTimeout) // Clear the loading timer
-        this.photoName.textContent = imgBox.dataset.desc // Update photo name with description
+        this.photoName.textContent = imgBox?.dataset.desc // Update photo name with description
       });
 
       // Handle image load error
@@ -1400,14 +1400,12 @@
         M: "96px",
         L: "150px",
         XL: "210px",
-        XXL: "300px"
       }
       // Time intervals
       this.time = {
         T0 : 200,
         T1 : 1000,
         T2 : 2000,
-        T3 : 3000,
         T4 : 4000
       }
 
@@ -1640,7 +1638,6 @@
       this.gallery.prepareGallery(filteredData, this.state) // Prepare the gallery with the filtered data and current state
       this.gallery.updateVisibility() // Update the visibility of year and month elements in the gallery
       this.gallery.setActivePhoto() // Set the active item for the current item in the gallery
-      console.log(filteredData) // Log the filtered data
     }
 
     /**

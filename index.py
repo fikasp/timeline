@@ -111,7 +111,6 @@ categories = {
     'Dziewiętnastka',
     'Imprezki DM',
     'Na Staszica',
-    'Parapetówka',
     'Pożegnanie pokoju',
     'Spotkanie nostalgiczne',
     'Starych dziejów',
@@ -660,7 +659,7 @@ for root, dirs, files in os.walk(inputPath):
             if (category == 'Spacery' 
               or category == 'Rowery' 
               or category == 'Narty'     
-              or category == 'Miasta'     
+              or category == 'Miasta'
               or category == matched_category):
               matched_category.clear()
             if (category not in matched_category):
