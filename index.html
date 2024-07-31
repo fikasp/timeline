@@ -979,7 +979,7 @@
 
           if (this.isMonthsVisible & this.isYearsVisible) {
             if (items.length > 0) {
-              monthContainer = this.buildMonthBox(yearContainer, month)
+              monthContainer = this.buildMonthBox(yearContainer, month, year)
             } else {
               monthContainer = this.buildMonthBox(yearContainer)
             }
@@ -1001,9 +1001,9 @@
 
       // Get all boxex, years and months
       this.boxes = document.querySelectorAll(".gallery_box")
-      this.monthValues = document.querySelectorAll(".gallery_month-value");
-      this.yearValues = document.querySelectorAll(".gallery_year-value");
-      this.yearBoxes = document.querySelectorAll(".gallery_year-content");
+      this.monthValues = document.querySelectorAll(".gallery_month-value")
+      this.yearValues = document.querySelectorAll(".gallery_year-value")
+      this.yearBoxes = document.querySelectorAll(".gallery_year-content")
 
       // Collapse years if necessary
       if (this.isYearsCollapsed) {
@@ -1097,7 +1097,7 @@
      * @param {string} year - The year value of the box.
      * @returns {HTMLElement} - The right content element of the month box.
      *
-    @func */ buildMonthBox = (parent, month) =>
+    @func */ buildMonthBox = (parent, month, year) =>
 		{
       const monthTimeline = ARW.createElement({
         class: "gallery_month-timeline",
@@ -1107,6 +1107,7 @@
           dataset: {
             open: "true"
           },
+          id: year
         })
       })
       const monthContent = ARW.createElement({
