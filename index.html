@@ -39,6 +39,7 @@
       background: #000;
       font-family: verdana, sans-serif;
       font-size: 14px;
+      --accent: #444;
       --gridSize: 0;
       --viewHeight: 0px;
       --marginTop: 0px;
@@ -327,7 +328,7 @@
       z-index: 3;
       }
       .photo_arrow:hover {
-        color: var(--accent);
+        color: white;
         text-shadow: 0 0 20px var(--accent);
       }
     .photo_next {
@@ -344,20 +345,17 @@
       position: relative;
       max-width: calc(100vw - 40px);
       max-height: calc(100vh - 80px);
-      min-width: 280px;
-      min-height: 210px;
+      min-width: 300px;
+      min-height: 50px;
       object-fit: cover;
-      box-shadow: 0 0 30px var(--accent);
+      box-shadow: 0 0 30px #111;
       transition: 0.5s;
       }
     .photo_image {
       position: relative;
       max-width: calc(100vw - 40px);
       max-height: calc(100vh - 80px);
-      min-width: 280;
-      min-height: 210;
       object-fit: cover;
-      box-shadow: 0 0 30px var(--accent);
       transition: 0.5s;
       }
     .photo_name {
