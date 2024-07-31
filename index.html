@@ -41,6 +41,7 @@
       font-size: 14px;
       --accent: #444;
       --gridSize: 0;
+      --yearHeight: 45px;
       --viewHeight: 0px;
       --marginTop: 0px;
       --fontSize: 8px;
@@ -226,7 +227,7 @@
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       grid-auto-flow: dense;
-      height: 45px;
+      height: var(--yearHeight);
       overflow: hidden;
       filter: sepia(1);
     }
@@ -724,13 +725,10 @@
       ARW.printFuncName(this.prepareYears) // Print function name
       
       ARW.createOption(this.selectYear, this.filters.none) // Create "None" option      
-      ARW.createOption(this.selectYear, this.filters.compact, this.filters.compact, true) // Create "Compact" option      
-      ARW.createOption(this.selectYear, this.filters.all) // Create "All" option
-
-      for (let year = 2023; year >= 1990; year-- ) {
-        ARW.createOption(this.selectYear, year) // Create year options from 1990 to 2023
-      }      
-      ARW.createOption(this.selectYear, 1986) // Create additional 1986 year option
+      ARW.createOption(this.selectYear, this.filters.min, this.filters.min, true) // Create "Min" option      
+      ARW.createOption(this.selectYear, this.filters.max) // Create "Max" option
+      ARW.createOption(this.selectYear, this.filters.auto) // Create "Auto" option
+      ARW.createOption(this.selectYear, this.filters.grid) // Create "Grid" option
     }
 
     /** 
@@ -813,17 +811,29 @@
 
       this.setState({filterYear: filterYear}) // Set state of filter year
 
+      // Set yearHeight property on the root element
+      if (filterYear == this.filters.min) {
+        this.root.style.setProperty('--yearHeight', `45px`)
+      } else if (filterYear == this.filters.max) {
+        this.root.style.setProperty('--yearHeight', `90px`)
+      } else if (filterYear == this.filters.auto) {
+        this.root.style.setProperty('--yearHeight', `auto`)
+      }
+
       // Set state of years visible and collapsed
       if (filterYear == this.filters.none) {
         this.setState({isYearsVisible: false})
-      } else if (filterYear == this.filters.compact){
-        this.setState({isYearsVisible: true})
-        this.setState({isYearsCollapsed: true})
-      } else {
+      } else if (filterYear == this.filters.grid){
         this.setState({isYearsVisible: true})
         this.setState({isYearsCollapsed: false})
+      } else {
+        this.setState({isYearsVisible: true})
+        this.setState({isYearsCollapsed: true})
       }      
       this.updateData() // Update data and gallery
+
+
+
     }
 
     /**
@@ -1405,8 +1415,11 @@
       // Common filters
       this.filters = {
         none: "Brak",
-        compact: "Kompakt",
+        min: "Wąsko",
+        max: "Szeroko",
+        auto: "Automat",
         all: "Wszystko",
+        grid: "Siatka"
       }
       // Grid sizes
       this.grid = {
@@ -1432,7 +1445,7 @@
         isYearsCollapsed: true,
         filterCategory: this.filters.all, 
         filterMonth: this.filters.all,
-        filterYear: this.filters.compact,
+        filterYear: this.filters.min,
         grid: this.grid.S,
         time: this.time.T1
       }
@@ -1464,6 +1477,10 @@
       window.addEventListener('keyup', (e) => this.checkKeys(e))
       window.addEventListener('resize', (e) => this.changeMargin(e))
       window.addEventListener('wheel', (e) => this.checkWheel(e))
+      window.addEventListener('popstate', (e) => {
+        history.pushState(null, "", location.href)
+        alert("Przycisk wstecz został zablokowany.")
+      })
       this.header.buttonBackward.addEventListener('click', (e) => this.gallery.showBackward(e))
       this.header.buttonForward.addEventListener('click', (e) => this.gallery.showForward(e))
       // Initialize the application
@@ -1615,7 +1632,7 @@
       let filteredData = this.data // Initialize filteredData with the original data
       
       const { filterCategory, filterMonth, filterYear } = this.state // Destructure filters from state
-      const { all, compact, none } = this.filters // Destructure common filters
+      const { all, min, medium, max, none } = this.filters // Destructure common filters
 
       // Filter by category
       if(filterCategory != all) {
@@ -1627,12 +1644,6 @@
       if(filterMonth != all && filterMonth != none) {
         filteredData = filteredData.filter(item => {
           return item.month == filterMonth // Filter items where the month matches filterMonth
-        })
-      }
-      // Filter by year
-      if(filterYear != all && filterYear != compact && filterYear != none) {
-        filteredData = filteredData.filter(item => {
-          return item.year == filterYear // Filter items where the year matches filterYear
         })
       }
       filteredData.forEach((item, index) => item.id = index) // Assign unique ids to each filtered item
