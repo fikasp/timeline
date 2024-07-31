@@ -653,6 +653,9 @@
       this.buttonForward = document.querySelector('#forward') // Button for forward presentation
 
       // listeners
+      this.headerDiv.addEventListener("touchstart", (e) => this.touchstart(e))
+      this.headerDiv.addEventListener("touchmove", (e) => this.touchmove(e))
+      this.headerDiv.addEventListener("touchend", (e) => this.touchend(e))
       this.headerBars.addEventListener('click', () => this.showHideMenu()) // Click event for menu button
       this.selectCategory.addEventListener('change', () => this.setCategory()) // Change event for category select
       this.selectMonth.addEventListener('change', () => this.setMonths()) // Change event for month select
@@ -673,6 +676,27 @@
       this.prepareYears() // Prepare the years
       this.prepareGrid() // Prepare the grid size
       this.prepareTime() // Prepare the time intervals
+    }
+
+    /**
+     * Touch event handlers for hiding menu.
+    */
+    // Touch start event handler
+    touchstart = (e) => {
+      this.touchStartY = e.touches[0].pageY
+      this.touchEndY = this.touchStartY
+    }
+    // Touch move event handler
+    touchmove = (e) => {
+      this.touchEndY = e.touches[0].pageY
+    }
+    // Touch end event handler
+    touchend = (e) => {
+      const deltaY = this.touchEndY - this.touchStartY
+      console.log("touch:", deltaY)
+      if (deltaY < -50) {
+        this.showHideMenu()
+      } 
     }
     
     /** 
@@ -1477,10 +1501,6 @@
       window.addEventListener('keyup', (e) => this.checkKeys(e))
       window.addEventListener('resize', (e) => this.changeMargin(e))
       window.addEventListener('wheel', (e) => this.checkWheel(e))
-      window.addEventListener('popstate', (e) => {
-        history.pushState(null, "", location.href)
-        alert("Przycisk wstecz został zablokowany.")
-      })
       this.header.buttonBackward.addEventListener('click', (e) => this.gallery.showBackward(e))
       this.header.buttonForward.addEventListener('click', (e) => this.gallery.showForward(e))
       // Initialize the application
