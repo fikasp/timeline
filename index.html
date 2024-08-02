@@ -229,7 +229,12 @@
       grid-auto-flow: dense;
       height: var(--yearHeight);
       overflow: hidden;
+    }
+    .gallery_year-content--hidden .gallery_box {
       filter: sepia(1);
+    }
+    .gallery_year-content--hidden .gallery_box:hover {
+      filter: sepia(0);
     }
     .gallery_year-content--hidden .gallery_month:nth-child(1) { grid-column: 12 }
     .gallery_year-content--hidden .gallery_month:nth-child(2) { grid-column: 11 }
@@ -768,7 +773,7 @@
       ARW.createOption(this.selectYear, this.filters.none) // Create "None" option      
       ARW.createOption(this.selectYear, this.filters.min, this.filters.min, true) // Create "Min" option      
       ARW.createOption(this.selectYear, this.filters.max) // Create "Max" option
-      ARW.createOption(this.selectYear, this.filters.auto) // Create "Auto" option
+      ARW.createOption(this.selectYear, this.filters.all) // Create "All" option
       ARW.createOption(this.selectYear, this.filters.grid) // Create "Grid" option
     }
 
@@ -857,7 +862,7 @@
         this.root.style.setProperty('--yearHeight', `45px`)
       } else if (filterYear == this.filters.max) {
         this.root.style.setProperty('--yearHeight', `90px`)
-      } else if (filterYear == this.filters.auto) {
+      } else if (filterYear == this.filters.all) {
         this.root.style.setProperty('--yearHeight', `auto`)
       }
 
@@ -1458,7 +1463,7 @@
         none: "Brak",
         min: "Wąsko",
         max: "Szeroko",
-        auto: "Automat",
+        auto: "Wszystko",
         all: "Wszystko",
         grid: "Siatka"
       }
