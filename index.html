@@ -405,21 +405,7 @@
       color: #fff;
       z-index: 3;
     }
-    @keyframes show { 
-      from {
-        opacity: 0
-      } to {
-        opacity: 1
-      }
-    }
-    @keyframes hide {
-      from {
-        opacity: 1
-      } to {
-        opacity: 0
-      }
-    }
-    @media (max-height: 640px) {
+    @media (max-height: 600px) {
       .photo_group {
         max-height: 100vh;
         transform: translateY(0px);
@@ -448,6 +434,20 @@
       }
       .photo_previous {
         left: 0px;
+      }
+    }
+    @keyframes show { 
+      from {
+        opacity: 0
+      } to {
+        opacity: 1
+      }
+    }
+    @keyframes hide {
+      from {
+        opacity: 1
+      } to {
+        opacity: 0
       }
     }
     .none {
