@@ -386,7 +386,7 @@
       max-height: calc(100vh - 46px);
       transform: translateY(-8px);
       min-width: 300px;
-      min-height: 50px;
+      min-height: 40px;
       object-fit: cover;
       box-shadow: 0 0 30px #111;
       transition: 0.5s;
@@ -958,6 +958,7 @@
       // Properties
       this.index = 0
       this.marginTop = 0
+      this.presentation = ""
       this.interval
       this.time
       this.touchStartX 
@@ -1323,12 +1324,14 @@
       this.photoImage.addEventListener("load", () => {
         clearTimeout(loadingTimeout) // Clear the loading timer
         this.photoName.textContent = imgBox?.dataset.desc // Update photo name with description
+        this.resumePresentation() // Resume the interval once the image has loaded
       });
 
       // Handle image load error
       this.photoImage.addEventListener("error", () => {
         clearTimeout(loadingTimeout) // Clear the loading timer
         this.photoName.textContent = "Zdjęcie jest niedostępne." // Update photo name on error
+        this.resumePresentation() // Resume the interval even if there is an error
       });
     }
     
@@ -1340,7 +1343,7 @@
 		{
       ARW.printFuncName(this.setPreviousPhoto) // Print function name
 
-      e.stopPropagation()
+      e?.stopPropagation()
       if (this.index > 0) { // Check if the photo is not the first one
         this.index = parseInt(this.index) - 1 // Decrement the index by 1
         this.setPhoto(this.index) // Set the photo based on the new index
@@ -1355,7 +1358,7 @@
 		{   
       ARW.printFuncName(this.setPreviousPhoto) // Print function name
 
-      e.stopPropagation()
+      e?.stopPropagation()
       if (this.index < this.data.length - 1) { // Check if the photo is not the last one
         this.index = parseInt(this.index) + 1 // Increment the index by 1
         this.setPhoto(this.index) // Set the photo based on the new index
@@ -1368,9 +1371,9 @@
      *
     @func */ showBackward = (e) =>
 		{
-
       ARW.printFuncName(this.showBackward) // Print function name
 
+      this.presentation = "backward"
       this.photo.classList.remove("none") // Remove 'none' class to make the photo visible
       this.photo.classList.add("show") // Add 'show' class to animate showing the photo
 
@@ -1380,16 +1383,6 @@
         this.index = 0; // Set the index to the first photo if it is not set
       }
       this.setPhoto(this.index) // Set the photo based on the index
-      
-      clearInterval(this.interval)
-      this.interval = setInterval(() => {
-        if (this.index < this.data.length - 1) {
-          this.setNextPhoto(e) // Set the previous photo
-        } else {
-          clearInterval(this.interval) // Clear ongoing interval
-          this.hidePhoto(e) // Hide the photo if there are no more next photos
-        }
-      }, this.time); // Set the interval to automatically show photos based on the defined time
     }
     
     /**
@@ -1400,6 +1393,7 @@
 		{
       ARW.printFuncName(this.showForward) // Print function name
       
+      this.presentation = "forward"
       this.photo.classList.remove("none") // Remove 'none' class to make the photo visible
       this.photo.classList.add("show") // Add 'show' class to animate showing the photo        
 
@@ -1409,16 +1403,31 @@
         this.index = this.data.length - 1; // Set the index to the last photo if it is not set
       }
       this.setPhoto(this.index) // Set the photo based on the index
-      
+    }
+
+    /**
+     * Resumes the presentation.
+     *
+     @func */ resumePresentation = () => {
       clearInterval(this.interval)
-      this.interval = setInterval(() => {
-        if (this.index > 0) {
-          this.setPreviousPhoto(e) // Set the previous photo
-        } else {
-          clearInterval(this.interval) // Clear ongoing interval
-          this.hidePhoto(e) // Hide the photo if there are no more previous photos
-        }
-      }, this.time); // Set the interval to automatically show photos based on the defined time
+      if (this.presentation === "forward") {
+        this.interval = setInterval(() => {
+          if (this.index > 0) {
+            this.setPreviousPhoto() // Set the previous photo
+          } else {
+            this.hidePhoto() // Hide the photo if there are no more previous photos
+          }
+        }, this.time) // Set the interval to automatically show photos based on the defined time
+  
+      } else if (this.presentation === "backward") {
+        this.interval = setInterval(() => {
+          if (this.index < this.data.length - 1) {
+            this.setNextPhoto() // Set the previous photo
+          } else {
+            this.hidePhoto() // Hide the photo if there are no more next photos
+          }
+        }, this.time) // Set the interval to automatically show photos based on the defined time
+      }
     }
 
     /**
@@ -1454,8 +1463,9 @@
       
       this.setActivePhoto() // Set the active photo  
       this.setState({isPhotoOpen : false}) // Update the state to indicate that the photo is closed     
-      clearInterval(this.interval) // Clear any ongoing interval
+      clearInterval(this.interval) // Clear any ongoing intervals
 
+      this.presentation = ""
       this.photoName.textContent = "" // Clear the photo name
       this.photo.classList.add("hide") // Add 'hide' class to animate hiding the photo
       setTimeout(() => {
