@@ -1320,19 +1320,27 @@
         this.photoName.textContent = "Ładowanie zdjęcia..."
       }, 500)
 
-      // Clear timer and update photo name on image load
-      this.photoImage.addEventListener("load", () => {
-        clearTimeout(loadingTimeout) // Clear the loading timer
-        this.photoName.textContent = imgBox?.dataset.desc // Update photo name with description
-        this.resumePresentation() // Resume the interval once the image has loaded
-      });
+    // Remove existing listeners to prevent multiple triggers
+    this.photoImage.removeEventListener("load", this.onPhotoLoad);
+    this.photoImage.removeEventListener("error", this.onPhotoError);
 
-      // Handle image load error
-      this.photoImage.addEventListener("error", () => {
-        clearTimeout(loadingTimeout) // Clear the loading timer
-        this.photoName.textContent = "Zdjęcie jest niedostępne." // Update photo name on error
-        this.resumePresentation() // Resume the interval even if there is an error
-      });
+    // Define the event listener for the load event
+    this.onPhotoLoad = () => {
+      clearTimeout(loadingTimeout) // Clear the loading timer
+      this.photoName.textContent = imgBox?.dataset.desc // Update photo name with description
+      this.resumePresentation(); // Resume the interval once the image has loaded
+    };
+
+    // Define the event listener for the error event
+    this.onPhotoError = () => {
+      clearTimeout(loadingTimeout); // Clear the loading timer
+      this.photoName.textContent = "Zdjęcie jest niedostępne." // Update photo name on error
+      this.resumePresentation(); // Resume the interval even if there is an error
+    };
+
+    // Add the event listeners to the photo image
+    this.photoImage.addEventListener("load", this.onPhotoLoad)
+    this.photoImage.addEventListener("error", this.onPhotoError)
     }
     
     /**
@@ -1383,6 +1391,7 @@
         this.index = 0; // Set the index to the first photo if it is not set
       }
       this.setPhoto(this.index) // Set the photo based on the index
+      clearInterval(this.interval)
     }
     
     /**
@@ -1403,12 +1412,14 @@
         this.index = this.data.length - 1; // Set the index to the last photo if it is not set
       }
       this.setPhoto(this.index) // Set the photo based on the index
+      clearInterval(this.interval)
     }
 
     /**
      * Resumes the presentation.
      *
      @func */ resumePresentation = () => {
+      console.log("Resume presentation", this.presentation)
       clearInterval(this.interval)
       if (this.presentation === "forward") {
         this.interval = setInterval(() => {
