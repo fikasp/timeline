@@ -1320,22 +1320,22 @@
         this.photoName.textContent = "Ładowanie zdjęcia..."
       }, 500)
 
-    // Remove existing listeners to prevent multiple triggers
-    this.photoImage.removeEventListener("load", this.onPhotoLoad);
-    this.photoImage.removeEventListener("error", this.onPhotoError);
-
     // Define the event listener for the load event
     this.onPhotoLoad = () => {
       clearTimeout(loadingTimeout) // Clear the loading timer
       this.photoName.textContent = imgBox?.dataset.desc // Update photo name with description
-      this.resumePresentation(); // Resume the interval once the image has loaded
+      this.showContinue() // Resume the interval once the image has loaded
+      this.photoImage.removeEventListener("load", this.onPhotoLoad)
+      this.photoImage.removeEventListener("error", this.onPhotoError)
     };
 
     // Define the event listener for the error event
     this.onPhotoError = () => {
       clearTimeout(loadingTimeout); // Clear the loading timer
       this.photoName.textContent = "Zdjęcie jest niedostępne." // Update photo name on error
-      this.resumePresentation(); // Resume the interval even if there is an error
+      this.showContinue() // Resume the interval even if there is an error
+      this.photoImage.removeEventListener("load", this.onPhotoLoad)
+      this.photoImage.removeEventListener("error", this.onPhotoError)
     };
 
     // Add the event listeners to the photo image
@@ -1384,7 +1384,6 @@
       this.presentation = "backward"
       this.photo.classList.remove("none") // Remove 'none' class to make the photo visible
       this.photo.classList.add("show") // Add 'show' class to animate showing the photo
-
       this.setState({isPhotoOpen : true}) // Update the state to indicate that the photo is open
       
       if(!this.index) {
@@ -1405,7 +1404,6 @@
       this.presentation = "forward"
       this.photo.classList.remove("none") // Remove 'none' class to make the photo visible
       this.photo.classList.add("show") // Add 'show' class to animate showing the photo        
-
       this.setState({isPhotoOpen : true}) // Update the state to indicate that the photo is open
       
       if(!this.index) {
@@ -1418,8 +1416,8 @@
     /**
      * Resumes the presentation.
      *
-     @func */ resumePresentation = () => {
-      console.log("Resume presentation", this.presentation)
+     @func */ showContinue = () => {
+      console.log("Presentation", this.presentation)
       clearInterval(this.interval)
       if (this.presentation === "forward") {
         this.interval = setInterval(() => {
