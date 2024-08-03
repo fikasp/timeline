@@ -358,12 +358,12 @@
       }
     .photo_next {
       padding: 0 10px 0 90px;
-      right: -40px;
+      right: -36px;
       top: 0;
     }
     .photo_previous {
       padding: 0 90px 0 10px;
-      left: -40px;
+      left: -36px;
       top: 0;
     }
     .photo_close {
@@ -379,11 +379,10 @@
           right: 5px;
         }
       }
-    
     .photo_group {
       display: flex;
       position: relative;
-      max-width: calc(100vw - 30px);
+      max-width: calc(100vw - 80px);
       max-height: calc(100vh - 46px);
       transform: translateY(-8px);
       min-width: 300px;
@@ -394,11 +393,11 @@
       }
     .photo_image {
       position: relative;
-      max-width: calc(100vw - 30px);
+      max-width: calc(100vw - 80px);
       max-height: calc(100vh - 46px);
       object-fit: cover;
       transition: 0.5s;
-      }
+    }
     .photo_name {
       font-size: 1.2rem;
       position: absolute;
@@ -406,6 +405,7 @@
       width: 100%;
       left: 0px;
       bottom: -25px;
+      padding: 0px 15px;
       text-shadow: 0 0 5px #000;
       color: #fff;
       z-index: 3;
@@ -422,7 +422,21 @@
         bottom: 6px;
       }
     }
-    @media (max-width: 900px) {
+    @media (max-width: 1200px) {
+      .photo_group {
+        max-width: calc(100vw - 30px);
+      }
+      .photo_image {
+        max-width: calc(100vw - 30px);
+      }
+      .photo_next {
+        right: 0px;
+      }
+      .photo_previous {
+        left: 0px;
+      }
+    }
+    @media (max-width: 600px) {
       .photo_group {
         max-width: 100vw;
       }
@@ -431,14 +445,6 @@
       }
       .photo_arrow {
         font-size: 30px;
-      }
-    }
-    @media (max-width: 1900px) {
-      .photo_next {
-        right: 0px;
-      }
-      .photo_previous {
-        left: 0px;
       }
     }
     @keyframes show { 
