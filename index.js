@@ -1060,4 +1060,7 @@ const data = [
 {date: '2024-04-14', catg: ['Spacery'], name: 'Spacer Krzywy Grunt'},
 {date: '2024-04-26', catg: ['Koncerty'], name: 'Filharmonia'},
 {date: '2024-04-27', catg: ['Uroczystości'], name: 'Wesele Ani i Szymona'},
+{date: '2024-05-01', catg: ['Miasta'], name: '1 Imielin'},
+{date: '2024-05-01', catg: ['Miasta'], name: '2 Lędziny'},
+{date: '2024-05-02', catg: ['Miasta'], name: '3 Łazy'},
 ]
