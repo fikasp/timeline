@@ -958,9 +958,9 @@
       // Properties
       this.index = 0
       this.marginTop = 0
-      this.presentation = ""
+      this.presentation = "none"
+      this.presentationTimeout
       this.loadingTimeout
-      this.interval
       this.time
       this.touchStartX 
       this.touchEndX
@@ -1333,14 +1333,14 @@
         console.log("Photo loaded successfully...")
         clearTimeout(this.loadingTimeout) // Clear the loading timer
         this.photoName.textContent = imgBox?.dataset.desc // Update photo name with description
-        this.showContinue() // Resume the interval once the image has loaded
+        this.showContinue() // Continue the presentation
       };
 
       // Define the event listener for the error event
       this.onPhotoError = () => {
         clearTimeout(this.loadingTimeout) // Clear the loading timer
         this.photoName.textContent = "Zdjęcie jest niedostępne." // Update photo name on error
-        this.showContinue() // Resume the interval even if there is an error
+        this.showContinue() // Continue the presentation
       }
 
       // Add the event listeners to the photo image
@@ -1395,7 +1395,6 @@
         this.index = 0; // Set the index to the first photo if it is not set
       }
       this.setPhoto(this.index) // Set the photo based on the index
-      clearInterval(this.interval)
     }
     
     /**
@@ -1415,32 +1414,31 @@
         this.index = this.data.length - 1; // Set the index to the last photo if it is not set
       }
       this.setPhoto(this.index) // Set the photo based on the index
-      clearInterval(this.interval)
     }
 
     /**
      * Resumes the presentation.
      *
      @func */ showContinue = () => {
-      clearInterval(this.interval)
       console.log("Presentation", this.presentation)
       if (this.presentation === "forward") {
-        this.interval = setInterval(() => {
+        this.presentationTimeout = setTimeout(() => {
           if (this.index > 0) {
             this.setPreviousPhoto() // Set the previous photo
+            
           } else {
             this.hidePhoto() // Hide the photo if there are no more previous photos
           }
-        }, this.time) // Set the interval to automatically show photos based on the defined time
+        }, this.time)
   
       } else if (this.presentation === "backward") {
-        this.interval = setInterval(() => {
+        this.presentationTimeout = setTimeout(() => {
           if (this.index < this.data.length - 1) {
             this.setNextPhoto() // Set the previous photo
           } else {
             this.hidePhoto() // Hide the photo if there are no more next photos
           }
-        }, this.time) // Set the interval to automatically show photos based on the defined time
+        }, this.time) 
       }
     }
 
@@ -1477,9 +1475,9 @@
       
       this.setActivePhoto() // Set the active photo  
       this.setState({isPhotoOpen : false}) // Update the state to indicate that the photo is closed     
-      clearInterval(this.interval) // Clear any ongoing intervals
+      clearTimeout(this.presentationTimeout) // Clear presentation timeout
 
-      this.presentation = ""
+      this.presentation = "none"
       this.photoName.textContent = "" // Clear the photo name
       this.photo.classList.add("hide") // Add 'hide' class to animate hiding the photo
       setTimeout(() => {
