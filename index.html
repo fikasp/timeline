@@ -959,6 +959,7 @@
       this.index = 0
       this.marginTop = 0
       this.presentation = ""
+      this.loadingTimeout
       this.interval
       this.time
       this.touchStartX 
@@ -1312,35 +1313,39 @@
       const imgBox = document.getElementById(id) // Get the image box element
       this.photoImage.setAttribute("src", imgBox?.dataset.src) // Set the source attribute of the photo image
 
-      // Timer for showing loading message
-      let loadingTimeout
+      // Remove previous event listeners to avoid duplication
+      this.photoImage.removeEventListener("load", this.onPhotoLoad)
+      this.photoImage.removeEventListener("error", this.onPhotoError)
 
-      // Show loading message if image loading takes more than 500ms
-      loadingTimeout = setTimeout(() => {
+      // Clear any existing loading timer
+      if (this.loadingTimeout) {
+        clearTimeout(this.loadingTimeout)
+      }
+
+      // Timer for showing loading message
+      this.loadingTimeout = setTimeout(() => {
+        console.log("Loading photo...")
         this.photoName.textContent = "Ładowanie zdjęcia..."
       }, 500)
 
-    // Define the event listener for the load event
-    this.onPhotoLoad = () => {
-      clearTimeout(loadingTimeout) // Clear the loading timer
-      this.photoName.textContent = imgBox?.dataset.desc // Update photo name with description
-      this.showContinue() // Resume the interval once the image has loaded
-      this.photoImage.removeEventListener("load", this.onPhotoLoad)
-      this.photoImage.removeEventListener("error", this.onPhotoError)
-    };
+      // Define the event listener for the load event
+      this.onPhotoLoad = () => {
+        console.log("Photo loaded successfully...")
+        clearTimeout(this.loadingTimeout) // Clear the loading timer
+        this.photoName.textContent = imgBox?.dataset.desc // Update photo name with description
+        this.showContinue() // Resume the interval once the image has loaded
+      };
 
-    // Define the event listener for the error event
-    this.onPhotoError = () => {
-      clearTimeout(loadingTimeout); // Clear the loading timer
-      this.photoName.textContent = "Zdjęcie jest niedostępne." // Update photo name on error
-      this.showContinue() // Resume the interval even if there is an error
-      this.photoImage.removeEventListener("load", this.onPhotoLoad)
-      this.photoImage.removeEventListener("error", this.onPhotoError)
-    };
+      // Define the event listener for the error event
+      this.onPhotoError = () => {
+        clearTimeout(this.loadingTimeout) // Clear the loading timer
+        this.photoName.textContent = "Zdjęcie jest niedostępne." // Update photo name on error
+        this.showContinue() // Resume the interval even if there is an error
+      }
 
-    // Add the event listeners to the photo image
-    this.photoImage.addEventListener("load", this.onPhotoLoad)
-    this.photoImage.addEventListener("error", this.onPhotoError)
+      // Add the event listeners to the photo image
+      this.photoImage.addEventListener("load", this.onPhotoLoad)
+      this.photoImage.addEventListener("error", this.onPhotoError)
     }
     
     /**
@@ -1364,7 +1369,7 @@
      *
     @func */ setNextPhoto = (e) =>
 		{   
-      ARW.printFuncName(this.setPreviousPhoto) // Print function name
+      ARW.printFuncName(this.setNextPhoto) // Print function name
 
       e?.stopPropagation()
       if (this.index < this.data.length - 1) { // Check if the photo is not the last one
@@ -1417,8 +1422,8 @@
      * Resumes the presentation.
      *
      @func */ showContinue = () => {
-      console.log("Presentation", this.presentation)
       clearInterval(this.interval)
+      console.log("Presentation", this.presentation)
       if (this.presentation === "forward") {
         this.interval = setInterval(() => {
           if (this.index > 0) {
