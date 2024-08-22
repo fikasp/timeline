@@ -657,16 +657,20 @@ for root, dirs, files in os.walk(inputPath):
     # Process jpg files only
     if file.endswith('.jpg'):
 
+      # print(file)
+
       # Prepare file name
       filePath = os.path.join(root, file)
       string = file.replace('.jpg', '')
 
       # Separate date and event name
-      splitted_string = string.split(' - ', 1)
-      if len(splitted_string) < 2:
-        continue  
-      date = splitted_string[0]
-      name = splitted_string[1]
+      if ' - ' in string:
+        # Top-level file
+        date, name = string.split(' - ', 1)
+      else:
+        # Subfolder case
+        date = os.path.basename(root).split(' - ', 1)[0]
+        name = os.path.basename(root).split(' - ', 1)[1] + '/' + string
 
       # Prepare category for event
       matched_category = []

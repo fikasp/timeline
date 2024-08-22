@@ -783,7 +783,9 @@
       ARW.printFuncName(this.prepareMonths) // Print function name
       
       ARW.createOption(this.selectMonth, this.filters.none) // Create "None" option
-      ARW.createOption(this.selectMonth, this.filters.all, this.filters.all, true) // Create "All" option
+      ARW.createOption(this.selectMonth, this.filters.compact, this.filters.compact, true) // Create "Compact" option
+      ARW.createOption(this.selectMonth, this.filters.catalog) // Create "Catalog" option
+      ARW.createOption(this.selectMonth, this.filters.all) // Create "All" option
       
       Object.keys(this.months).sort().forEach(month => {
         ARW.createOption(this.selectMonth, month, this.months[month]) // Create month options
@@ -800,7 +802,7 @@
       ARW.createOption(this.selectYear, this.filters.none) // Create "None" option      
       ARW.createOption(this.selectYear, this.filters.min, this.filters.min, true) // Create "Min" option      
       ARW.createOption(this.selectYear, this.filters.max) // Create "Max" option
-      ARW.createOption(this.selectYear, this.filters.all) // Create "All" option
+      ARW.createOption(this.selectYear, this.filters.auto) // Create "Auto" option
       ARW.createOption(this.selectYear, this.filters.grid) // Create "Grid" option
     }
 
@@ -866,7 +868,8 @@
       this.setState({filterMonth: filterMonth}) // Set state of filter month
 
       // Set state of months visible
-      if (filterMonth != this.filters.all) { 
+      const {all, compact, catalog} = this.filters
+      if (![all, compact, catalog].includes(filterMonth)) { 
         this.setState({isMonthsVisible: false})
       } else {
         this.setState({isMonthsVisible: true})
@@ -888,8 +891,8 @@
       if (filterYear == this.filters.min) {
         this.root.style.setProperty('--yearHeight', `45px`)
       } else if (filterYear == this.filters.max) {
-        this.root.style.setProperty('--yearHeight', `90px`)
-      } else if (filterYear == this.filters.all) {
+        this.root.style.setProperty('--yearHeight', `200px`)
+      } else if (filterYear == this.filters.auto) {
         this.root.style.setProperty('--yearHeight', `auto`)
       }
 
@@ -1510,10 +1513,12 @@
       // Common filters
       this.filters = {
         none: "Brak",
-        min: "Wąsko",
+        min: "Kompaktowo",
         max: "Szeroko",
-        auto: "Wszystko",
+        auto: "Automatycznie",
         all: "Wszystko",
+        catalog: "Katalogowo",
+        compact: "Kompaktowo",
         grid: "Siatka"
       }
       // Grid sizes
@@ -1539,7 +1544,7 @@
         isYearsVisible: true,
         isYearsCollapsed: true,
         filterCategory: this.filters.all, 
-        filterMonth: this.filters.all,
+        filterMonth: this.filters.compact,
         filterYear: this.filters.min,
         grid: this.grid.S,
         time: this.time.T1
@@ -1723,7 +1728,7 @@
       let filteredData = this.data // Initialize filteredData with the original data
       
       const { filterCategory, filterMonth, filterYear } = this.state // Destructure filters from state
-      const { all, min, medium, max, none } = this.filters // Destructure common filters
+      const { all, catalog, compact, min, medium, max, none } = this.filters // Destructure common filters
 
       // Filter by category
       if(filterCategory != all) {
@@ -1732,11 +1737,16 @@
         })
       }
       // Filter by month
-      if(filterMonth != all && filterMonth != none) {
+      if(filterMonth == compact) {
+        filteredData = filteredData.filter(item => !item.name.includes('/'))
+      } else if (filterMonth == catalog) {
+        filteredData = filteredData.filter(item => item.name.includes('/'))
+      } else if(filterMonth != all && filterMonth != none) {
         filteredData = filteredData.filter(item => {
-          return item.month == filterMonth // Filter items where the month matches filterMonth
+          return item.month == filterMonth 
         })
       }
+
       filteredData.forEach((item, index) => item.id = index) // Assign unique ids to each filtered item
       return filteredData // Return the filtered data
     }
