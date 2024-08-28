@@ -347,7 +347,7 @@
       align-items: center;
       height: 100%;
       position: absolute;
-      font-size: 35px;
+      font-size: 36px;
       text-shadow: 0 0 3px #000;
       color: #888;
       transition: 1s;
@@ -384,9 +384,7 @@
       display: flex;
       position: relative;
       max-width: calc(100vw - 80px);
-      max-height: calc(100vh - 60px);
-      /* max-height: calc(100vh - 46px); */
-      /* transform: translateY(-8px); */
+      max-height: calc(100vh - 30px);
       min-width: 300px;
       min-height: 30px;
       object-fit: cover;
@@ -397,8 +395,7 @@
     .photo_image {
       position: relative;
       max-width: calc(100vw - 80px);
-      max-height: calc(100vh - 60px);
-      /* max-height: calc(100vh - 46px); */
+      max-height: calc(100vh - 30px);
       object-fit: cover;
       transition: 0.5s;
     }
@@ -408,7 +405,7 @@
       text-align: center;
       width: 100%;
       left: 0px;
-      bottom: -25px;
+      bottom: 24px;
       padding: 0px 15px;
       text-shadow: 0 0 5px #000;
       color: #fff;
@@ -417,13 +414,12 @@
     @media (max-height: 600px) {
       .photo_group {
         max-height: 100vh;
-        /* transform: translateY(0px); */
       }
       .photo_image {
         max-height: 100vh;
       }
       .photo_name {
-        bottom: 6px;
+        bottom: 10px;
       }
     }
     @media (max-width: 1200px) {
@@ -543,9 +539,9 @@
         <i class="fa-solid fa-angle-right"></i>
       </div>
       <!-- Image, name -->
-      <div class="photo_name"></div>
       <img class="photo_image">
     </div>
+    <div class="photo_name"></div>
   </div>
 
   <script>
