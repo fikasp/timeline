@@ -779,9 +779,9 @@
       ARW.printFuncName(this.prepareMonths) // Print function name
       
       ARW.createOption(this.selectMonth, this.filters.none) // Create "None" option
-      ARW.createOption(this.selectMonth, this.filters.compact, this.filters.compact, true) // Create "Compact" option
-      ARW.createOption(this.selectMonth, this.filters.catalog) // Create "Catalog" option
-      ARW.createOption(this.selectMonth, this.filters.all) // Create "All" option
+      // ARW.createOption(this.selectMonth, this.filters.compact, this.filters.compact, true) // Create "Compact" option
+      // ARW.createOption(this.selectMonth, this.filters.catalog) // Create "Catalog" option
+      ARW.createOption(this.selectMonth, this.filters.all, this.filters.all, true) // Create "All" option
       
       Object.keys(this.months).sort().forEach(month => {
         ARW.createOption(this.selectMonth, month, this.months[month]) // Create month options
@@ -1540,7 +1540,7 @@
         isYearsVisible: true,
         isYearsCollapsed: true,
         filterCategory: this.filters.all, 
-        filterMonth: this.filters.compact,
+        filterMonth: this.filters.all,
         filterYear: this.filters.min,
         grid: this.grid.S,
         time: this.time.T1

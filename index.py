@@ -2,8 +2,7 @@ import os
 from encodings import utf_8
 
 # Path
-inputPath = 'B:/Prywatne/Lifebook/Timeline'
-outputPath = 'B:/Prywatne/Lifebook/Timeline/index.js'
+input_path = 'b:\Prywatne\Lifebook\Timeline'
 
 # Category
   # @sup Categories
@@ -638,6 +637,7 @@ cat_keys = list(categories.keys())
 cat_string = str(cat_keys)
 
 # Open the output file
+outputPath = os.path.join(input_path, 'index.js')
 output = open(outputPath, 'w', encoding='utf8')
 
 # Write header with categories
@@ -649,7 +649,7 @@ print(header)
 previous_year = '' 
 
 # Traverse the directory structure
-for root, dirs, files in os.walk(inputPath):
+for root, dirs, files in os.walk(input_path):
   # Sort files
   files = sorted(files)
   for file in files:
@@ -668,9 +668,10 @@ for root, dirs, files in os.walk(inputPath):
         # Top-level file
         date, name = string.split(' - ', 1)
       else:
+        continue
         # Subfolder case
-        date = os.path.basename(root).split(' - ', 1)[0]
-        name = os.path.basename(root).split(' - ', 1)[1] + '/' + string
+        # date = os.path.basename(root).split(' - ', 1)[0]
+        # name = os.path.basename(root).split(' - ', 1)[1] + '/' + string
 
       # Prepare category for event
       matched_category = []
