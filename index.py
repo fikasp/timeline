@@ -1,4 +1,5 @@
 import os
+import subprocess
 from encodings import utf_8
 
 # Path
@@ -638,6 +639,8 @@ cat_string = str(cat_keys)
 
 # Open the output file
 outputPath = os.path.join(input_path, 'index.js')
+subprocess.run(['attrib', '-H', outputPath])
+
 output = open(outputPath, 'w', encoding='utf8')
 
 # Write header with categories
@@ -716,5 +719,7 @@ output.write(']')
 
 # Close the output file
 output.close()
+
+subprocess.run(['attrib', '+H', outputPath])
 
 print('Conversion done...')

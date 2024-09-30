@@ -839,7 +839,7 @@ const data = [
 {date: '2021-10-31', catg: ['Spacery'], name: 'Spacer Dolinka Będkowska'},
 {date: '2021-11-01', catg: ['Kościoły'], name: 'Wszystkich Świętych'},
 {date: '2021-11-05', catg: ['Koncerty'], name: 'Zaduszki organowe'},
-{date: '2021-11-06', catg: ['Spacery'], name: 'Spacer Lasek Wolski'},
+{date: '2021-11-06', catg: ['Spacery'], name: 'Spacer Las Wolski'},
 {date: '2021-11-07', catg: ['Kościoły'], name: 'Kościół Dominikanie'},
 {date: '2021-11-13', catg: ['Imprezy'], name: 'Urodziny Anielki'},
 {date: '2021-11-14', catg: ['Spektakle'], name: 'Opera Krakowska'},
@@ -1113,4 +1113,8 @@ const data = [
 {date: '2024-09-08', catg: [], name: 'Ogród Krakowianek'},
 {date: '2024-09-15', catg: [], name: 'Fabryczna Office Park'},
 {date: '2024-09-20', catg: ['Koncerty'], name: 'Filharmonia'},
+{date: '2024-09-21', catg: ['Miasta'], name: 'Krzeszowice'},
+{date: '2024-09-21', catg: [], name: 'Zamek Tenczyn'},
+{date: '2024-09-22', catg: [], name: 'Dolina Bolechowicka'},
+{date: '2024-09-22', catg: ['Imprezy'], name: 'Urodziny mamy Ani'},
 ]
