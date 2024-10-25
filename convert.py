@@ -28,10 +28,10 @@ for filename in sorted(os.listdir(input_folder)):
         # Open the JPG file
         image = Image.open(input_path)
 
-        # Resize the image (e.g., to 240x180)
+        # Resize the image
         new_image = image.resize((240, 180))
 
-        # Save as WebP with 50% quality
+        # Save as WebP with 60% quality
         new_image.save(output_path, "WEBP", quality=60)
 
         print(f'Converted: {filename} -> {webp_filename}')
