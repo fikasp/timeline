@@ -39,6 +39,7 @@ categories = {
     'Dolina Chochołowska',
     'Dolina Pięciu Stawów',
     'Dolina Roztoki',
+    'Dolina Starorobociańska',
     'Gęsia Szyja',
     'Giewont',
     'Gorc',
