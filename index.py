@@ -46,6 +46,7 @@ categories = {
     'Hala Łabowska',
     'Hala Lipowska',
     'Hala Pisana',
+    'Jałowiec',
     'Jarząbczy Wierch',
     'Jasknia Mroźna',
     'Jaworzyna Krynicka',
