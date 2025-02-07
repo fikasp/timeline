@@ -472,6 +472,7 @@ categories = {
   ],
   # @sub Narty
   'Narty': [
+    'Biegówki',
     'Kotelnica',
     'Master Ski',
     'Narty',
@@ -515,7 +516,8 @@ categories = {
     'Restauracja',
     'Taco Mexicano',
     'Babcia Malina',
-    'Karczma'
+    'Karczma',
+    'Sphinx'
   ],
   # @sub Rodzina
   'Rodzina': [

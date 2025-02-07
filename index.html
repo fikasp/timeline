@@ -154,7 +154,7 @@
       justify-content: center;
       align-items: center;
       top: 10px;
-      right: 20px;
+      right: 10px;
       font-size: 20px;
       background-color: rgb(0, 0, 0, 50%);
       transition: 0.5s
@@ -162,12 +162,6 @@
     .header_bars:hover {
       background-color: rgb(0, 0, 0, 100%);
     }
-    @media (max-width: 640px) {
-      .header_bars {
-        right: 10px;
-      }
-    }
-
     /* @sub gallery */
     .gallery {
       z-index: 1;
@@ -347,7 +341,7 @@
       align-items: center;
       height: 100%;
       position: absolute;
-      font-size: 36px;
+      font-size: 30px;
       text-shadow: 0 0 3px #000;
       color: #888;
       transition: 1s;
@@ -359,12 +353,12 @@
       }
     .photo_next {
       padding: 0 10px 0 90px;
-      right: -36px;
+      right: 10px;
       top: 0;
     }
     .photo_previous {
       padding: 0 90px 0 10px;
-      left: -36px;
+      left: 10px;
       top: 0;
     }
     .photo_close {
@@ -372,14 +366,9 @@
       height: auto;
       font-size: 30px;
       padding: 10px;
-      right: 15px;
+      right: 5px;
       top: 0px;
     }
-      @media (max-width: 640px) {
-        .photo_close {
-          right: 5px;
-        }
-      }
     .photo_group {
       display: flex;
       position: relative;
@@ -429,12 +418,6 @@
       .photo_image {
         max-width: calc(100vw - 30px);
       }
-      .photo_next {
-        right: 0px;
-      }
-      .photo_previous {
-        left: 0px;
-      }
     }
     @media (max-width: 600px) {
       .photo_group {
@@ -442,9 +425,6 @@
       }
       .photo_image {
         max-width: 100vw;
-      }
-      .photo_arrow {
-        font-size: 30px;
       }
     }
     @keyframes show { 
@@ -529,15 +509,15 @@
     <div class="photo_arrow photo_close">
       <i class="fa-solid fa-xmark"></i>
     </div>
+    <!-- Arrow previous -->
+    <div class="photo_arrow photo_previous">
+      <i class="fa-solid fa-angle-left"></i>
+    </div>
+    <!-- Arrow next -->
+    <div class="photo_arrow photo_next">
+      <i class="fa-solid fa-angle-right"></i>
+    </div>
     <div class="photo_group">
-      <!-- Arrow previous -->
-      <div class="photo_arrow photo_previous">
-        <i class="fa-solid fa-angle-left"></i>
-      </div>
-      <!-- Arrow next -->
-      <div class="photo_arrow photo_next">
-        <i class="fa-solid fa-angle-right"></i>
-      </div>
       <!-- Image, name -->
       <img class="photo_image">
     </div>

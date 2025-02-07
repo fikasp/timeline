@@ -1144,4 +1144,15 @@ const data = [
 {date: '2024-12-20', catg: ['Znajomi'], name: 'Spotkanie w biurze'},
 {date: '2024-12-25', catg: ['Rodzina'], name: 'Boże Narodzenie'},
 {date: '2024-12-28', catg: ['Koncerty'], name: 'Koncert na Ruczaju'},
+// 2025
+{date: '2025-01-05', catg: ['Restauracje'], name: 'Karczma Łemkowska'},
+{date: '2025-01-06', catg: ['Narty'], name: 'Krynica i narty Tylicz Ski'},
+{date: '2025-01-12', catg: ['Koncerty', 'Rodzina'], name: 'Koncert w Myślenicach'},
+{date: '2025-01-18', catg: ['Narty'], name: 'Biegówki pod Mogielicą'},
+{date: '2025-01-19', catg: ['Kawiarnie'], name: 'Kawiarnia Dziórawy Kocioł'},
+{date: '2025-01-19', catg: ['Koncerty'], name: 'Koncert organowy u Jezuitów'},
+{date: '2025-01-19', catg: ['Spacery'], name: 'Spacer Planty Dietlowskie'},
+{date: '2025-01-25', catg: ['Kościoły'], name: 'Częstochowa'},
+{date: '2025-01-25', catg: ['Miasta'], name: 'Olsztyn'},
+{date: '2025-01-25', catg: ['Restauracje'], name: 'Sphinx'},
 ]
