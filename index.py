@@ -34,6 +34,7 @@ categories = {
     'Bystra',
     'Ciecień',
     'Ćwilin',
+    'Czarny Mniszek',
     'Czerwone Wierchy',
     'Czupel',
     'Dolina Chochołowska',
@@ -45,6 +46,7 @@ categories = {
     'Giewont',
     'Gorc',
     'Goryczkowa Czuba',
+    'Granaty',
     'Hala Łabowska',
     'Hala Lipowska',
     'Hala Pisana',
@@ -61,6 +63,7 @@ categories = {
     'Kościelisko',
     'Koskowa Góra',
     'Kotoń',
+    'Kozi Wierch',
     'Koziarz',
     'Krawców Wierch',
     'Krzyżne',
@@ -116,6 +119,7 @@ categories = {
     'Wilczyce',
     'Wołowiec',
     'Wysoka',
+    'Żleb Kulczyckiego',
   ],
   # @sub Domówki
   'Domówki': [
