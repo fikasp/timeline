@@ -3,7 +3,7 @@ from PIL import Image
 # pip install Pillow
 
 # Input folder path
-input_folder = 'b:/Prywatne/Lifebook/Timeline/2025/'
+input_folder = 'b:/Prywatne/Lifebook/Timeline/2023/'
 
 # Subfolder for webp
 webp_folder = os.path.join(input_folder, 'webp')

@@ -11,6 +11,7 @@ categories = {
   # @sub Atrakcje
   'Atrakcje': [
     'Basen',
+    'Centrum Nauki Kopernik',
     'Kręgle',
     'Łyżwy',
     'Muzeum',
@@ -80,6 +81,7 @@ categories = {
     'Nosal',
     'Orla Perć',
     'Ornak',
+    'Pańska Przehybka',
     'Piec','Pieniny',
     'Pilsko',
     'Plebańska Góra',
@@ -602,6 +604,7 @@ categories = {
     'Międzyzdroje',
     'Mielno',
     'Mileżówka',
+    'Nocleg',
     'Sarbinowo',
     'Słowacki Raj',
     'Sopot',
@@ -710,6 +713,7 @@ for root, dirs, files in os.walk(input_path):
               or category == 'Rowery' 
               or category == 'Narty'     
               or category == 'Miasta'
+              or category == 'Wyjazdy'
               or category == matched_category):
               matched_category.clear()
             if (category not in matched_category):
