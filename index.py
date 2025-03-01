@@ -1,4 +1,4 @@
-import os
+import os, re
 import subprocess
 from encodings import utf_8
 
@@ -28,6 +28,7 @@ categories = {
   ],
   # @sub Góry
   'Góry': [
+    '2013-08-24',
     'Babia Góra',
     'Barania Góra',
     'Barnasiówka',
@@ -564,6 +565,8 @@ categories = {
     'Spacer',
     'Dróżki Kalwaryjskie',
     'Ogród Botaniczny',
+    '2013-06-22',
+    '2024-11-16'
 
   ],
   # @sub Spektakle
@@ -705,19 +708,19 @@ for root, dirs, files in os.walk(input_path):
 
       # Prepare category for event
       matched_category = []
+      date_matched = False
       # Match categories based on patterns in file names
       for category, patterns in categories.items():
         for pattern in patterns:
-          if pattern.lower() in name.lower():
-            if (category == 'Spacery' 
-              or category == 'Rowery' 
-              or category == 'Narty'     
-              or category == 'Miasta'
-              or category == 'Wyjazdy'
-              or category == matched_category):
-              matched_category.clear()
+          if pattern.lower() in name.lower() or pattern.lower() in date.lower():
+            if re.match(r'^\d{4}-\d{2}-\d{2}$', pattern):
+              matched_category = [category]
+              date_matched = True
+              break
             if (category not in matched_category):
               matched_category.append(category)
+        if date_matched:
+          break
 
       # Prepare years separators
       current_year = date.split('-')[0]
