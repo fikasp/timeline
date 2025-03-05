@@ -1212,5 +1212,10 @@ const data = [
 {date: '2025-01-25', catg: ['Miasta'], name: 'Ogrodzieniec'},
 {date: '2025-01-25', catg: ['Miasta'], name: 'Olsztyn'},
 {date: '2025-01-25', catg: ['Restauracje'], name: 'Sphinx'},
-{date: '2025-02-14', catg: [], name: 'Przystanek Pierogarnia'},
+{date: '2025-02-01', catg: ['Koncerty'], name: 'Koncert w ICE'},
+{date: '2025-02-09', catg: ['Kościoły'], name: 'Kościół Bonifratrów'},
+{date: '2025-02-09', catg: ['Restauracje'], name: 'Restauracja Tajska'},
+{date: '2025-02-14', catg: ['Restauracje'], name: 'Przystanek Pierogarnia'},
+{date: '2025-02-16', catg: ['Atrakcje'], name: 'Festiwal Magii'},
+{date: '2025-02-22', catg: ['Narty'], name: 'Narty Kluszkowce'},
 ]

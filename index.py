@@ -12,6 +12,7 @@ categories = {
   'Atrakcje': [
     'Basen',
     'Centrum Nauki Kopernik',
+    'Festiwal Magii',
     'Kręgle',
     'Łyżwy',
     'Muzeum',
@@ -528,6 +529,7 @@ categories = {
     'Taco Mexicano',
     'Babcia Malina',
     'Karczma',
+    'Przystanek Pierogarnia',
     'Sphinx'
   ],
   # @sub Rodzina
