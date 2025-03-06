@@ -1218,4 +1218,5 @@ const data = [
 {date: '2025-02-14', catg: ['Restauracje'], name: 'Przystanek Pierogarnia'},
 {date: '2025-02-16', catg: ['Atrakcje'], name: 'Festiwal Magii'},
 {date: '2025-02-22', catg: ['Narty'], name: 'Narty Kluszkowce'},
+{date: '2025-02-28', catg: ['Koncerty'], name: 'Koncert w filharmonii'},
 ]
