@@ -13,6 +13,7 @@ categories = {
     'Basen',
     'Centrum Nauki Kopernik',
     'Festiwal Magii',
+    'Jaskinia Raj',
     'Kręgle',
     'Łyżwy',
     'Muzeum',
@@ -23,6 +24,7 @@ categories = {
     'Turniej',
     'Wawel',
     'Wianki',
+    'Wydmy',
     'Wystawa',
     'Zamek',
     'ZOO',
@@ -41,6 +43,7 @@ categories = {
     'Czerwone Wierchy',
     'Czupel',
     'Dolina Chochołowska',
+    'Dolina Goryczkowa',
     'Dolina Pięciu Stawów',
     'Dolina Roztoki',
     'Dolina Starorobociańska',
@@ -50,6 +53,7 @@ categories = {
     'Gorc',
     'Goryczkowa Czuba',
     'Granaty',
+    'Grzęda Rysów',
     'Hala Łabowska',
     'Hala Lipowska',
     'Hala Pisana',
@@ -70,6 +74,7 @@ categories = {
     'Koziarz',
     'Krawców Wierch',
     'Krzyżne',
+    'Kuźnice',
     'Lackowa',
     'Leskowiec',
     'Lubań',
@@ -80,6 +85,7 @@ categories = {
     'Mędralowa',
     'Modyń',
     'Mogielica',
+    'Morskie Oko',
     'Nosal',
     'Orla Perć',
     'Ornak',
@@ -93,6 +99,7 @@ categories = {
     'Połonica Caryńska',
     'Połonina Wetlińska',
     'Przehyba',
+    'Przełęcz',
     'Przełęcze',
     'Radziejowa',
     'Rakoń',
@@ -175,6 +182,7 @@ categories = {
   ],
   # @sub Kościoły
   'Kościoły': [
+    'Bolechowice',
     'Częstochowa',
     'Droga Krzyżowa',
     'Jasna Góra',
@@ -557,6 +565,7 @@ categories = {
     'Wigilia',
     'Wikusi',
     'Załubińczu',
+    '2013-06-30'
   ],
   # @sub Rowery
   'Rowery': [
@@ -589,6 +598,7 @@ categories = {
     'Rocznica',
     'Ślub',
     'Wesele',
+    'Zjazd'
   ],
   # @sub Wyjazdy
   'Wyjazdy': [
@@ -741,11 +751,10 @@ for root, dirs, files in os.walk(input_path):
       output.write(js_obj + '\n')
       
       # @sup Log
-      # Print log
-      # if date.startswith('19'):
-      #   print(js_obj)
+      if date.startswith('2013'):
+        print(js_obj)
 
-      print(js_obj)
+      # print(js_obj)
 
 # Write footer
 output.write(']')
