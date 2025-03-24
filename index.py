@@ -66,6 +66,8 @@ categories = {
 }
 
 # @sup Program
+print("📷 JPG to JS converter:")
+
 # String list from categories
 cat_keys = list(categories.keys())
 cat_string = str(cat_keys)
@@ -79,7 +81,7 @@ output = open(outputPath, 'w', encoding='utf8')
 # Write header with categories
 header = 'const cat = ' + cat_string + '\n\nconst data = [\n'
 output.write(header)
-print(header)
+# print(header)
 
 # Initialize variable to keep track of the previous year
 previous_year = '' 
@@ -136,13 +138,13 @@ for root, dirs, files in os.walk(input_path):
       categories_string = str(matched_category)
 
       # Generate JavaScript object for the file
-      js_obj = f"{{date: '{date}', catg: {categories_string}, name: '{name}'}},"
+      js_obj = f"  {{date: '{date}', catg: {categories_string}, name: '{name}'}},"
 
       # Write the JavaScript object to the output file
       output.write(js_obj + '\n')
       
       # @sup Log
-      if date.startswith('2013'):
+      if date.startswith('2014'):
         print(js_obj)
 
       # print(js_obj)
@@ -155,4 +157,4 @@ output.close()
 
 subprocess.run(['attrib', '+H', outputPath])
 
-print('Conversion done...')
+print('🏆 Conversion done!')

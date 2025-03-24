@@ -2,8 +2,10 @@ import os
 from PIL import Image
 # pip install Pillow
 
+print("📷 JPG to WEBP converter:")
+
 # Input folder path
-input_folder = 'b:/Prywatne/Lifebook/Timeline/2013/'
+input_folder = 'b:/Prywatne/Lifebook/Timeline/2025/'
 
 # Subfolder for webp
 webp_folder = os.path.join(input_folder, 'webp')
@@ -34,10 +36,10 @@ for filename in sorted(os.listdir(input_folder)):
         # Save as WebP with 60% quality
         new_image.save(output_path, "WEBP", quality=60)
 
-        print(f'Converted: {filename} -> {webp_filename}')
+        print(f'🟢 Converted: {filename} -> {webp_filename}')
       except Exception as e:
         print(f"Error converting {filename}: {e}")
     else:
-      print(f'Skipping: {webp_filename} already exists.')
+      print(f'🟡 Skipping: {webp_filename} already exists.')
 
-print('Conversion done...')
+print('🏆 Conversion done!')
