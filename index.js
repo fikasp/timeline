@@ -446,6 +446,7 @@ const data = [
   {date: '2014-07-22', catg: ['Miasta', 'Wyjazdy'], name: 'Wyjazd Grzybowo'},
   {date: '2014-07-23', catg: ['Miasta', 'Wyjazdy'], name: 'Wyjazd Grzybowo'},
   {date: '2014-07-24', catg: ['Miasta'], name: 'Kołobrzeg'},
+  {date: '2014-07-24', catg: ['Atrakcje'], name: 'Muzeum Oręża Polskiego'},
   {date: '2014-07-26', catg: ['Rowery', 'Wyjazdy'], name: 'Rower Dźwirzyno'},
   {date: '2014-07-27', catg: ['Atrakcje'], name: 'Muzeum minerałów'},
   {date: '2014-08-02', catg: ['Spacery'], name: 'Spacer Dalin'},
