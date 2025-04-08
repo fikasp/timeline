@@ -3,7 +3,7 @@ import subprocess
 from encodings import utf_8
 
 # Variables
-year = 2024
+year = 2025
 
 # Path
 input_path = 'b:\Prywatne\Lifebook\Timeline'

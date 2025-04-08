@@ -1283,4 +1283,6 @@ const data = [
   {date: '2025-03-15', catg: ['Spektakle'], name: 'Teatr Ludowy'},
   {date: '2025-03-22', catg: ['Spacery'], name: 'Spacer Park Strzelecki'},
   {date: '2025-03-22', catg: ['Rodzina'], name: 'Spotkanie u dziadków'},
+  {date: '2025-04-04', catg: ['Spektakle'], name: 'Kino pod Baranami'},
+  {date: '2025-04-05', catg: ['Spacery'], name: 'Spacer Mydlniki'},
 ]
