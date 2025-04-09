@@ -372,7 +372,7 @@
     .photo_group {
       display: flex;
       position: relative;
-      max-width: calc(100vw - 80px);
+      max-width: calc(100vw - 100px);
       max-height: calc(100vh - 30px);
       min-width: 300px;
       min-height: 30px;
@@ -383,7 +383,7 @@
       }
     .photo_image {
       position: relative;
-      max-width: calc(100vw - 80px);
+      max-width: calc(100vw - 100px);
       max-height: calc(100vh - 30px);
       object-fit: cover;
       transition: 0.5s;
@@ -1669,18 +1669,11 @@
       // Sort the data array by date in descending order, and then by name in descending order
       this.data.sort((a, b) => {
         if (a.date > b.date) {
-          return -1; // If date a is greater than date b, a comes before b
+          return -1
         } else if (a.date < b.date) {
-          return 1; // If date a is less than date b, b comes before a
+          return 1
         } else {
-          // If dates are equal, sort by name in descending order
-          if (a.name > b.name) {
-            return -1; // If name a is greater than name b, a comes before b
-          } else if (a.name < b.name) {
-            return 1; // If name a is less than name b, b comes before a
-          } else {
-            return 0; // If objects have the same date and name, maintain their order
-          }
+          return b.name.localeCompare(a.name, 'pl', { sensitivity: 'base' })
         }
       })
     }

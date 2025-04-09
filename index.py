@@ -1,9 +1,10 @@
 import os, re
 import subprocess
+import unicodedata
 from encodings import utf_8
 
 # Variables
-year = 2025
+year = 2015
 
 # Path
 input_path = 'b:\Prywatne\Lifebook\Timeline'
@@ -11,7 +12,7 @@ input_path = 'b:\Prywatne\Lifebook\Timeline'
 # @sup Categories
 categories = {
   # @sub Atrakcje
-  'Atrakcje': ['Basen', 'Centrum Nauki Kopernik', 'Festiwal Magii', 'Jaskinia Raj', 'Kopalnia soli', 'Kręgle', 'Łyżwy', 'Muzeum', 'Parada smoków', 'Park Niespodzianek', 'Smocza Jama', 'Termy', 'Turniej', 'Wawel', 'Wianki', 'Wydmy', 'Wystawa', 'Zamek', 'ZOO'],
+  'Atrakcje': ['Basen', 'Centrum Nauki Kopernik', 'Festiwal Magii', 'Jaskinia Raj', 'Kopalnia soli', 'Kręgle', 'Łyżwy', 'Muzeum', 'Parada smoków', 'Park Niespodzianek', 'Smocza Jama', 'Terma', 'Termy', 'Turniej', 'Wawel', 'Wianki', 'Wydmy', 'Wystawa', 'Zamek', 'ZOO'],
 
   # @sub Góry
   'Góry': ['2013-08-24', 'Babia Góra', 'Barania Góra', 'Barnasiówka', 'Błędne Skały', 'Bystra', 'Ciecień', 'Ćwilin', 'Czarny Mniszek', 'Czerwone Wierchy', 'Czupel', 'Dolina Chochołowska', 'Dolina Goryczkowa', 'Dolina Kościeliska', 'Dolina Pięciu Stawów', 'Dolina Roztoki', 'Dolina Starorobociańska', 'Dróżki różańcowe', 'Gęsia Szyja', 'Giewont', 'Gorc', 'Goryczkowa Czuba', 'Granaty', 'Grzęda Rysów', 'Hala Łabowska', 'Hala Lipowska', 'Hala Pisana', 'Jałowiec', 'Jarząbczy Wierch', 'Jasknia Mroźna', 'Jaworzyna Krynicka', 'Kamiennik', 'Karb', 'Kasprowy Wierch', 'Kończysty Wierch', 'Kopieniec Wielki', 'Kościelec', 'Kościelisko', 'Koskowa Góra', 'Kotoń', 'Kozi Wierch', 'Koziarz', 'Krawców Wierch', 'Krzyżne', 'Kuźnice', 'Lackowa', 'Leskowiec', 'Lubań', 'Lubogoszcz', 'Lubomir', 'Luboń Wielki', 'Łysica', 'Magurki', 'Mędralowa', 'Modyń', 'Mogielica', 'Morskie Oko', 'Nosal', 'Orla Perć', 'Ornak', 'Pańska Przehybka', 'Piec', 'Pieniny', 'Pilsko', 'Plebańska Góra', 'Polana Huciska', 'Polana Michurowa', 'Polica', 'Połonica Caryńska', 'Połonina Wetlińska', 'Przehyba', 'Przełęcz', 'Przełęcze', 'Radziejowa', 'Rakoń', 'Rusinowa Polana', 'Rysy', 'Sarnie Skałki', 'Siwa Przełęcz', 'Skrzyczne', 'Śnieżka', 'Śnieżnica', 'Sokola Perć', 'Sokolica', 'Starorobociański Wierch', 'Stożek Wielki', 'Świnica', 'Świstowa Czuba', 'Szczebel', 'Szczeliniec Wielki', 'Szpiglasowy Wierch', 'Tarnica', 'Trzy Korony', 'Turbacz', 'Uklejna', 'Uklejnę', 'Wąwóz Homole', 'Wielka Racza', 'Wielka Rycerzowa', 'Wilczyce', 'Wołowiec', 'Wysoka', 'Żleb Kulczyckiego'],
@@ -41,7 +42,7 @@ categories = {
   'Narty': ['Biegówki', 'Kotelnica', 'Master Ski', 'Narty'],
 
   # @sub Ogólne
-  'Ogólne': ['Agnieszka', 'Agusia', 'Asia', 'Auto', 'Biuro', 'ŚDM Błonia', 'Gimnazjum', 'Kaśka', 'Koniec pracy', 'Konkursy', 'Kwadrat', 'Liceum', 'Natalia', 'Obrona', 'Początek związku', 'Podstawówka', 'Pokoik', 'Powiększenie biura', 'Praca', 'Prawo jazdy', 'Przedszkole', 'Przemuś', 'Rafał', 'Remont biura', 'Rodzeństwo', 'Rozdanie', 'Rozstanie', 'Sanatorium', 'Sesja', 'Sprzedaż', 'Statut', 'Studia', 'Szkoła', 'Volvo', 'Wykłady'],
+  'Ogólne': ['Agnieszka', 'Agusia', 'Asia', 'Auto', 'Biuro', 'ŚDM Błonia', 'Gimnazjum', 'Kaśka', 'Koniec pracy', 'Konkursy', 'Kwadrat', 'Liceum', 'Natalia', 'Obrona', 'Początek związku', 'Podstawówka', 'Pokoik', 'Powiększenie biura', 'Praca', 'Prawo jazdy', 'Przedszkole', 'Przemuś', 'Rafał', 'Remont','Rodzeństwo', 'Rozdanie', 'Rozstanie', 'Sanatorium', 'Sesja', 'Sprzedaż', 'Statut', 'Studia', 'Szkoła', 'Volvo', 'Wykłady'],
 
   # @sub Restauracje
   'Restauracje': ['Restauracja', 'Taco Mexicano', 'Babcia Malina', 'Karczma', 'Przystanek Pierogarnia', 'Sphinx'],
@@ -62,7 +63,7 @@ categories = {
   'Uroczystości': ['Chrzciny', 'Komunia', 'Oświadczyny', 'Pogrzeb', 'Poprawiny', 'Rocznica', 'Ślub', 'Wesele', 'Zjazd'],
 
   # @sub Wyjazdy
-  'Wyjazdy': ['Biały Dunajec', 'Bieszczady', 'Bukowina', 'Czerwonka', 'Darłówko', 'Dźwirzyno', 'Glinka', 'Gródek', 'Grzybowo', 'Ibiza', 'Kreta', 'Krynica Morska', 'Łeba', 'Majorka', 'Międzyzdroje', 'Mielno', 'Mileżówka', 'Nocleg', 'Sarbinowo', 'Słowacki Raj', 'Sopot', 'Ustka', 'Wyjazd'],
+  'Wyjazdy': ['Biały Dunajec', 'Bieszczady', 'Bukowina', 'Czerwonka', 'Darłówko', 'Dźwirzyno', 'Glinka', 'Gródek', 'Grzybowo', 'Ibiza', 'Kreta', 'Krępachy', 'Krynica Morska', 'Łeba', 'Majorka', 'Międzyzdroje', 'Mielno', 'Mileżówka', 'Nocleg', 'Podróż', 'Sarbinowo', 'Słowacki Raj', 'Sopot', 'Ustka', 'Wyjazd', '2015-10-08', '2015-10-09', '2015-10-10', '2015-10-12', '2015-10-13'],
 
   # @sub Znajomi
   'Znajomi': ['Adwentowe', 'Andrzejki', 'Artura', 'Aśki', 'Bal', 'Ciasteczkowe', 'Kawalerski', 'Klasowe', 'Mariusza', 'Mateusza', 'Męskie', 'Na Szubiennej', 'Nad Wisłę', 'Opłatkowe', 'Panieński', 'Planszówki', 'Podyplomowe', 'Poobozowe','Półmetek', 'Pooświadczynowe', 'Posesyjna', 'Posesyjne', 'Studniówka', 'U Anki', 'U Asi', 'U Kamila', 'U Kamili', 'U Kingi', 'U Łukasza', 'U Moniki', 'U Pawła', 'U Przemka', 'U Sebastiana', 'U Sysłów', 'U Wojtka', 'Urodzinowe', 'W biurze', 'W Brodach', 'W Krakowie', 'W Krempachach', 'W Polibudzie', 'Waldi', 'Walentynki', 'Wypad nad Wisłę', 'Znajomi'],
@@ -89,10 +90,15 @@ output.write(header)
 # Initialize variable to keep track of the previous year
 previous_year = '' 
 
+# normalize filenames
+def normalize_filename(s):
+  nfkd = unicodedata.normalize('NFKD', s)
+  return ''.join([c for c in nfkd if not unicodedata.combining(c)]).lower()
+
 # Traverse the directory structure
 for root, dirs, files in os.walk(input_path):
   # Sort files
-  files = sorted(files)
+  files = sorted(files, key=normalize_filename)
   for file in files:
 
     # Process jpg files only
