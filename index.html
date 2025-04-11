@@ -393,11 +393,9 @@
       position: absolute;
       text-align: center;
       width: 100%;
-      bottom: 15px;
+      bottom: 5px;
       left: 0;
       padding: 5px 15px;
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(6px);
       text-shadow: 0 0 10px #000;
       color: #fff;
       z-index: 3;
@@ -409,9 +407,6 @@
       .photo_image {
         max-height: 100vh;
       }
-      .photo_name {
-        bottom: 10px;
-      }
     }
     @media (max-width: 1200px) {
       .photo_group {
@@ -419,6 +414,9 @@
       }
       .photo_image {
         max-width: 100vw;
+      }
+      .photo_name {
+        position: fixed;
       }
     }
     @keyframes show { 
@@ -514,8 +512,8 @@
     <div class="photo_group">
       <!-- Image, name -->
       <img class="photo_image">
+      <div class="photo_name"></div>
     </div>
-    <div class="photo_name"></div>
   </div>
 
   <script>
