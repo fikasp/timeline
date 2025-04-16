@@ -3,7 +3,7 @@ from PIL import Image
 # pip install Pillow
 
 # variables
-year = 2015
+year = 2016
 
 print("📷 JPG to WEBP converter:")
 
