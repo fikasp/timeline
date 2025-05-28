@@ -692,7 +692,8 @@ const data = [
   {date: '2017-10-16', catg: ['Góry'], name: 'Tarnica 3'},
   {date: '2017-10-28', catg: ['Domówki'], name: 'Trzydziestka jedynka'},
   {date: '2017-11-25', catg: ['Atrakcje'], name: 'Kręgle Plaza'},
-  {date: '2017-12-24', catg: ['Rodzina'], name: 'Wigilia na Załubińczu'},
+  {date: '2017-12-24', catg: ['Rodzina'], name: 'Wigilia na Załubińczu 1'},
+  {date: '2017-12-24', catg: ['Rodzina'], name: 'Wigilia na Załubińczu 2'},
   {date: '2017-12-31', catg: ['Znajomi'], name: 'Sylwester u Asi Wojas'},
 // 2018
   {date: '2018-01-14', catg: ['Spektakle'], name: 'Kino Gwiezdne Wojny'},
