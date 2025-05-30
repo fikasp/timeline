@@ -1436,4 +1436,6 @@ const data = [
   {date: '2025-04-30', catg: [], name: 'Luksemburg'},
   {date: '2025-05-02', catg: [], name: 'Park Skalskiego'},
   {date: '2025-05-03', catg: [], name: 'Krzywy Grunt'},
+  {date: '2025-05-16', catg: ['Atrakcje'], name: 'Muzeum Rydlówka'},
+  {date: '2025-05-23', catg: ['Koncerty'], name: 'Koncert w filharmonii'},
 ]
