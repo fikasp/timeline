@@ -45,7 +45,7 @@ categories = {
   'Ogólne': ['Agnieszka', 'Agusia', 'Asia', 'Auto', 'Biuro', 'ŚDM Błonia', 'Gimnazjum', 'Kaśka', 'Koniec pracy', 'Konkursy', 'Kwadrat', 'Liceum', 'Natalia', 'Obrona', 'Początek związku', 'Podstawówka', 'Pokoik', 'Powiększenie biura', 'Praca', 'Prawo jazdy', 'Przedszkole', 'Przemuś', 'Rafał', 'Remont','Rodzeństwo', 'Rozdanie', 'Rozstanie', 'Sanatorium', 'Sesja', 'Sprzedaż', 'Statut', 'Studia', 'Szkoła', 'Volvo', 'Wykłady'],
 
   # @sub Restauracje
-  'Restauracje': ['Restauracja', 'Taco Mexicano', 'Babcia Malina', 'Karczma', 'Przystanek Pierogarnia', 'Sphinx'],
+  'Restauracje': ['Restauracja', 'Taco Mexicano', 'Babcia Malina', 'Karczma', 'Przystanek Pierogarnia', 'Sphinx', '2024-07-29'],
 
   # @sub Rodzina
   'Rodzina': ['Boże narodzenie', 'Brzezinka', 'Dziadkowie', 'Dzień Dziecka', 'Grill', 'Karolinki', 'Karoliny', 'Kątscy', 'Maciejowskiej', 'Modelowie', 'Na Sądowej', 'Ognisko nad Rabą', 'Osieczany', 'Rodzina', 'U Ani', 'U Darka', 'U dziadków', 'W Brzezince', 'W Myślenicach', 'W Nowej Hucie', 'Wielkanoc', 'Wigilia', 'Wikusi', 'Załubińczu', '2013-06-30'],

@@ -1337,7 +1337,7 @@ const data = [
   {date: '2024-07-27', catg: ['Góry'], name: '2 Gęsia Szyja'},
   {date: '2024-07-27', catg: ['Góry'], name: '3 Kopieniec Wielki'},
   {date: '2024-07-27', catg: ['Góry'], name: '4 Nosal'},
-  {date: '2024-07-29', catg: ['Góry', 'Restauracje'], name: 'Restauracja Morskie Oko'},
+  {date: '2024-07-29', catg: ['Restauracje'], name: 'Restauracja Morskie Oko'},
   {date: '2024-08-04', catg: ['Spektakle'], name: 'Kino na Tarasie'},
   {date: '2024-08-11', catg: ['Rowery'], name: 'Rower Zalew Bagry'},
   {date: '2024-08-15', catg: ['Rodzina'], name: 'Ognisko nad Rabą'},
