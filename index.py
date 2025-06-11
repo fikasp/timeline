@@ -1,21 +1,19 @@
 import os, re
 import subprocess
 import unicodedata
-from encodings import utf_8
+from PIL.ExifTags import TAGS
+from PIL import Image
+# pip install pillow
 
-# Variables
+# @sup Config
 year = 2025
-
-# Path
 input_path = 'b:\Prywatne\Lifebook\Timeline'
-
-# @sup Categories
 categories = {
   # @sub Atrakcje
   'Atrakcje': ['Basen', 'Centrum Nauki Kopernik', 'Festiwal Magii', 'Jaskinia Raj', 'Kopalnia soli', 'Kręgle', 'Łyżwy', 'Muzeum', 'Parada smoków', 'Park Niespodzianek', 'Smocza Jama', 'Terma', 'Termy', 'Turniej', 'Wawel', 'Wianki', 'Wydmy', 'Wystawa', 'Zamek', 'ZOO'],
 
   # @sub Góry
-  'Góry': ['2013-08-24', 'Babia Góra', 'Barania Góra', 'Barnasiówka', 'Błędne Skały', 'Bystra', 'Ciecień', 'Ćwilin', 'Czarny Mniszek', 'Czerwone Wierchy', 'Czupel', 'Dolina Chochołowska', 'Dolina Goryczkowa', 'Dolina Kościeliska', 'Dolina Pięciu Stawów', 'Dolina Roztoki', 'Dolina Starorobociańska', 'Dróżki różańcowe', 'Gęsia Szyja', 'Giewont', 'Gorc', 'Goryczkowa Czuba', 'Granaty', 'Grzęda Rysów', 'Hala Łabowska', 'Hala Lipowska', 'Hala Pisana', 'Jałowiec', 'Jarząbczy Wierch', 'Jasknia Mroźna', 'Jaworzyna Krynicka', 'Kamiennik', 'Karb', 'Kasprowy Wierch', 'Kończysty Wierch', 'Kopieniec Wielki', 'Kościelec', 'Kościelisko', 'Koskowa Góra', 'Kotoń', 'Kozi Wierch', 'Koziarz', 'Krawców Wierch', 'Krzyżne', 'Kuźnice', 'Lackowa', 'Leskowiec', 'Lubań', 'Lubogoszcz', 'Lubomir', 'Luboń Wielki', 'Łysica', 'Magurki', 'Mędralowa', 'Modyń', 'Mogielica', 'Morskie Oko', 'Nosal', 'Orla Perć', 'Ornak', 'Pańska Przehybka', 'Piec', 'Pieniny', 'Pilsko', 'Plebańska Góra', 'Polana Huciska', 'Polana Michurowa', 'Polica', 'Połonica Caryńska', 'Połonina Wetlińska', 'Przehyba', 'Przełęcz', 'Przełęcze', 'Radziejowa', 'Rakoń', 'Rusinowa Polana', 'Rysy', 'Sarnie Skałki', 'Siwa Przełęcz', 'Skrzyczne', 'Śnieżka', 'Śnieżnica', 'Sokola Perć', 'Sokolica', 'Starorobociański Wierch', 'Stożek Wielki', 'Świnica', 'Świstowa Czuba', 'Szczebel', 'Szczeliniec Wielki', 'Szpiglasowy Wierch', 'Tarnica', 'Trzy Korony', 'Turbacz', 'Uklejna', 'Uklejnę', 'Wąwóz Homole', 'Wielka Racza', 'Wielka Rycerzowa', 'Wilczyce', 'Wołowiec', 'Wysoka', 'Żleb Kulczyckiego'],
+  'Góry': ['2013-08-24', 'Babia Góra', 'Barania Góra', 'Barnasiówka', 'Błędne Skały', 'Bystra', 'Ciecień', 'Ćwilin', 'Czarny Mniszek', 'Czerwone Wierchy', 'Czupel', 'Dolina Chochołowska', 'Dolina Goryczkowa', 'Dolina Kościeliska', 'Dolina Pięciu Stawów', 'Dolina Roztoki', 'Dolina Starorobociańska', 'Dróżki różańcowe', 'Gęsia Szyja', 'Giewont', 'Gorc', 'Goryczkowa Czuba', 'Granaty', 'Grzęda Rysów', 'Hala Łabowska', 'Hala Lipowska', 'Hala Pisana', 'Jałowiec', 'Jarząbczy Wierch', 'Jasknia Mroźna', 'Jaworzyna Krynicka', 'Kamiennik', 'Karb', 'Kasprowy Wierch', 'Kończysty Wierch', 'Kopieniec Wielki', 'Kościelec', 'Kościelisko', 'Koskowa Góra', 'Kotoń', 'Kozi Wierch', 'Koziarz', 'Krawców Wierch', 'Krzyżne', 'Kuźnice', 'Lackowa', 'Leskowiec', 'Lubań', 'Lubogoszcz', 'Lubomir', 'Luboń Wielki', 'Łysica', 'Magurki', 'Mędralowa', 'Modyń', 'Mogielica', 'Morskie Oko', 'Nosal', 'Orla Perć', 'Ornak', 'Pańska Przehybka', 'Piec', 'Pieniny', 'Pilsko', 'Plebańska Góra', 'Polana Huciska', 'Polana Michurowa', 'Polica', 'Połonica Caryńska', 'Połonina Wetlińska', 'Przehyba', 'Przełęcz', 'Przełęcze', 'Pusta Wielka','Radziejowa', 'Rakoń', 'Rusinowa Polana', 'Rysy', 'Sarnie Skałki', 'Siwa Przełęcz', 'Skrzyczne', 'Śnieżka', 'Śnieżnica', 'Sokola Perć', 'Sokolica', 'Starorobociański Wierch', 'Stożek Wielki', 'Świnica', 'Świstowa Czuba', 'Szczebel', 'Szczeliniec Wielki', 'Szpiglasowy Wierch', 'Tarnica', 'Trzy Korony', 'Turbacz', 'Uklejna', 'Uklejnę', 'Wąwóz Homole', 'Wielka Racza', 'Wielka Rycerzowa', 'Wilczyce', 'Wołowiec', 'Wysoka', 'Żleb Kulczyckiego'],
 
   # @sub Domówki
   'Domówki': ['Ćwierćwiecze', 'DM Party', 'Dwudziestka', 'Dwunastka', 'Dziewiętnastka', 'Imprezki DM', 'Na Staszica', 'Pożegnanie pokoju', 'Spotkanie nostalgiczne', 'Starych dziejów', 'Trzydziestka', 'Urodziny Agusi', 'W domu'],
@@ -36,10 +34,10 @@ categories = {
   'Kościoły': ['Bolechowice', 'Częstochowa', 'Droga Krzyżowa', 'Jasna Góra', 'Kapucyni', 'Kościół', 'Niepokalanów', 'Pielgrzymka', 'ŚDM', 'Świątynia Opatrzności', 'Wszystkich Świętych', 'Zmartwychwstańcy'],
 
   # @sub Miasta
-  'Miasta': ['Alwernia', 'Andrychów', 'Asyż', 'Babice', 'Barcelona', 'Będzin', 'Bełchatów', 'Biała Podlaska', 'Biała Rawska', 'Białystok', 'Biecz', 'Bielsko-Biała', 'Bieruń', 'Bobowa', 'Bochnia', 'Boguszów-Gorce', 'Brzesko', 'Brzeszcze', 'Budapeszt', 'Bukowno', 'Busko-Zdrój', 'Bydgoszcz', 'Bydlin', 'Bystrzyca Kłodzka', 'Bytom', 'Chabówka', 'Chęciny', 'Chełm', 'Chełmek', 'Chmielnik', 'Chorzów', 'Chrzanów', 'Ciechanów', 'Cieszyn', 'Ciężkowice', 'Collioure', 'Cuenca', 'Czchów', 'Czechowice-Dziedzice', 'Czechowice', 'Czeladź', 'Czorsztyn', 'Dąbrowa Górnicza', 'Dąbrowa Tarnowska', 'DąbrowaG.', 'DąbrowaT.', 'Darłowo', 'Dębica', 'Dobczyce', 'Działoszyce', 'Elbląg', 'Ełk', 'Figueres', 'Florencja', 'Frombork', 'Garwolin', 'Gdańsk', 'Gdynia', 'Giżycko', 'Gliwice', 'Głogów', 'Głogówek', 'Gniezno', 'Gorlice', 'Gorzów Wielkopolski', 'Grudziądz', 'Grybów', 'Grzybowo', 'Hel', 'Imielin', 'Inowrocław', 'Inwałd', 'Jarosław', 'Jasło', 'Jastrzębie-Zdrój', 'Jaworzno', 'Jędrzejów', 'Jelenia Góra', 'Jordanów', 'Kalisz', 'Kalwaria Zebrzydowska', 'Kamienna Góra', 'Karpacz', 'Katowice', 'Kazimierz Dolny', 'Kazimierza Wielka', 'Kędzierzyn-Koźle', 'Kęty', 'Kielce', 'Kłodzko', 'Kołobrzeg', 'Konin', 'Koszalin', 'Koszyce', 'Kowary', 'Koziegłowy', 'Kraków', 'Krosno', 'Krynica', 'Krzeszowice', 'Książ Wielki', 'Kutno', 'Lanckorona', 'Łańcut', 'Łazy', 'Lędziny', 'Legionowo', 'Legnica', 'Leszno', 'Libiąż', 'Licheń', 'Limanowa', 'Liszki', 'Łódź', 'Łomża', 'Lubin', 'Lublin', 'Madryt', 'Maków Podhalański', 'Malbork', 'Miechów', 'Międzylesie', 'Międzyzdroje', 'Mielec', 'Mielno', 'Mikołów', 'Milanówek', 'Mława', 'Monte Cassino', 'Moszna', 'Mszana Dolna', 'Muszyna', 'Myślenice', 'Mysłowice', 'Myszków', 'Neapol', 'Nidzica', 'Niedzica', 'Niepołomice', 'Nowa Ruda', 'Nowe Brzesko', 'Nowy Korczyn', 'Nowy Sącz', 'Nowy Targ', 'Nowy Wiśnicz', 'Nysa', 'Ogrodzieniec', 'Ojców', 'Oleśnica', 'Olkusz', 'Olsztyn', 'Opatowiec', 'Opoczno', 'Opole', 'Orneta', 'Ostróda', 'Ostrołęka', 'Ostrów Wielkopolski', 'Ostrowiec Świętokrzyski', 'Oświęcim', 'Otmuchów', 'Otwock', 'Pabianice', 'Pacanów', 'Paczków', 'Piaseczno', 'Piekary Śląskie', 'Piła', 'Pilica', 'Pilzno', 'Pińczów', 'Piotrków Trybunalski', 'Piwniczna', 'Płock', 'Polanica-Zdrój', 'Poręba', 'Poznań', 'Praga', 'Proszowice', 'Prudnik', 'Pruszków', 'Przemyśl', 'Przeworsk', 'Pszczyna', 'Puławy', 'Rabka', 'Racibórz', 'Racławice', 'Radłów', 'Radom', 'Radomsko', 'Radymno', 'Rimini', 'Ropczyce', 'Ruda Śląska', 'Rumia', 'Rybnik', 'Ryglice', 'Rzeszów', 'Rzym', 'San Marino', 'Sandomierz', 'Sanok', 'Saragossa', 'Sędziszów Małopolski', 'Sędziszów', 'Sępólno Krajeńskie', 'Siedlce', 'Siemianowice Śląskie', 'Siemianowice', 'Sieradz', 'Siewierz', 'Skała', 'Skalbmierz', 'Skamieniałe Miasto', 'Skarżysko-Kamienna', 'Skawina', 'Skierniewice', 'Sławków', 'Słomniki', 'Słupsk', 'Smoleń', 'Sopot', 'Sosnowiec', 'Stalowa Wola', 'Staniątki', 'Starachowice', 'Stargard', 'Starogard Gdański', 'Stary Sącz', 'Staszów', 'Stopnica', 'Sucha Beskidzka', 'Sułkowice', 'Suwałki', 'Świątniki Górne', 'Świdnica', 'Świętochłowice', 'Świnoujście', 'Szczawnica', 'Szczebrzeszyn', 'Szczecin', 'Szczekociny', 'Szczucin', 'Szczyrk', 'Szydłów', 'Tarnobrzeg', 'Tarnów', 'Tarnowskie Góry', 'Tczew', 'Tomaszów Mazowiecki', 'Toruń', 'Trzebinia', 'Tuchów', 'Tychy', 'Tylicz', 'Ustka', 'Ustroń', 'Wadowice', 'Wałbrzych', 'Walencja', 'Warszawa', 'Wejherowo', 'Wenecja', 'Wiedeń', 'Wieliczka', 'Wilamowice', 'Wisła', 'Wiślica', 'Włocławek', 'Wodzisław Śląski', 'Wojnicz', 'Wolbrom', 'Wrocław', 'Żabno', 'Zabrze', 'Zakliczyn', 'Zakopane', 'Zamość', 'Żarki', 'Zator', 'Zawiercie', 'Zduńska Wola', 'Zgierz', 'Zielona Góra', 'Złotoryja', 'Złoty Stok', 'Żnin', 'Żory', 'Żywiec'],
+  'Miasta': ['Alwernia', 'Andrychów', 'Asyż', 'Babice', 'Barcelona', 'Będzin', 'Bełchatów', 'Biała Podlaska', 'Biała Rawska', 'Białystok', 'Biecz', 'Bielsko-Biała', 'Bieruń', 'Bobowa', 'Bochnia', 'Boguszów-Gorce', 'Brzesko', 'Brzeszcze', 'Budapeszt', 'Bukowno', 'Busko-Zdrój', 'Bydgoszcz', 'Bydlin', 'Bystrzyca Kłodzka', 'Bytom', 'Chabówka', 'Chęciny', 'Chełm', 'Chełmek', 'Chmielnik', 'Chorzów', 'Chrzanów', 'Ciechanów', 'Cieszyn', 'Ciężkowice', 'Collioure', 'Cuenca', 'Czchów', 'Czechowice-Dziedzice', 'Czechowice', 'Czeladź', 'Czorsztyn', 'Dąbrowa Górnicza', 'Dąbrowa Tarnowska', 'DąbrowaG.', 'DąbrowaT.', 'Darłowo', 'Dębica', 'Dobczyce', 'Działoszyce', 'Elbląg', 'Ełk', 'Figueres', 'Florencja', 'Frombork', 'Garwolin', 'Gdańsk', 'Gdynia', 'Giżycko', 'Gliwice', 'Głogów', 'Głogówek', 'Gniezno', 'Gorlice', 'Gorzów Wielkopolski', 'Grudziądz', 'Grybów', 'Grzybowo', 'Hel', 'Imielin', 'Inowrocław', 'Inwałd', 'Jarosław', 'Jasło', 'Jastrzębie-Zdrój', 'Jaworzno', 'Jędrzejów', 'Jelenia Góra', 'Jordanów', 'Kalisz', 'Kalwaria Zebrzydowska', 'Kamienna Góra', 'Karpacz', 'Katowice', 'Kazimierz Dolny', 'Kazimierza Wielka', 'Kędzierzyn-Koźle', 'Kęty', 'Kielce', 'Kłodzko', 'Kołobrzeg', 'Konin', 'Koszalin', 'Koszyce', 'Kowary', 'Koziegłowy', 'Kraków', 'Krosno', 'Krynica', 'Krzeszowice', 'Książ Wielki', 'Kutno', 'Lanckorona', 'Łańcut', 'Łazy', 'Lędziny', 'Legionowo', 'Legnica', 'Leszno', 'Libiąż', 'Licheń', 'Limanowa', 'Liszki', 'Łódź', 'Łomża', 'Lubin', 'Lublin', 'Madryt', 'Maków Podhalański', 'Malbork', 'Miechów', 'Międzylesie', 'Międzyzdroje', 'Mielec', 'Mielno', 'Mikołów', 'Milanówek', 'Mława', 'Monte Cassino', 'Moszna', 'Mszana Dolna', 'Muszyna', 'Myślenice', 'Mysłowice', 'Myszków', 'Neapol', 'Nidzica', 'Niedzica', 'Niepołomice', 'Nowa Ruda', 'Nowe Brzesko', 'Nowy Korczyn', 'Nowy Sącz', 'Nowy Targ', 'Nowy Wiśnicz', 'Nysa', 'Ogrodzieniec', 'Ojców', 'Oleśnica', 'Olkusz', 'Olsztyn', 'Opatowiec', 'Opoczno', 'Opole', 'Orneta', 'Ostróda', 'Ostrołęka', 'Ostrów Wielkopolski', 'Ostrowiec Świętokrzyski', 'Oświęcim', 'Otmuchów', 'Otwock', 'Pabianice', 'Pacanów', 'Paczków', 'Piaseczno', 'Piekary Śląskie', 'Piła', 'Pilica', 'Pińczów', 'Piotrków Trybunalski', 'Piwniczna', 'Płock', 'Polanica-Zdrój', 'Poręba', 'Poznań', 'Praga', 'Proszowice', 'Prudnik', 'Pruszków', 'Przemyśl', 'Przeworsk', 'Pszczyna', 'Puławy', 'Rabka', 'Racibórz', 'Racławice', 'Radłów', 'Radom', 'Radomsko', 'Radymno', 'Rimini', 'Ropczyce', 'Ruda Śląska', 'Rumia', 'Rybnik', 'Ryglice', 'Rzeszów', 'San Marino', 'Sandomierz', 'Sanok', 'Saragossa', 'Sędziszów Małopolski', 'Sędziszów', 'Sępólno Krajeńskie', 'Siedlce', 'Siemianowice Śląskie', 'Siemianowice', 'Sieradz', 'Siewierz', 'Skała', 'Skalbmierz', 'Skamieniałe Miasto', 'Skarżysko-Kamienna', 'Skawina', 'Skierniewice', 'Sławków', 'Słomniki', 'Słupsk', 'Smoleń', 'Sopot', 'Sosnowiec', 'Stalowa Wola', 'Staniątki', 'Starachowice', 'Stargard', 'Starogard Gdański', 'Stary Sącz', 'Staszów', 'Stopnica', 'Sucha Beskidzka', 'Sułkowice', 'Suwałki', 'Świątniki Górne', 'Świdnica', 'Świętochłowice', 'Świnoujście', 'Szczawnica', 'Szczebrzeszyn', 'Szczecin', 'Szczekociny', 'Szczucin', 'Szczyrk', 'Szydłów', 'Tarnobrzeg', 'Tarnów', 'Tarnowskie Góry', 'Tczew', 'Tomaszów Mazowiecki', 'Toruń', 'Trzebinia', 'Tuchów', 'Tychy', 'Tylicz', 'Ustka', 'Ustroń', 'Wadowice', 'Wałbrzych', 'Walencja', 'Warszawa', 'Wejherowo', 'Wenecja', 'Wiedeń', 'Wieliczka', 'Wilamowice', 'Wisła', 'Wiślica', 'Włocławek', 'Wodzisław Śląski', 'Wojnicz', 'Wolbrom', 'Wrocław', 'Żabno', 'Zabrze', 'Zakliczyn', 'Zakopane', 'Zamość', 'Żarki', 'Zator', 'Zawiercie', 'Zduńska Wola', 'Zgierz', 'Zielona Góra', 'Złotoryja', 'Złoty Stok', 'Żnin', 'Żory', 'Żywiec','2024-09-04', '2025-04-12','2025-04-25','2025-04-26','2025-04-27','2025-04-28','2025-04-29','2025-04-30'],
 
   # @sub Narty
-  'Narty': ['Biegówki', 'Kotelnica', 'Master Ski', 'Narty'],
+  'Narty': ['Biegówki', 'Kotelnica', 'Master Ski', 'Narty', '2025-01-06'],
 
   # @sub Ogólne
   'Ogólne': ['Agnieszka', 'Agusia', 'Asia', 'Auto', 'Biuro', 'ŚDM Błonia', 'Gimnazjum', 'Kaśka', 'Koniec pracy', 'Konkursy', 'Kwadrat', 'Liceum', 'Natalia', 'Obrona', 'Początek związku', 'Podstawówka', 'Pokoik', 'Powiększenie biura', 'Praca', 'Prawo jazdy', 'Przedszkole', 'Przemuś', 'Rafał', 'Remont','Rodzeństwo', 'Rozdanie', 'Rozstanie', 'Sanatorium', 'Sesja', 'Sprzedaż', 'Statut', 'Studia', 'Szkoła', 'Volvo', 'Wykłady'],
@@ -48,7 +46,7 @@ categories = {
   'Restauracje': ['Restauracja', 'Taco Mexicano', 'Babcia Malina', 'Karczma', 'Przystanek Pierogarnia', 'Sphinx', '2024-07-29'],
 
   # @sub Rodzina
-  'Rodzina': ['Boże narodzenie', 'Brzezinka', 'Dziadkowie', 'Dzień Dziecka', 'Grill', 'Karolinki', 'Karoliny', 'Kątscy', 'Maciejowskiej', 'Modelowie', 'Na Sądowej', 'Ognisko nad Rabą', 'Osieczany', 'Rodzina', 'U Ani', 'U Darka', 'U dziadków', 'W Brzezince', 'W Myślenicach', 'W Nowej Hucie', 'Wielkanoc', 'Wigilia', 'Wikusi', 'Załubińczu', '2013-06-30'],
+  'Rodzina': ['Boże narodzenie', 'Brzezinka', 'Dziadkowie', 'Dzień Dziecka', 'Grill', 'Karolinki', 'Karoliny', 'Kątscy', 'Maciejowskiej', 'Modelowie', 'Na Sądowej', 'Ognisko nad Rabą', 'Osieczany', 'Rodzina', 'Święcenie pokarmów', 'U Ani', 'U Darka', 'U dziadków', 'W Brzezince', 'W Myślenicach', 'W Nowej Hucie', 'Wielkanoc', 'Wigilia', 'Wikusi', 'Załubińczu', '2013-06-30'],
 
   # @sub Rowery
   'Rowery': ['Rower'],
@@ -63,7 +61,7 @@ categories = {
   'Uroczystości': ['Chrzciny', 'Komunia', 'Oświadczyny', 'Pogrzeb', 'Poprawiny', 'Rocznica', 'Ślub', 'Wesele', 'Zjazd'],
 
   # @sub Wyjazdy
-  'Wyjazdy': ['Biały Dunajec', 'Bieszczady', 'Bukowina', 'Czerwonka', 'Darłówko', 'Dźwirzyno', 'Glinka', 'Gródek', 'Grzybowo', 'Ibiza', 'Kreta', 'Krępachy', 'Krynica Morska', 'Łeba', 'Majorka', 'Międzyzdroje', 'Mielno', 'Mileżówka', 'Nocleg', 'Podróż', 'Sarbinowo', 'Słowacki Raj', 'Sopot', 'Ustka', 'Wyjazd', '2015-10-08', '2015-10-09', '2015-10-10', '2015-10-12', '2015-10-13'],
+  'Wyjazdy': ['Biały Dunajec', 'Bieszczady', 'Bukowina', 'Czerwonka', 'Darłówko', 'Dźwirzyno', 'Glinka', 'Gródek', 'Grzybowo', 'Ibiza', 'Kreta', 'Krępachy', 'Krynica Morska', 'Łeba', 'Majorka', 'Międzyzdroje', 'Mielno', 'Mileżówka', 'Nocleg', 'Podróż', 'Sarbinowo', 'Słowacki Raj', 'Sopot', 'Ustka', 'Wyjazd', '2015-10-08', '2015-10-09', '2015-10-10', '2015-10-12', '2015-10-13', '2025-01-04'],
 
   # @sub Znajomi
   'Znajomi': ['Adwentowe', 'Andrzejki', 'Artura', 'Aśki', 'Bal', 'Ciasteczkowe', 'Kawalerski', 'Klasowe', 'Mariusza', 'Mateusza', 'Męskie', 'Na Szubiennej', 'Nad Wisłę', 'Opłatkowe', 'Panieński', 'Planszówki', 'Podyplomowe', 'Poobozowe','Półmetek', 'Pooświadczynowe', 'Posesyjna', 'Posesyjne', 'Studniówka', 'U Anki', 'U Asi', 'U Kamila', 'U Kamili', 'U Kingi', 'U Łukasza', 'U Moniki', 'U Pawła', 'U Przemka', 'U Sebastiana', 'U Sysłów', 'U Wojtka', 'Urodzinowe', 'W biurze', 'W Brodach', 'W Krakowie', 'W Krempachach', 'W Polibudzie', 'Waldi', 'Walentynki', 'Wypad nad Wisłę', 'Znajomi'],
@@ -85,15 +83,34 @@ output = open(outputPath, 'w', encoding='utf8')
 # Write header with categories
 header = 'const cat = ' + cat_string + '\n\nconst data = [\n'
 output.write(header)
-# print(header)
 
 # Initialize variable to keep track of the previous year
 previous_year = '' 
 
-# normalize filenames
+# Normalize filenames
 def normalize_filename(s):
   nfkd = unicodedata.normalize('NFKD', s)
   return ''.join([c for c in nfkd if not unicodedata.combining(c)]).lower()
+
+# Get exif tags
+def get_tags(path):
+  try:
+    with Image.open(path) as img:
+      exif_data = img._getexif()
+      if not exif_data:
+        return []
+
+      for tag_id, value in exif_data.items():
+        tag = TAGS.get(tag_id, tag_id)
+        if tag == 'XPKeywords':
+          if isinstance(value, bytes):
+            decoded = value.decode('utf-16le', errors='ignore').strip('\x00')
+          else:
+            decoded = ''.join(chr(c) for c in value).strip('\x00')
+          return [t.strip() for t in decoded.split(';') if t.strip()]
+  except Exception as e:
+    print(f"EXIF error in '{path}': {e}")
+  return []
 
 # Traverse the directory structure
 for root, dirs, files in os.walk(input_path):
@@ -103,8 +120,6 @@ for root, dirs, files in os.walk(input_path):
 
     # Process jpg files only
     if file.endswith('.jpg'):
-
-      # print(file)
 
       # Prepare file name
       filePath = os.path.join(root, file)
@@ -116,12 +131,10 @@ for root, dirs, files in os.walk(input_path):
         date, name = string.split(' - ', 1)
       else:
         continue
-        # Subfolder case
-        # date = os.path.basename(root).split(' - ', 1)[0]
-        # name = os.path.basename(root).split(' - ', 1)[1] + '/' + string
 
       # Prepare category for event
       matched_category = []
+      
       date_matched = False
       # Match categories based on patterns in file names
       for category, patterns in categories.items():
@@ -136,6 +149,11 @@ for root, dirs, files in os.walk(input_path):
         if date_matched:
           break
 
+      # Match categories based on tags
+      tags = get_tags(filePath)
+      if tags:
+        matched_category = tags
+       
       # Prepare years separators
       current_year = date.split('-')[0]
       if current_year != previous_year:
