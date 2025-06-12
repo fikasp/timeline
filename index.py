@@ -7,7 +7,6 @@ from PIL import Image
 
 # @sup Config
 year = 2025
-input_path = 'b:\Prywatne\Lifebook\Timeline'
 categories = {
   # @sub Atrakcje
   'Atrakcje': ['Basen', 'Centrum Nauki Kopernik', 'Festiwal Magii', 'Jaskinia Raj', 'Kopalnia soli', 'Kręgle', 'Łyżwy', 'Muzeum', 'Parada smoków', 'Park Niespodzianek', 'Smocza Jama', 'Terma', 'Termy', 'Turniej', 'Wawel', 'Wianki', 'Wydmy', 'Wystawa', 'Zamek', 'ZOO'],
@@ -70,30 +69,37 @@ categories = {
 # @sup Program
 print("📷 JPG to JS converter:")
 
-# String list from categories
+# Category keys
 cat_keys = list(categories.keys())
-cat_string = str(cat_keys)
 
-# Open the output file
+# Set input and output paths
+input_path = os.path.dirname(os.path.abspath(__file__))
 outputPath = os.path.join(input_path, 'index.js')
+
+# Remove hidden attribute from output file if it exists
 subprocess.run(['attrib', '-H', outputPath])
 
+# Open output file for writing with UTF-8 encoding
 output = open(outputPath, 'w', encoding='utf8')
 
-# Write header with categories
-header = 'const cat = ' + cat_string + '\n\nconst data = [\n'
-output.write(header)
+# Write initial JS header: category keys and start of data array
+output.write(f"const cat = {cat_keys}\n\nconst data = [\n")
 
-# Initialize variable to keep track of the previous year
+# Keep track of last processed year to insert year separators
 previous_year = '' 
 
 # Normalize filenames
 def normalize_filename(s):
+  """Normalize filename by removing accents and converting to lowercase."""
   nfkd = unicodedata.normalize('NFKD', s)
   return ''.join([c for c in nfkd if not unicodedata.combining(c)]).lower()
 
 # Get exif tags
 def get_tags(path):
+  """
+  Extract XPKeywords tags from image EXIF metadata.
+  Returns list of tags split by semicolon, or empty list if none found.
+  """
   try:
     with Image.open(path) as img:
       exif_data = img._getexif()
@@ -107,15 +113,17 @@ def get_tags(path):
             decoded = value.decode('utf-16le', errors='ignore').strip('\x00')
           else:
             decoded = ''.join(chr(c) for c in value).strip('\x00')
+          # Split tags by semicolon and strip whitespace
           return [t.strip() for t in decoded.split(';') if t.strip()]
   except Exception as e:
     print(f"EXIF error in '{path}': {e}")
   return []
 
-# Traverse the directory structure
+# Traverse directory tree
 for root, dirs, files in os.walk(input_path):
   # Sort files
   files = sorted(files, key=normalize_filename)
+
   for file in files:
 
     # Process jpg files only
@@ -123,23 +131,23 @@ for root, dirs, files in os.walk(input_path):
 
       # Prepare file name
       filePath = os.path.join(root, file)
-      string = file.replace('.jpg', '')
+      base_name = file[:-4] # remove '.jpg'
 
       # Separate date and event name
-      if ' - ' in string:
-        # Top-level file
-        date, name = string.split(' - ', 1)
-      else:
+      if ' - ' not in base_name:
         continue
 
-      # Prepare category for event
+      date, name = base_name.split(' - ', 1)
+
+      # Find categories matched by filename patterns
       matched_category = []
-      
       date_matched = False
+
       # Match categories based on patterns in file names
       for category, patterns in categories.items():
         for pattern in patterns:
           if pattern.lower() in name.lower() or pattern.lower() in date.lower():
+            # If pattern looks like a date, match category exclusively
             if re.match(r'^\d{4}-\d{2}-\d{2}$', pattern):
               matched_category = [category]
               date_matched = True
@@ -149,32 +157,40 @@ for root, dirs, files in os.walk(input_path):
         if date_matched:
           break
 
-      # Match categories based on tags
+      # Get tags from EXIF and check if any match categories
       tags = get_tags(filePath)
-      if tags:
-        matched_category = tags
+      tag_categories = [tag for tag in tags if tag in cat_keys]
+      invalid_tags = [tag for tag in tags if tag not in cat_keys]
+
+      # If tags-based categories exist, override filename-based categories
+      if tag_categories:
+        matched_category = tag_categories
        
-      # Prepare years separators
-      current_year = date.split('-')[0]
+      # Insert year separator comment if year changes
+      current_year = date[:4]
       if current_year != previous_year:
-        header = f'// {current_year}'
-        output.write(header + '\n')
+        output.write(f"// {current_year}\n")
+        print(f"📅 {current_year}")
         previous_year = current_year
-        print(header)
 
-      categories_string = str(matched_category)
+      # Determine status icon based on presence and validity of tags
+      if invalid_tags:
+        status = '🔴'
+      elif tags:
+        status = '🟢'
+      else:
+        status = '🟡'
 
-      # Generate JavaScript object for the file
-      js_obj = f"  {{date: '{date}', catg: {categories_string}, name: '{name}'}},"
+      # Prepare JS object and Python log string
+      js_obj = f"{{date: '{date}', catg: {matched_category}, name: '{name}'}},"
+      python_log = f"{status} {js_obj}"
 
-      # Write the JavaScript object to the output file
+      # Write JS object to output file
       output.write(js_obj + '\n')
-      
-      # @sup Log
-      if date.startswith(f'{year}'):
-        print(js_obj)
 
-      # print(js_obj)
+      # @sup Log
+      if not year or date.startswith(f'{year}'):
+        print(python_log)
 
 # Write footer
 output.write(']')
@@ -182,6 +198,7 @@ output.write(']')
 # Close the output file
 output.close()
 
+# Reapply hidden attribute to output file
 subprocess.run(['attrib', '+H', outputPath])
 
 print('🏆 Conversion done!')

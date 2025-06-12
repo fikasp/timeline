@@ -1047,7 +1047,7 @@
           // Add items to the month container
           if (items.length > 0) {
             items.forEach(item => {
-              const desc = `${item.date} \n${item.name}`;
+              const desc = `${item.date.slice(0, 10)} \n${item.name}`;
               const path = `${item.year}/${item.date} - ${item.name}.jpg`;
               this.buildGalleryBox(monthContainer, desc, path, item.id);
             })
