@@ -1459,4 +1459,5 @@ const data = [
 {date: '2025-06-08.2', catg: ['Miasta'], name: 'Łańcut'},
 {date: '2025-06-08.3', catg: ['Kawiarnie'], name: 'Art Cafe'},
 {date: '2025-06-08.4', catg: ['Restauracje'], name: 'Pizza Hut'},
+{date: '2025-06-15.0', catg: ['Rodzina'], name: 'Spotkanie w Myślenicach'},
 ]
