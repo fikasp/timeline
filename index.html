@@ -1004,7 +1004,7 @@
       this.gallery.classList.remove("gallery_grid")
  
       // Get years from 1986 to the current year
-      const startYear = 2005
+      const startYear = 1986
       const currentYear = new Date().getFullYear()
       const years = Array.from({ length: currentYear - startYear + 1 }, (_, i) => (startYear + i).toString())
       const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'))
@@ -1047,7 +1047,7 @@
           // Add items to the month container
           if (items.length > 0) {
             items.forEach(item => {
-              const desc = `${item.date.slice(0, 10)} \n${item.name}`;
+              const desc = `${item.date.split('.')[0]} \n${item.name}`;
               const path = `${item.year}/${item.date} - ${item.name}.jpg`;
               this.buildGalleryBox(monthContainer, desc, path, item.id);
             })
@@ -1660,7 +1660,7 @@
         const splitedDate = item.date.split("-") // Split the date into year and month
         item.year = splitedDate[0] // Assign the year to the item's year property
         if (splitedDate[1]) { // If the month exists
-          item.month = splitedDate[1] // Assign the month to the item's month property
+          item.month = splitedDate[1].slice(0, 2) // Assign the month to the item's month property
         } else {
           item.month = "" // Otherwise, assign an empty string to the month property
         }

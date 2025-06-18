@@ -1,12 +1,13 @@
 import os, re
 import subprocess
 import unicodedata
+from pathlib import Path
 from PIL.ExifTags import TAGS
 from PIL import Image
 # pip install pillow
 
 # @sup Config
-year = 2025
+year = 0
 categories = {
   # @sub Atrakcje
   'Atrakcje': ['Basen', 'Centrum Nauki Kopernik', 'Festiwal Magii', 'Jaskinia Raj', 'Kopalnia soli', 'Kręgle', 'Łyżwy', 'Muzeum', 'Parada smoków', 'Park Niespodzianek', 'Smocza Jama', 'Terma', 'Termy', 'Turniej', 'Wawel', 'Wianki', 'Wydmy', 'Wystawa', 'Zamek', 'ZOO'],
@@ -73,8 +74,8 @@ print("📷 JPG to JS converter:")
 cat_keys = list(categories.keys())
 
 # Set input and output paths
-input_path = os.path.dirname(os.path.abspath(__file__))
-outputPath = os.path.join(input_path, 'index.js')
+input_path = Path(__file__).parent.resolve()
+outputPath = input_path / 'index.js'
 
 # Remove hidden attribute from output file if it exists
 subprocess.run(['attrib', '-H', outputPath])
@@ -119,78 +120,74 @@ def get_tags(path):
     print(f"EXIF error in '{path}': {e}")
   return []
 
-# Traverse directory tree
-for root, dirs, files in os.walk(input_path):
-  # Sort files
-  files = sorted(files, key=normalize_filename)
+# Gather all .jpg files and sort
+all_files = list(input_path.rglob('*.jpg'))
+sorted_files = sorted(all_files, key=lambda f: normalize_filename(f.name))
 
-  for file in files:
+for file in sorted_files:
+  # Prepare filename without extension
+  base_name = file.stem
 
-    # Process jpg files only
-    if file.endswith('.jpg'):
+  # Skip files without the expected ' - '
+  if ' - ' not in base_name:
+    continue
+  
+  # Separate date and event name
+  date, name = base_name.split(' - ', 1)
 
-      # Prepare file name
-      filePath = os.path.join(root, file)
-      base_name = file[:-4] # remove '.jpg'
+  # Find categories matched by filename patterns
+  matched_category = []
+  date_matched = False
 
-      # Separate date and event name
-      if ' - ' not in base_name:
-        continue
-
-      date, name = base_name.split(' - ', 1)
-
-      # Find categories matched by filename patterns
-      matched_category = []
-      date_matched = False
-
-      # Match categories based on patterns in file names
-      for category, patterns in categories.items():
-        for pattern in patterns:
-          if pattern.lower() in name.lower() or pattern.lower() in date.lower():
-            # If pattern looks like a date, match category exclusively
-            if re.match(r'^\d{4}-\d{2}-\d{2}$', pattern):
-              matched_category = [category]
-              date_matched = True
-              break
-            if (category not in matched_category):
-              matched_category.append(category)
-        if date_matched:
+  # Match categories based on patterns in file names
+  for category, patterns in categories.items():
+    for pattern in patterns:
+      if pattern.lower() in name.lower() or pattern.lower() in date.lower():
+        # If pattern looks like a date, match category exclusively
+        if re.match(r'^\d{4}-\d{2}-\d{2}$', pattern):
+          matched_category = [category]
+          date_matched = True
           break
+        if (category not in matched_category):
+          matched_category.append(category)
+    if date_matched:
+      break
 
-      # Get tags from EXIF and check if any match categories
-      tags = get_tags(filePath)
-      tag_categories = [tag for tag in tags if tag in cat_keys]
-      invalid_tags = [tag for tag in tags if tag not in cat_keys]
+  # Get tags from EXIF and check if any match categories
+  tags = get_tags(str(file))
+  tag_categories = [tag for tag in tags if tag in cat_keys]
+  invalid_tags = [tag for tag in tags if tag not in cat_keys]
 
-      # If tags-based categories exist, override filename-based categories
-      if tag_categories:
-        matched_category = tag_categories
-       
-      # Insert year separator comment if year changes
-      current_year = date[:4]
-      if current_year != previous_year:
-        output.write(f"// {current_year}\n")
-        print(f"📅 {current_year}")
-        previous_year = current_year
+  # If tags-based categories exist, override filename-based categories
+  if tag_categories:
+    matched_category = tag_categories
+    
+  # Insert year separator comment if year changes
+  current_year = date[:4]
+  if current_year != previous_year:
+    output.write(f"// {current_year}\n")
+    print(f"📅 {current_year}")
+    previous_year = current_year
 
-      # Determine status icon based on presence and validity of tags
-      if invalid_tags:
-        status = '🔴'
-      elif tags:
-        status = '🟢'
-      else:
-        status = '🟡'
+  # Determine status icon based on presence and validity of tags
+  if invalid_tags:
+    status = '🔴'
+  elif tags:
+    status = '🟢'
+  else:
+    status = '🟡'
 
-      # Prepare JS object and Python log string
-      js_obj = f"{{date: '{date}', catg: {matched_category}, name: '{name}'}},"
-      python_log = f"{status} {js_obj}"
+  # Prepare JS object and Python log string
+  js_obj = f"{{date: '{date}', catg: {matched_category}, name: '{name}'}},"
+  python_log = f"{status} {js_obj}"
 
-      # Write JS object to output file
-      output.write(js_obj + '\n')
+  # Write JS object to output file
+  output.write(js_obj + '\n')
 
-      # @sup Log
-      if not year or date.startswith(f'{year}'):
-        print(python_log)
+  # @sup Log
+  if not year or date.startswith(f'{year}'):
+    print(python_log)
+
 
 # Write footer
 output.write(']')

@@ -3,7 +3,7 @@ from PIL import Image
 # pip install Pillow
 
 # variables
-year = 2020
+year = 1996
 
 print("📷 JPG to WEBP converter:")
 
@@ -41,7 +41,13 @@ for filename in sorted(os.listdir(input_folder)):
         image = Image.open(input_path)
 
         # Resize the image
-        new_image = image.resize((240, 180))
+        # new_image = image.resize((240, 180))
+
+        # Resize the image to 10% of original size
+        width, height = image.size
+        new_width = int(width * 0.1)
+        new_height = int(height * 0.1)
+        new_image = image.resize((new_width, new_height))
 
         # Save as WebP with 60% quality
         new_image.save(output_path, "WEBP", quality=60)
