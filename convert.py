@@ -2,13 +2,12 @@ import os
 from PIL import Image
 # pip install Pillow
 
-# variables
-year = 2009
+YEAR = 2009
 
 print("📷 JPG to WEBP converter:")
 
 # Input folder path
-input_folder = f'b:/Prywatne/Lifebook/Timeline/{year}/'
+input_folder = f'b:/Prywatne/Lifebook/Timeline/{YEAR}/'
 
 # Subfolder for webp
 webp_folder = os.path.join(input_folder, 'webp')

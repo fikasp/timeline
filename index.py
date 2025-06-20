@@ -6,8 +6,9 @@ from PIL.ExifTags import TAGS
 from PIL import Image
 # pip install pillow
 
+YEAR = 0
+
 # @sup Config
-year = 0
 categories = {
   # @sub Atrakcje
   'Atrakcje': ['Basen', 'Centrum Nauki Kopernik', 'Festiwal Magii', 'Jaskinia Raj', 'Kopalnia soli', 'Kręgle', 'Łyżwy', 'Muzeum', 'Parada smoków', 'Park Niespodzianek', 'Smocza Jama', 'Terma', 'Termy', 'Turniej', 'Wawel', 'Wianki', 'Wydmy', 'Wystawa', 'Zamek', 'ZOO'],
@@ -185,7 +186,7 @@ for file in sorted_files:
   output.write(js_obj + '\n')
 
   # @sup Log
-  if not year or date.startswith(f'{year}'):
+  if not YEAR or date.startswith(f'{YEAR}'):
     print(python_log)
 
 
