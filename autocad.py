@@ -3,7 +3,7 @@ import re
 import win32com.client
 # pip install pywin32
 
-YEAR = 2019
+YEAR = 2013
 
 BASE_PATH = r"B:\Prywatne\Lifebook"
 
@@ -47,23 +47,50 @@ def rename_raster_images(dwg_path):
 						print("🟢 Original file exists, no update needed.\n")
 						continue
 
-					# Check for trailing number at the end of the rest
-					number_match = re.search(r"(.*?)(?:\s(\d+))?(\.[^.]+)$", rest)
-					if number_match:
-						rest_base = number_match.group(1)
-						number = number_match.group(2) if number_match.group(2) else "0"
-						ext = number_match.group(3)
-						new_filename = f"{date_part}.{number} {rest_base}{ext}"
-						new_path = os.path.join(dirname, new_filename)
+					# Separate filename from extension
+					ext_match = re.match(r"(.*)(\.[^.]+)$", rest)
+					if not ext_match:
+						print("⚠️ Could not extract file extension, skipping.\n")
+						continue
 
-						new_exists = os.path.isfile(new_path)
-						print(f"{'✔️ ' if new_exists else '❌'} {new_path}")
-						if new_exists:
-							obj.ImageFile = new_path
-							obj.Update()
-							print("🔵 Updated path in DWG.\n")
-						else:
-							print("🔴 New file not found, skipping update.\n")
+					name_without_ext = ext_match.group(1).strip()
+					ext = ext_match.group(2)
+
+					# Clean up: remove leading dash/underscore/spaces
+					cleaned_name = re.sub(r"^[\s\-_]+", "", name_without_ext)
+
+					new_filename = None
+
+					# Case 1: number at the beginning
+					leading_number_match = re.match(r"^(\d+)\s+(.*)", cleaned_name)
+					if leading_number_match:
+						number = leading_number_match.group(1)
+						title = leading_number_match.group(2)
+						new_filename = f"{date_part}.{number} - {title}{ext}"
+
+					# Case 2: number at the end
+					elif re.match(r".*\s\d+$", cleaned_name):
+						trailing_number_match = re.match(r"(.*)\s(\d+)$", cleaned_name)
+						title = trailing_number_match.group(1)
+						number = trailing_number_match.group(2)
+						new_filename = f"{date_part}.{number} - {title}{ext}"
+
+					# Case 3: no number
+					else:
+						number = "0"
+						title = cleaned_name
+						new_filename = f"{date_part}.{number} - {title}{ext}"
+
+					new_path = os.path.join(dirname, new_filename)
+
+					new_exists = os.path.isfile(new_path)
+					print(f"{'✔️ ' if new_exists else '❌'} {new_path}")
+					if new_exists:
+						obj.ImageFile = new_path
+						obj.Update()
+						print("🔵 Updated path in DWG.\n")
+					else:
+						print("🔴 New file not found, skipping update.\n")
 
 		doc.Save()
 		doc.Close()
