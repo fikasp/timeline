@@ -3,7 +3,7 @@ import re
 import win32com.client
 # pip install pywin32
 
-YEAR = 2013
+YEAR = 2018
 
 BASE_PATH = r"B:\Prywatne\Lifebook"
 
@@ -101,4 +101,4 @@ def rename_raster_images(dwg_path):
 
 
 if __name__ == "__main__":
-	rename_raster_images(os.path.join(BASE_PATH, "Timeline.dwg"))
+	rename_raster_images(os.path.join(BASE_PATH, "Timeline_2506.dwg"))
