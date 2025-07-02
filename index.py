@@ -6,7 +6,7 @@ from PIL.ExifTags import TAGS
 from PIL import Image
 # pip install pillow
 
-YEAR = 2021
+YEAR = 0
 
 # @sup Config
 
@@ -15,10 +15,10 @@ categories = {
   'Atrakcje': ['Basen', 'Centrum Nauki Kopernik', 'Festiwal Magii', 'Jaskinia Raj', 'Kopalnia soli', 'Kręgle', 'Łyżwy', 'Muzeum', 'Parada smoków', 'Park Niespodzianek', 'Smocza Jama', 'Terma', 'Termy', 'Turniej', 'Wawel', 'Wianki', 'Wydmy', 'Wystawa', 'Zamek', 'ZOO'],
 
   # @sub Gastronomia
-  'Gastronomia': ['Kawiarnia','Restauracja', 'Babcia Malina', 'Karczma', 'Przystanek Pierogarnia', 'Sphinx'],
+  'Gastronomia': ['Kawiarnia','Restauracja', 'Babcia Malina', 'Karczma', 'Sphinx'],
 
   # @sub Góry
-  'Góry': ['2013-08-24', 'Babia Góra', 'Barania Góra', 'Barnasiówka', 'Błędne Skały', 'Bystra', 'Ciecień', 'Ćwilin', 'Czarny Mniszek', 'Czerwone Wierchy', 'Czupel', 'Dolina Chochołowska', 'Dolina Goryczkowa', 'Dolina Kościeliska', 'Dolina Pięciu Stawów', 'Dolina Roztoki', 'Dolina Starorobociańska', 'Dróżki różańcowe', 'Gęsia Szyja', 'Giewont', 'Gorc', 'Goryczkowa Czuba', 'Granaty', 'Grzęda Rysów', 'Hala Łabowska', 'Hala Lipowska', 'Hala Pisana', 'Jałowiec', 'Jarząbczy Wierch', 'Jasknia Mroźna', 'Jaworzyna Krynicka', 'Kamiennik', 'Karb', 'Kasprowy Wierch', 'Kończysty Wierch', 'Kopieniec Wielki', 'Kościelec', 'Kościelisko', 'Koskowa Góra', 'Kotoń', 'Kozi Wierch', 'Koziarz', 'Krawców Wierch', 'Krzyżne', 'Kuźnice', 'Lackowa', 'Leskowiec', 'Lubań', 'Lubogoszcz', 'Lubomir', 'Luboń Wielki', 'Łysica', 'Magurki', 'Mędralowa', 'Modyń', 'Mogielica', 'Morskie Oko', 'Nosal', 'Orla Perć', 'Ornak', 'Pańska Przehybka', 'Piec', 'Pieniny', 'Pilsko', 'Plebańska Góra', 'Polana Huciska', 'Polana Michurowa', 'Polica', 'Połonica Caryńska', 'Połonina Wetlińska', 'Przehyba', 'Przełęcz', 'Przełęcze', 'Pusta Wielka','Radziejowa', 'Rakoń', 'Rusinowa Polana', 'Rysy', 'Sarnie Skałki', 'Siwa Przełęcz', 'Skrzyczne', 'Śnieżka', 'Śnieżnica', 'Sokola Perć', 'Sokolica', 'Starorobociański Wierch', 'Stożek Wielki', 'Świnica', 'Świstowa Czuba', 'Szczebel', 'Szczeliniec Wielki', 'Szpiglasowy Wierch', 'Tarnica', 'Trzy Korony', 'Turbacz', 'Uklejna', 'Uklejnę', 'Wąwóz Homole', 'Wielka Racza', 'Wielka Rycerzowa', 'Wilczyce', 'Wołowiec', 'Wysoka', 'Żleb Kulczyckiego'],
+  'Góry': ['Babia Góra', 'Barania Góra', 'Barnasiówka', 'Błędne Skały', 'Bystra', 'Ciecień', 'Ćwilin', 'Czarny Mniszek', 'Czerwone Wierchy', 'Czupel', 'Dolina Chochołowska', 'Dolina Goryczkowa', 'Dolina Kościeliska', 'Dolina Pięciu Stawów', 'Dolina Roztoki', 'Dolina Starorobociańska', 'Dróżki różańcowe', 'Gęsia Szyja', 'Giewont', 'Gorc', 'Goryczkowa Czuba', 'Granaty', 'Grzęda Rysów', 'Hala Łabowska', 'Hala Lipowska', 'Hala Pisana', 'Jałowiec', 'Jarząbczy Wierch', 'Jasknia Mroźna', 'Jaworzyna Krynicka', 'Kamiennik', 'Karb', 'Kasprowy Wierch', 'Kończysty Wierch', 'Kopieniec Wielki', 'Kościelec', 'Kościelisko', 'Koskowa Góra', 'Kotoń', 'Kozi Wierch', 'Koziarz', 'Krawców Wierch', 'Krzyżne', 'Kuźnice', 'Lackowa', 'Leskowiec', 'Lubań', 'Lubogoszcz', 'Lubomir', 'Luboń Wielki', 'Łysica', 'Magurki', 'Mędralowa', 'Modyń', 'Mogielica', 'Morskie Oko', 'Nosal', 'Orla Perć', 'Ornak', 'Pańska Przehybka', 'Piec', 'Pieniny', 'Pilsko', 'Plebańska Góra', 'Polana Huciska', 'Polana Michurowa', 'Polica', 'Połonica Caryńska', 'Połonina Wetlińska', 'Przehyba', 'Przełęcz', 'Przełęcze', 'Pusta Wielka','Radziejowa', 'Rakoń', 'Rusinowa Polana', 'Rysy', 'Sarnie Skałki', 'Siwa Przełęcz', 'Skrzyczne', 'Śnieżka', 'Śnieżnica', 'Sokola Perć', 'Sokolica', 'Starorobociański Wierch', 'Stożek Wielki', 'Świnica', 'Świstowa Czuba', 'Szczebel', 'Szczeliniec Wielki', 'Szpiglasowy Wierch', 'Tarnica', 'Trzy Korony', 'Turbacz', 'Uklejna', 'Uklejnę', 'Wąwóz Homole', 'Wielka Racza', 'Wielka Rycerzowa', 'Wilczyce', 'Wołowiec', 'Wysoka', 'Żleb Kulczyckiego'],
 
   # @sub Domówki
   'Domówki': ['Ćwierćwiecze', 'DM Party', 'Dwudziestka', 'Dwunastka', 'Dziewiętnastka', 'Imprezki DM', 'Na Staszica', 'Pożegnanie pokoju', 'Spotkanie nostalgiczne', 'Starych dziejów', 'Trzydziestka', 'Urodziny Agusi', 'W domu'],
@@ -36,7 +36,7 @@ categories = {
   'Narty': ['Biegówki', 'Kotelnica', 'Master Ski', 'Narty'],
 
   # @sub Ogólne
-  'Ogólne': ['Agnieszka', 'Agusia', 'Asia', 'Auto', 'Biuro', 'ŚDM Błonia', 'Gimnazjum', 'Kaśka', 'Koniec pracy', 'Konkursy', 'Kwadrat', 'Liceum', 'Natalia', 'Obrona', 'Początek związku', 'Podstawówka', 'Pokoik', 'Powiększenie biura', 'Praca', 'Prawo jazdy', 'Przedszkole', 'Przemuś', 'Rafał', 'Remont','Rodzeństwo', 'Rozdanie', 'Rozstanie', 'Sanatorium', 'Sesja', 'Sprzedaż', 'Statut', 'Studia', 'Szkoła', 'Volvo', 'Wykłady'],
+  'Ogólne': ['Ogólne'],
 
   # @sub Rodzina
   'Rodzina': ['Boże narodzenie', 'Brzezinka', 'Dziadkowie', 'Dzień Dziecka', 'Grill', 'Karolinki', 'Karoliny', 'Kątscy', 'Maciejowskiej', 'Modelowie', 'Na Sądowej', 'Ognisko nad Rabą', 'Osieczany', 'Rodzina', 'Święcenie pokarmów', 'U Ani', 'U Darka', 'U dziadków', 'W Brzezince', 'W Myślenicach', 'W Nowej Hucie', 'Wielkanoc', 'Wigilia', 'Wikusi', 'Załubińczu'],
