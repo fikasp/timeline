@@ -6,7 +6,7 @@ from PIL.ExifTags import TAGS
 from PIL import Image
 # pip install pillow
 
-YEAR = 0
+YEAR = 2019
 
 # @sup Config
 
