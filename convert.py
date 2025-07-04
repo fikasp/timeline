@@ -2,7 +2,7 @@ import os
 from PIL import Image
 # pip install Pillow
 
-YEAR = 2019
+YEAR = 2018
 
 print("📷 JPG to WEBP converter:")
 
