@@ -771,7 +771,6 @@
       
       ARW.createOption(this.selectMonth, this.filters.none) // Create "None" option
       // ARW.createOption(this.selectMonth, this.filters.compact, this.filters.compact, true) // Create "Compact" option
-      // ARW.createOption(this.selectMonth, this.filters.catalog) // Create "Catalog" option
       ARW.createOption(this.selectMonth, this.filters.all, this.filters.all, true) // Create "All" option
       
       Object.keys(this.months).sort().forEach(month => {
@@ -788,10 +787,9 @@
       ARW.printFuncName(this.prepareYears) // Print function name
       
       ARW.createOption(this.selectYear, this.filters.none) // Create "None" option      
-      ARW.createOption(this.selectYear, this.filters.min, this.filters.min, true) // Create "Min" option      
-      ARW.createOption(this.selectYear, this.filters.max) // Create "Max" option
+      ARW.createOption(this.selectYear, this.filters.compact, this.filters.compact, true) // Create "Compact" option      
       ARW.createOption(this.selectYear, this.filters.auto) // Create "Auto" option
-      ARW.createOption(this.selectYear, this.filters.grid) // Create "Grid" option
+      ARW.createOption(this.selectYear, this.filters.all) // Create "All" option
     }
 
     /** 
@@ -860,8 +858,8 @@
       this.setState({filterMonth: filterMonth}) // Set state of filter month
 
       // Set state of months visible
-      const {all, compact, catalog} = this.filters
-      if (![all, compact, catalog].includes(filterMonth)) { 
+      const {all, compact} = this.filters
+      if (![all, compact].includes(filterMonth)) { 
         this.setState({isMonthsVisible: false})
       } else {
         this.setState({isMonthsVisible: true})
@@ -881,10 +879,8 @@
       this.setState({filterYear: filterYear}) // Set state of filter year
 
       // Set yearHeight property on the root element
-      if (filterYear == this.filters.min) {
+      if (filterYear == this.filters.compact) {
         this.root.style.setProperty('--yearHeight', `45px`)
-      } else if (filterYear == this.filters.max) {
-        this.root.style.setProperty('--yearHeight', `200px`)
       } else if (filterYear == this.filters.auto) {
         this.root.style.setProperty('--yearHeight', `auto`)
       }
@@ -892,7 +888,7 @@
       // Set state of years visible and collapsed
       if (filterYear == this.filters.none) {
         this.setState({isYearsVisible: false})
-      } else if (filterYear == this.filters.grid){
+      } else if (filterYear == this.filters.all){
         this.setState({isYearsVisible: true})
         this.setState({isYearsCollapsed: false})
       } else {
@@ -1523,13 +1519,9 @@
       // Common filters
       this.filters = {
         none: "Brak",
-        min: "Kompaktowo",
-        max: "Szeroko",
-        auto: "Automatycznie",
         all: "Wszystko",
-        catalog: "Katalogowo",
+        auto: "Automatycznie",
         compact: "Kompaktowo",
-        grid: "Siatka"
       }
       // Grid sizes
       this.grid = {
@@ -1555,7 +1547,7 @@
         isYearsCollapsed: true,
         filterCategory: this.filters.all, 
         filterMonth: this.filters.all,
-        filterYear: this.filters.min,
+        filterYear: this.filters.compact,
         grid: this.grid.S,
         time: this.time.T1
       }
@@ -1738,7 +1730,7 @@
       let filteredData = this.data // Initialize filteredData with the original data
       
       const { filterCategory, filterMonth, filterYear } = this.state // Destructure filters from state
-      const { all, catalog, compact, min, medium, max, none } = this.filters // Destructure common filters
+      const { all, compact, medium, none } = this.filters // Destructure common filters
 
       // Filter by category
       if(filterCategory != all) {
@@ -1749,8 +1741,6 @@
       // Filter by month
       if(filterMonth == compact) {
         filteredData = filteredData.filter(item => !item.name.includes('/'))
-      } else if (filterMonth == catalog) {
-        filteredData = filteredData.filter(item => item.name.includes('/'))
       } else if(filterMonth != all && filterMonth != none) {
         filteredData = filteredData.filter(item => {
           return item.month == filterMonth 
