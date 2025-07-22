@@ -1,4 +1,7 @@
-<!-- @sup HEAD -->
+<!-- @r ! TIMELINE !
+-->
+<!-- @r HEAD 
+-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,9 +14,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
   <script src="index.js"></script>
 
-  <!-- @sup STYLE -->
+  <!-- @r STYLE 
+  -->
   <style>
-    /* @sub general */
+    /* @p general 
+    */
     * {
       margin: 0;
       padding: 0;
@@ -47,7 +52,8 @@
       --fontSize: 8px;
     }
 
-    /* @sub header */
+    /* @p header
+    */
     .header {
       z-index: 2;
       background-color: black;
@@ -162,7 +168,8 @@
     .header_bars:hover {
       background-color: rgb(0, 0, 0, 100%);
     }
-    /* @sub gallery */
+    /* @p gallery
+    */
     .gallery {
       z-index: 1;
       position: fixed;
@@ -323,7 +330,8 @@
       filter: sepia(1)
     }
 
-    /* @sub photo */
+    /* @p photo 
+    */
     .photo {
       display: flex;
       justify-content: center;
@@ -447,8 +455,10 @@
 </head>
 
 <body>
-  <!-- @sup HTML -->
-  <!-- @sub HEADER -->
+  <!-- @r HTML 
+  -->
+  <!-- @r HEADER
+  -->
   <div class="header_bars">
     <i class="fa-solid fa-bars"></i>
   </div>
@@ -517,12 +527,13 @@
   </div>
 
   <script>
-  // @sup SCRIPTS
+  // @r SCRIPTS
   
   /** 
    * The ARW class provides utility functions for creating HTML elements and working with functions.
-   * 
-  @class */ class ARW 
+   * @g ARW
+   */ 
+  class ARW 
 	{
     /**
      * Creates a new HTML element and configures it based on the provided options.
@@ -534,8 +545,9 @@
      * @param {Object<string, string>} options.dataset - An object containing key-value pairs to be set as data-* attributes.
      * @param {Object<string, string>} options.attributes - Additional options for configuring the element.
      * @returns {HTMLElement} The created HTML element.  
-     * 
-    @func */ static createElement = ({type="div", parent, children, listeners, dataset, ...attributes}) =>
+     * @b createElement
+     */ 
+    static createElement = ({type="div", parent, children, listeners, dataset, ...attributes}) =>
     {      
       const element = document.createElement(type) // Create the element
       
@@ -575,8 +587,9 @@
      * @param {HTMLElement} parent - The parent element to which the option element will be appended.
      * @param {string} value - The value attribute of the option element.
      * @param {string} [content=value] - The content of the option element (default: value).
-     * 
-    @func */ static createOption = (parent, value, content=value, selected=false) =>
+     * @b createOption
+     */ 
+    static createOption = (parent, value, content=value, selected=false) =>
 		{
       // Create an option element using the createElement method
       const option = this.createElement({
@@ -596,8 +609,9 @@
      * Prints the name of a function along with an optional value.
      * @param {Function} callback - The callback function whose name will be printed.
      * @param {*} value - An optional value to be displayed along with the function name (default: "").
-     *
-    @func */ static printFuncName = (callback, value) =>
+     * @b printFuncName
+     */ 
+    static printFuncName = (callback, value) =>
 		{
       // Get the name of the callback function.
       const functionName = callback.name
@@ -619,8 +633,9 @@
   /**
    * Class representing application header.
    * Manages the categories, months, years, grid and time.
-    * 
-  @class */ class Header 
+   * @g HEADER
+   */ 
+  class Header 
   {
     /**
      * Constructs a new instance of the Header class.
@@ -685,8 +700,9 @@
 
     /** 
      * Initializes the header.
-     * 
-    @func */ init = () =>
+     * @b init
+     */ 
+    init = () =>
 		{
       this.prepareCategories() // Prepare the categories
       this.prepareMonths() // Prepare the months
@@ -718,8 +734,9 @@
     
     /** 
      * Shows or hides the menu.
-     * 
-    @func */ showHideMenu = () =>
+     * @b showHideMenu
+     */ 
+    showHideMenu = () =>
 		{
       ARW.printFuncName(this.showHideMenu) // Print function name
       
@@ -732,8 +749,9 @@
 
     /** 
      * Prepares the categories.
-     * 
-    @func */ prepareCategories = () =>
+     * @b prepareCategories
+     */ 
+    prepareCategories = () =>
 		{
       ARW.printFuncName(this.prepareCategories) // Print function name
       
@@ -745,8 +763,9 @@
 
     /** 
      * Prepares the months.
-     * 
-    @func */ prepareMonths = () =>
+     * @b prepareMonths
+     */ 
+    prepareMonths = () =>
 		{      
       ARW.printFuncName(this.prepareMonths) // Print function name
       
@@ -762,8 +781,9 @@
 
     /** 
      * Prepares the years.
-     * 
-    @func */ prepareYears = () =>
+     * @b prepareYears
+     */ 
+    prepareYears = () =>
 		{      
       ARW.printFuncName(this.prepareYears) // Print function name
       
@@ -776,8 +796,9 @@
 
     /** 
      * Prepares the grid size.
-     * 
-    @func */ prepareGrid = () =>
+     * @b prepareGrid 
+     */ 
+    prepareGrid = () =>
 		{      
       ARW.printFuncName(this.prepareGrid) // Print function name
       
@@ -796,8 +817,9 @@
 
     /** 
      * Prepares the time intervals.
-     * 
-    @func */ prepareTime = () =>
+     * @b prepareTime
+     */ 
+    prepareTime = () =>
 		{
       ARW.printFuncName(this.prepareTime) // Print function name
 
@@ -814,8 +836,9 @@
 
     /**
      * Sets the selected category for filtering data.
-     * 
-    @func */ setCategory = () =>
+     * @b setCategory
+     */ 
+    setCategory = () =>
     {      
       const filterCategory = this.selectCategory.value // Get the selected category value from the select input 
       ARW.printFuncName(this.setCategory, filterCategory) // Print function name
@@ -826,8 +849,9 @@
 
     /**
      * Sets the selected month for filtering data.
-     * 
-    @func */ setMonths = () =>
+     * @b setMonths
+     */ 
+    setMonths = () =>
     {
       
       const filterMonth = this.selectMonth.value // Get the selected month value from the select input 
@@ -847,8 +871,9 @@
 
 		/**
      * Sets the selected year for filtering data.
-     * 
-    @func */ setYear = () =>
+     * @b setYear
+     */ 
+    setYear = () =>
 		{			
       const filterYear = this.selectYear.value // Get the selected year value from the select input
       ARW.printFuncName(this.setYear, filterYear) // Print function name
@@ -882,8 +907,9 @@
 
     /**
      * Sets the grid size for the gallery.
-     * 
-    @func */ setGrid = () =>
+     * @b setGrid
+     */ 
+    setGrid = () =>
     {
       const size = this.selectGrid.value // Get the grid size value from the select input      
       ARW.printFuncName(this.setGrid, size) // Print function name
@@ -905,8 +931,9 @@
 
     /** 
      * Sets the time for the gallery.
-     * 
-    @func */ setTime = () =>
+     * @b setTime
+     */ 
+    setTime = () =>
     {      
       const time = this.selectTime.value // Get the time value from the select input
       ARW.printFuncName(this.setTime, time) // Print function name
@@ -919,8 +946,9 @@
   /**
    * Class representing a photo gallery.
    * Manages the display of photos, navigation and user interactions.
-   *
-  @class */ class Gallery 
+   * @g GALLERY
+   */ 
+  class Gallery 
 	{  
     /**
      * Constructs a new instance of the Gallery class.
@@ -987,8 +1015,9 @@
      * Prepares the gallery with the provided data and state.
      * @param {Array} data - The gallery data.
      * @param {Object} state - The state of the gallery.
-     *
-    @func */ prepareGallery = (data, state) =>
+     * @b prepareGallery
+     */ 
+    prepareGallery = (data, state) =>
 		{      
      	ARW.printFuncName(this.prepareGallery) // Print function name
 
@@ -1081,8 +1110,9 @@
      * @param {string} desc - The description of the box.
      * @param {string} path - The path to the image of the box.
      * @param {string} id - The ID of the box.
-     *
-    @func */ buildGalleryBox = (parent, desc, path, id) =>
+     * @b buildGalleryBox
+     */ 
+    buildGalleryBox = (parent, desc, path, id) =>
 		{
       ARW.createElement({
         parent: parent,
@@ -1112,12 +1142,12 @@
 
     /**
      * Builds a year box and adds it to the specified parent element.
-     * @func
      * @param {HTMLElement} parent - The parent element to attach the box to.
      * @param {string} year - The year value of the box.
      * @returns {HTMLElement} - The right content element of the year box.
-     *
-    @func */ buildYearBox = (parent, year) =>
+     * @b buildYearBox
+     */ 
+    buildYearBox = (parent, year) =>
 		{
       const yearTimeline = ARW.createElement({
         class: "gallery_year-timeline",
@@ -1147,13 +1177,13 @@
 
     /**
      * Builds a month box and adds it to the specified parent element.
-     * @func
      * @param {HTMLElement} parent - The parent element to attach the box to.
      * @param {string} month - The month value of the box.
      * @param {string} year - The year value of the box.
      * @returns {HTMLElement} - The right content element of the month box.
-     *
-    @func */ buildMonthBox = (parent, month, year) =>
+     * @b buildMonthBox
+     */ 
+    buildMonthBox = (parent, month, year) =>
 		{
       const monthTimeline = ARW.createElement({
         class: "gallery_month-timeline",
@@ -1179,8 +1209,9 @@
 
     /**
      * Updates the visibility of year and month values based on scrolling position.
-     *
-    @func */ updateVisibility = () =>
+     * @b updateVisibility
+     */ 
+    updateVisibility = () =>
 		{      
       ARW.printFuncName(this.updateVisibility) // Print function name
 
@@ -1211,8 +1242,9 @@
     /**
      * Toggles the visibility of a year box and its associated month boxes.
      * @param {Event} e - The event object.
-     *
-    @func */ showHideYear = (e) =>
+     * @b showHideYear
+     */ 
+    showHideYear = (e) =>
     {      
 			ARW.printFuncName(this.showHideYear) // Print function name
 
@@ -1248,8 +1280,9 @@
 
     /**
      * Sets the border style for the currently selected box.
-     *
-    @func */ setActivePhoto = () =>
+     * @b setActivePhoto
+     */ 
+    setActivePhoto = () =>
 		{
       ARW.printFuncName(this.setActivePhoto, this.index) // Print function name
 
@@ -1268,8 +1301,9 @@
     /**
      * Sets the photo and navigation buttons for the specified ID.
      * @param {string} id - The ID of the photo.
-     *
-    @func */ setPhoto = (id) =>
+     * @b setPhoto
+     */ 
+    setPhoto = (id) =>
 		{
       ARW.printFuncName(this.setPhoto, id) // Print function name
 
@@ -1326,8 +1360,9 @@
     /**
      * Sets the previous photo in the gallery.
      * @param {Event} e - The event object.
-     *
-    @func */ setPreviousPhoto = (e) =>
+     * @b setPreviousPhoto
+     */ 
+    setPreviousPhoto = (e) =>
 		{
       ARW.printFuncName(this.setPreviousPhoto) // Print function name
 
@@ -1341,8 +1376,9 @@
     /**
      * Sets the next photo in the gallery.
      * @param {Event} e - The event object.
-     *
-    @func */ setNextPhoto = (e) =>
+     * @b setNextPhoto
+     */ 
+    setNextPhoto = (e) =>
 		{   
       ARW.printFuncName(this.setNextPhoto) // Print function name
 
@@ -1356,8 +1392,9 @@
     /**
      * Shows the previous photo in the gallery.
      * @param {Event} e - The event object.
-     *
-    @func */ showBackward = (e) =>
+     * @b showBackward
+     */ 
+    showBackward = (e) =>
 		{
       ARW.printFuncName(this.showBackward) // Print function name
 
@@ -1375,8 +1412,9 @@
     /**
      * Shows the next photo in the gallery.
      * @param {Event} e - The event object.
-     *
-    @func */ showForward = (e) =>
+     * @b showForward
+     */ 
+    showForward = (e) =>
 		{
       ARW.printFuncName(this.showForward) // Print function name
       
@@ -1393,8 +1431,9 @@
 
     /**
      * Resumes the presentation.
-     *
-     @func */ showContinue = () => {
+     * @b showContinue
+     */ 
+    showContinue = () => {
       console.log("Presentation", this.presentation)
       if (this.presentation === "forward") {
         this.presentationTimeout = setTimeout(() => {
@@ -1420,8 +1459,9 @@
     /**
      * Shows the selected photo in a modal.
      * @param {Event} e - The event object.
-     *
-    @func */ showPhoto = (e) =>
+     * @b showPhoto
+     */ 
+    showPhoto = (e) =>
 		{   
       setTimeout(() => {
         this.photo.classList.remove("none") // Remove 'none' class to make the photo visible
@@ -1443,8 +1483,9 @@
     /**
      * Hides the displayed photo modal.
      * @param {Event} e - The event object.
-     *
-    @func */ hidePhoto = () =>
+     * @b hidePhoto
+     */ 
+    hidePhoto = () =>
 		{      
       ARW.printFuncName(this.hidePhoto) // Print function name
       
@@ -1466,8 +1507,9 @@
   /**
    * Class representing the main application.
    * Manages the state, initialization, event listeners and data manipulation.
-   *
-  @class */ class Main 
+   * @g MAIN
+   */
+  class Main 
   {
     /**
       * Constructs a new Main instance.
@@ -1553,8 +1595,9 @@
 
     /**
      * Initializes the main application.
-     *
-    @func */ init = () =>
+     * @b init
+     */  
+    init = () =>
 		{
       this.changeMargin() // Change the margin and height of the view based on the header visibility
       this.prepareData() // Prepare the data by adding additional properties and sorting it
@@ -1564,8 +1607,9 @@
     /**
      * Sets the state of the application.
      * @param {Object} newState - The new state object.
-     *
-    @func */ setState = (newState) =>
+     * @b setState
+     */ 
+    setState = (newState) =>
 		{      
       ARW.printFuncName(this.setState, newState) // Print function name
 
@@ -1575,8 +1619,9 @@
     /**
      * Checks the keyboard keys pressed and performs corresponding actions.
      * @param {Event} e - The keyup event object.
-     *
-    @func */ checkKeys = (e) =>
+     * @b checkKeys
+     */ 
+    checkKeys = (e) =>
 		{      
       ARW.printFuncName(this.checkKeys, e.key) // Print function name
 
@@ -1615,8 +1660,9 @@
     /**
      * Checks the mouse wheel movement and performs corresponding actions.
      * @param {Event} e - The wheel event object.
-     *
-    @func */ checkWheel = (e) =>
+     * @b checkWheel
+     */ 
+    checkWheel = (e) =>
 		{
       if (this.state.isPhotoOpen) { // Check if photo is open
         if (e.deltaY > 0) {
@@ -1629,8 +1675,9 @@
 
     /**
      * Changes the margin and height of the view based on the header visibility.
-     *
-    @func */ changeMargin = () =>
+     * @b changeMargin
+     */ 
+    changeMargin = () =>
 		{      
 			ARW.printFuncName(this.changeMargin) // Print function name
 
@@ -1651,8 +1698,9 @@
 
     /**
      * Prepares the data by adding additional properties and sorting it.
-     *
-    @func */ prepareData = () =>
+     * @b prepareData
+     */ 
+    prepareData = () =>
 		{      
       ARW.printFuncName(this.prepareData) // Print function name
 
@@ -1681,8 +1729,9 @@
     /**
      * Filters the data based on the current state and returns the filtered data.
      * @returns {Array} - The filtered data array.
-     *
-    @func */ filterData = () => 
+     * @b filterData
+    */ 
+    filterData = () => 
 		{      
       ARW.printFuncName(this.filterData) // Print function name
 
@@ -1714,8 +1763,9 @@
 
     /**
      * Updates the data and triggers gallery update.
-     *
-    @func */ updateData = () =>
+     * @b updateData
+     */ 
+    updateData = () =>
 		{      
 			ARW.printFuncName(this.updateData) // Print function name
       console.log(this.state) // Log the current state
@@ -1729,8 +1779,9 @@
 
     /**
      * Updates the interval time.
-     *
-    @func */ updateTime = () =>
+     * @b updateTime
+     */ 
+    updateTime = () =>
 		{      
 			ARW.printFuncName(this.updateTime) // Print function name
       this.gallery.time = this.state.time // Set gallery time
@@ -1739,8 +1790,9 @@
 
   /**
    * The main application class.
-   * 
-  @class */ class App 
+   * @g APP
+   */ 
+  class App 
   {
     static init = () =>
 		 {
@@ -1753,7 +1805,7 @@
 	// Initialize the application.
   App.init()
 
-  // @sup TESTS
+  // @r TESTS
 
   </script>
 </body>
