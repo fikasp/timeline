@@ -1,6 +1,4 @@
-<!-- @r ! TIMELINE !
--->
-<!-- @r HEAD 
+<!-- @r >> TIMELINE
 -->
 <!DOCTYPE html>
 <html>
@@ -14,10 +12,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
   <script src="index.js"></script>
 
-  <!-- @r STYLE 
+  <!-- @r > STYLE 
   -->
   <style>
-    /* @p general 
+    /* @r General 
     */
     * {
       margin: 0;
@@ -52,7 +50,7 @@
       --fontSize: 8px;
     }
 
-    /* @p header
+    /* @r Header
     */
     .header {
       z-index: 2;
@@ -168,7 +166,7 @@
     .header_bars:hover {
       background-color: rgb(0, 0, 0, 100%);
     }
-    /* @p gallery
+    /* @r Gallery
     */
     .gallery {
       z-index: 1;
@@ -330,7 +328,7 @@
       filter: sepia(1)
     }
 
-    /* @p photo 
+    /* @r Photo 
     */
     .photo {
       display: flex;
@@ -455,9 +453,9 @@
 </head>
 
 <body>
-  <!-- @r HTML 
+  <!-- @p > HTML 
   -->
-  <!-- @r HEADER
+  <!-- @p Header
   -->
   <div class="header_bars">
     <i class="fa-solid fa-bars"></i>
@@ -502,10 +500,12 @@
     </div>
   </div>
 
-  <!-- @sub GALLERY -->
+  <!-- @p Gallery 
+  -->
   <div class="gallery" tabindex="0"></div>
 
-  <!-- @sub PHOTO -->
+  <!-- @p Photo 
+  -->
   <div class="photo none">
     <!-- Arrow close -->
     <div class="photo_arrow photo_close">
@@ -527,7 +527,7 @@
   </div>
 
   <script>
-  // @r SCRIPTS
+  // @g > SCRIPTS
   
   /** 
    * The ARW class provides utility functions for creating HTML elements and working with functions.
@@ -1794,8 +1794,6 @@
 
 	// Initialize the application.
   App.init()
-
-  // @r TESTS
 
   </script>
 </body>
