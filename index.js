@@ -1320,8 +1320,7 @@ const data = [
 {date: '2024-04-06.2', catg: ['Miasta'], name: 'Szydłów'},
 {date: '2024-04-06.3', catg: ['Miasta'], name: 'Staszów'},
 {date: '2024-04-06.4', catg: ['Miasta'], name: 'Oleśnica'},
-{date: '2024-04-07.1', catg: ['Rowery'], name: 'Rower Wały wiślane'},
-{date: '2024-04-07.2', catg: ['Rowery'], name: 'Rower Zakrzówek'},
+{date: '2024-04-07.0', catg: ['Rowery'], name: 'Rower Wały wiślane'},
 {date: '2024-04-13.0', catg: ['Spacery'], name: 'Łąki nowohuckie'},
 {date: '2024-04-14.0', catg: ['Spacery'], name: 'Krzywy Grunt'},
 {date: '2024-04-26.0', catg: ['Koncerty'], name: 'Koncert w filharmonii'},
@@ -1518,4 +1517,5 @@ const data = [
 {date: '2025-07-20.3', catg: ['Gastronomia'], name: 'Pizza Hut'},
 {date: '2025-07-25.0', catg: ['Koncerty'], name: 'Koncert u Floriana'},
 {date: '2025-07-27.0', catg: ['Domówki'], name: 'Urodziny Agusi'},
+{date: '2025-08-02.0', catg: ['Rowery'], name: 'Rower Bronowice'},
 ]
