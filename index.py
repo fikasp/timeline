@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL.ExifTags import TAGS
 from PIL import Image
 
-YEAR = 2020
+YEAR = 2014
 
 # Categories
 categories = {
