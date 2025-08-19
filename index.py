@@ -5,57 +5,25 @@ from pathlib import Path
 from PIL.ExifTags import TAGS
 from PIL import Image
 
-YEAR = 2011
+YEAR = 2010
 
-# Categories
 categories = {
-    # Atrakcje
-    'Atrakcje': ['Muzeum', 'Termy', 'Wystawa'],
-
-    # Gastronomia
-    'Gastronomia': ['Kawiarnia', 'Restauracja', 'Karczma'],
-
-    # Góry
-    'Góry': ['Babia Góra', 'Barania Góra', 'Barnasiówka', 'Błędne Skały', 'Bystra', 'Ciecień', 'Ćwilin', 'Czarny Mniszek', 'Czerwone Wierchy', 'Czupel', 'Dolina Chochołowska', 'Dolina Goryczkowa', 'Dolina Kościeliska', 'Dolina Pięciu Stawów', 'Dolina Roztoki', 'Dolina Starorobociańska', 'Dróżki różańcowe', 'Gęsia Szyja', 'Giewont', 'Gorc', 'Goryczkowa Czuba', 'Granaty', 'Grzęda Rysów', 'Hala Łabowska', 'Hala Lipowska', 'Hala Pisana', 'Jałowiec', 'Jarząbczy Wierch', 'Jasknia Mroźna', 'Jaworzyna Krynicka', 'Kamiennik', 'Karb', 'Kasprowy Wierch', 'Kończysty Wierch', 'Kopieniec Wielki', 'Kościelec', 'Kościelisko', 'Koskowa Góra', 'Kotoń', 'Kozi Wierch', 'Koziarz', 'Krawców Wierch', 'Krzyżne', 'Kuźnice', 'Lackowa', 'Leskowiec', 'Lubań', 'Lubogoszcz', 'Lubomir', 'Luboń Wielki', 'Łysica', 'Magurki', 'Mędralowa', 'Modyń', 'Mogielica', 'Morskie Oko', 'Nosal', 'Orla Perć', 'Ornak', 'Pańska Przehybka', 'Piec', 'Pieniny', 'Pilsko', 'Plebańska Góra', 'Polana Huciska', 'Polana Michurowa', 'Polica', 'Połonica Caryńska', 'Połonina Wetlińska', 'Przehyba', 'Przełęcz', 'Przełęcze', 'Pusta Wielka','Radziejowa', 'Rakoń', 'Rusinowa Polana', 'Rysy', 'Sarnie Skałki', 'Siwa Przełęcz', 'Skrzyczne', 'Śnieżka', 'Śnieżnica', 'Sokola Perć', 'Sokolica', 'Starorobociański Wierch', 'Stożek Wielki', 'Świnica', 'Świstowa Czuba', 'Szczebel', 'Szczeliniec Wielki', 'Szpiglasowy Wierch', 'Tarnica', 'Trzy Korony', 'Turbacz', 'Uklejna', 'Uklejnę', 'Wąwóz Homole', 'Wielka Racza', 'Wielka Rycerzowa', 'Wilczyce', 'Wołowiec', 'Wysoka', 'Żleb Kulczyckiego'],
-
-    # Domówki
-    'Domówki': ['Ćwierćwiecze', 'DM Party', 'Dwudziestka', 'Dwunastka', 'Dziewiętnastka', 'Imprezki DM', 'Na Staszica', 'Pożegnanie pokoju', 'Spotkanie nostalgiczne', 'Starych dziejów', 'Trzydziestka', 'Urodziny Agusi', 'W domu'],
-
-    # Koncerty
-    'Koncerty': ['Dyplom Karolinki', 'Filharmonia', 'Koncert', 'Organy', 'Tauron Arena', 'Zaduszki organowe'],
-
-    # Kościoły
-    'Kościoły': ['Bolechowice', 'Częstochowa', 'Droga Krzyżowa', 'Jasna Góra', 'Kapucyni', 'Kościół', 'Niepokalanów', 'Pielgrzymka', 'ŚDM', 'Świątynia Opatrzności', 'Wszystkich Świętych', 'Zmartwychwstańcy'],
-
-    # Miasta
-    'Miasta': ['Alwernia', 'Andrychów', 'Asyż', 'Babice', 'Barcelona', 'Będzin', 'Bełchatów', 'Biała Podlaska', 'Biała Rawska', 'Białystok', 'Biecz', 'Bielsko-Biała', 'Bieruń', 'Bobowa', 'Bochnia', 'Boguszów-Gorce', 'Brzesko', 'Brzeszcze', 'Budapeszt', 'Bukowno', 'Busko-Zdrój', 'Bydgoszcz', 'Bydlin', 'Bystrzyca Kłodzka', 'Bytom', 'Chabówka', 'Chęciny', 'Chełm', 'Chełmek', 'Chmielnik', 'Chorzów', 'Chrzanów', 'Ciechanów', 'Cieszyn', 'Ciężkowice', 'Collioure', 'Cuenca', 'Czchów', 'Czechowice-Dziedzice', 'Czechowice', 'Czeladź', 'Czorsztyn', 'Dąbrowa Górnicza', 'Dąbrowa Tarnowska', 'DąbrowaG.', 'DąbrowaT.', 'Darłowo', 'Dębica', 'Dobczyce', 'Działoszyce', 'Elbląg', 'Ełk', 'Figueres', 'Florencja', 'Frombork', 'Garwolin', 'Gdańsk', 'Gdynia', 'Giżycko', 'Gliwice', 'Głogów', 'Głogówek', 'Gniezno', 'Gorlice', 'Gorzów Wielkopolski', 'Grudziądz', 'Grybów', 'Grzybowo', 'Hel', 'Imielin', 'Inowrocław', 'Inwałd', 'Jarosław', 'Jasło', 'Jastrzębie-Zdrój', 'Jaworzno', 'Jędrzejów', 'Jelenia Góra', 'Jordanów', 'Kalisz', 'Kalwaria Zebrzydowska', 'Kamienna Góra', 'Karpacz', 'Katowice', 'Kazimierz Dolny', 'Kazimierza Wielka', 'Kędzierzyn-Koźle', 'Kęty', 'Kielce', 'Kłodzko', 'Kołobrzeg', 'Konin', 'Koszalin', 'Koszyce', 'Kowary', 'Koziegłowy', 'Kraków', 'Krosno', 'Krynica', 'Krzeszowice', 'Książ Wielki', 'Kutno', 'Lanckorona', 'Łańcut', 'Łazy', 'Lędziny', 'Legionowo', 'Legnica', 'Leszno', 'Libiąż', 'Licheń', 'Limanowa', 'Liszki', 'Łódź', 'Łomża', 'Lubin', 'Lublin', 'Madryt', 'Maków Podhalański', 'Malbork', 'Miechów', 'Międzylesie', 'Międzyzdroje', 'Mielec', 'Mielno', 'Mikołów', 'Milanówek', 'Mława', 'Monte Cassino', 'Moszna', 'Mszana Dolna', 'Muszyna', 'Myślenice', 'Mysłowice', 'Myszków', 'Neapol', 'Nidzica', 'Niedzica', 'Niepołomice', 'Nowa Ruda', 'Nowe Brzesko', 'Nowy Korczyn', 'Nowy Sącz', 'Nowy Targ', 'Nowy Wiśnicz', 'Nysa', 'Ogrodzieniec', 'Ojców', 'Oleśnica', 'Olkusz', 'Olsztyn', 'Opatowiec', 'Opoczno', 'Opole', 'Orneta', 'Ostróda', 'Ostrołęka', 'Ostrów Wielkopolski', 'Ostrowiec Świętokrzyski', 'Oświęcim', 'Otmuchów', 'Otwock', 'Pabianice', 'Pacanów', 'Paczków', 'Piaseczno', 'Piekary Śląskie', 'Piła', 'Pilica', 'Pińczów', 'Piotrków Trybunalski', 'Piwniczna', 'Płock', 'Polanica-Zdrój', 'Poręba', 'Poznań', 'Praga', 'Proszowice', 'Prudnik', 'Pruszków', 'Przemyśl', 'Przeworsk', 'Pszczyna', 'Puławy', 'Rabka', 'Racibórz', 'Racławice', 'Radłów', 'Radom', 'Radomsko', 'Radymno', 'Rimini', 'Ropczyce', 'Ruda Śląska', 'Rumia', 'Rybnik', 'Ryglice', 'Rzeszów', 'San Marino', 'Sandomierz', 'Sanok', 'Saragossa', 'Sędziszów Małopolski', 'Sędziszów', 'Sępólno Krajeńskie', 'Siedlce', 'Siemianowice Śląskie', 'Siemianowice', 'Sieradz', 'Siewierz', 'Skała', 'Skalbmierz', 'Skamieniałe Miasto', 'Skarżysko-Kamienna', 'Skawina', 'Skierniewice', 'Sławków', 'Słomniki', 'Słupsk', 'Smoleń', 'Sopot', 'Sosnowiec', 'Stalowa Wola', 'Staniątki', 'Starachowice', 'Stargard', 'Starogard Gdański', 'Stary Sącz', 'Staszów', 'Stopnica', 'Sucha Beskidzka', 'Sułkowice', 'Suwałki', 'Świątniki Górne', 'Świdnica', 'Świętochłowice', 'Świnoujście', 'Szczawnica', 'Szczebrzeszyn', 'Szczecin', 'Szczekociny', 'Szczucin', 'Szczyrk', 'Szydłów', 'Tarnobrzeg', 'Tarnów', 'Tarnowskie Góry', 'Tczew', 'Tomaszów Mazowiecki', 'Toruń', 'Trzebinia', 'Tuchów', 'Tychy', 'Tylicz', 'Ustka', 'Ustroń', 'Wadowice', 'Wałbrzych', 'Walencja', 'Warszawa', 'Wejherowo', 'Wenecja', 'Wiedeń', 'Wieliczka', 'Wilamowice', 'Wisła', 'Wiślica', 'Włocławek', 'Wodzisław Śląski', 'Wojnicz', 'Wolbrom', 'Wrocław', 'Żabno', 'Zabrze', 'Zakliczyn', 'Zakopane', 'Zamość', 'Żarki', 'Zator', 'Zawiercie', 'Zduńska Wola', 'Zgierz', 'Zielona Góra', 'Złotoryja', 'Złoty Stok', 'Żnin', 'Żory', 'Żywiec'],
-
-    # Narty
-    'Narty': ['Biegówki', 'Kotelnica', 'Master Ski', 'Narty'],
-
-    # Ogólne
+    'Atrakcje': ['Muzeum', 'Wystawa'],
+    'Gastronomia': ['Kawiarnia', 'Restauracja'],
+    'Góry': [],
+    'Domówki': [],
+    'Koncerty': ['Koncert'],
+    'Kościoły': ['Kościół'],
+    'Miasta': [],
+    'Narty': ['Narty'],
     'Ogólne': ['Ogólne'],
-
-    # Rodzina
-    'Rodzina': ['Boże narodzenie', 'Brzezinka', 'Dziadkowie', 'Dzień Dziecka', 'Grill', 'Karolinki', 'Karoliny', 'Kątscy', 'Maciejowskiej', 'Modelowie', 'Na Sądowej', 'Ognisko nad Rabą', 'Osieczany', 'Rodzina', 'Święcenie pokarmów', 'U Ani', 'U Darka', 'U dziadków', 'W Brzezince', 'W Myślenicach', 'W Nowej Hucie', 'Wielkanoc', 'Wigilia', 'Wikusi', 'Załubińczu'],
-
-    # Rowery
+    'Rodzina': ['Rodzina'],
     'Rowery': ['Rower'],
-
-    # Spacery
     'Spacery': ['Spacer'],
-
-    # Spektakle
-    'Spektakle': ['Kino', 'Opera', 'Spektakl', 'Teatr', 'Wernisaż'],
-
-    # Uroczystości
-    'Uroczystości': ['Chrzciny', 'Komunia', 'Oświadczyny', 'Pogrzeb', 'Poprawiny', 'Rocznica', 'Ślub', 'Wesele', 'Zjazd'],
-
-    # Wyjazdy
-    'Wyjazdy': ['Biały Dunajec', 'Bieszczady', 'Bukowina', 'Czerwonka', 'Darłówko', 'Dźwirzyno', 'Glinka', 'Gródek', 'Grzybowo', 'Ibiza', 'Kreta', 'Krępachy', 'Krynica Morska', 'Łeba', 'Majorka', 'Międzyzdroje', 'Mielno', 'Mileżówka', 'Nocleg', 'Podróż', 'Sarbinowo', 'Słowacki Raj', 'Sopot', 'Ustka', 'Wyjazd'],
-
-    # Znajomi
-    'Znajomi': ['Adwentowe', 'Andrzejki', 'Artura', 'Aśki', 'Bal', 'Ciasteczkowe', 'Kawalerski', 'Klasowe', 'Mariusza', 'Mateusza', 'Męskie', 'Na Szubiennej', 'Nad Wisłę', 'Opłatkowe', 'Panieński', 'Planszówki', 'Podyplomowe', 'Poobozowe','Półmetek', 'Pooświadczynowe', 'Posesyjna', 'Posesyjne', 'Studniówka', 'U Anki', 'U Asi', 'U Kamila', 'U Kamili', 'U Kingi', 'U Łukasza', 'U Moniki', 'U Pawła', 'U Przemka', 'U Sebastiana', 'U Sysłów', 'U Wojtka', 'Urodzinowe', 'W biurze', 'W Brodach', 'W Krakowie', 'W Krempachach', 'W Polibudzie', 'Waldi', 'Walentynki', 'Wypad nad Wisłę', 'Znajomi'],
+    'Spektakle': ['Kino', 'Opera', 'Spektakl', 'Teatr'],
+    'Uroczystości': ['Chrzciny', 'Komunia', 'Pogrzeb', 'Ślub', 'Wesele'],
+    'Wyjazdy': ['Wczasy', 'Wyjazd'],
+    'Znajomi': ['Znajomi'],
 }
 
 
