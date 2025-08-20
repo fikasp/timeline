@@ -694,6 +694,13 @@
       this.selectYear.addEventListener('change', () => this.setYear()) // Change event for year select
       this.selectGrid.addEventListener('change', () => this.setGrid()) // Change event for grid size select
       this.selectTime.addEventListener('change', () => this.setTime()) // Change event for time select
+      this.addListenersToSelects([
+        this.selectCategory,
+				this.selectMonth,
+				this.selectYear,
+				this.selectGrid,
+				this.selectTime
+			])
 
       this.init() // Initialization
     } 
@@ -709,6 +716,85 @@
       this.prepareYears() // Prepare the years
       this.prepareGrid() // Prepare the grid size
       this.prepareTime() // Prepare the time intervals
+    }
+
+    /** 
+     * Add listeners to selects.
+     * @b addListeners
+     */ 
+    addListenersToSelects = (selectElements) => {
+      selectElements.forEach((select) => {
+        let startX = 0
+        let startY = 0
+        const threshold = 30
+
+        // swipe
+        select.addEventListener(
+          'touchstart',
+          (e) => {
+            e.stopPropagation()
+            const touch = e.changedTouches[0]
+            startX = touch.pageX
+            startY = touch.pageY
+          },
+          { passive: true }
+        )
+
+        select.addEventListener(
+          'touchend',
+          (e) => {
+            e.stopPropagation()
+            const touch = e.changedTouches[0]
+            const diffX = touch.pageX - startX
+            const diffY = touch.pageY - startY
+
+            if (
+              Math.abs(diffX) > Math.abs(diffY) &&
+              Math.abs(diffX) > threshold
+            ) {
+              const options = select.options
+              let newIndex = select.selectedIndex
+
+              if (diffX > 0) {
+                if (newIndex < options.length - 1) newIndex++
+              } else {
+                if (newIndex > 0) newIndex--
+              }
+
+              if (newIndex !== select.selectedIndex) {
+                select.selectedIndex = newIndex
+                select.dispatchEvent(new Event('change'))
+              }
+            }
+          },
+          { passive: true }
+        )
+
+        // scroll
+        select.addEventListener(
+          'wheel',
+          (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            const options = select.options
+            let newIndex = select.selectedIndex
+
+            if (e.deltaY > 0) {
+              // down
+              if (newIndex < options.length - 1) newIndex++
+            } else {
+              // up
+              if (newIndex > 0) newIndex--
+            }
+
+            if (newIndex !== select.selectedIndex) {
+              select.selectedIndex = newIndex
+              select.dispatchEvent(new Event('change'))
+            }
+          },
+          { passive: false }
+        )
+      })
     }
 
     /**
