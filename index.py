@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL.ExifTags import TAGS
 from PIL import Image
 
-YEAR = 0
+YEAR = 2011
 
 categories = {
     'Atrakcje': ['Muzeum', 'Wystawa'],
