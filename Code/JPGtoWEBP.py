@@ -51,7 +51,7 @@ def convert_images(input_folder_path, webp_folder_path, jpg_files):
                 width, height = image.size
                 new_width = int(width * 0.1)
                 new_height = int(height * 0.1)
-                new_image = image.resize((new_width, new_height))
+                new_image = image.resize((new_width, new_height), Image.LANCZOS)
                 new_image.save(output_path, "WEBP", quality=60)
                 print(f'🟢 Converted: {filename} -> {webp_filename}')
             except Exception as e:
