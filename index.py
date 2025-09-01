@@ -1,11 +1,13 @@
 import re
 import subprocess
 import unicodedata
+import xml.etree.ElementTree as ET
 from pathlib import Path
-from PIL.ExifTags import TAGS
-from PIL import Image
 
-YEAR = 2025
+YEAR = 0
+
+ALL_MODE = False
+# ALL_MODE = True
 
 categories = {
     'Atrakcje': ['Muzeum', 'Wystawa'],
@@ -33,29 +35,61 @@ def normalize_filename(s):
     return ''.join([c for c in nfkd if not unicodedata.combining(c)]).lower()
 
 
-def get_tags(path):
+def get_xmp_tags(image_path: str) -> list[str]:
     """
-    Extract XPKeywords tags from image EXIF metadata.
-    Returns list of tags split by semicolon, or empty list if none found.
+    Retrieves tags from the XMP section of a JPG image.
+    Returns a list of tags or an empty list if no XMP tags are found.
     """
+    tags = []
+    namespaces = {
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "dc": "http://purl.org/dc/elements/1.1/"
+    }
     try:
-        with Image.open(path) as img:
-            exif_data = img._getexif()
-            if not exif_data:
-                return []
+        # Read the file in binary mode
+        with open(image_path, 'rb') as f:
+            data = f.read()
 
-            for tag_id, value in exif_data.items():
-                tag = TAGS.get(tag_id, tag_id)
-                if tag == 'XPKeywords':
-                    if isinstance(value, bytes):
-                        decoded = value.decode('utf-16le', errors='ignore').strip('\x00')
-                    else:
-                        decoded = ''.join(chr(c) for c in value).strip('\x00')
-                    # Split tags by semicolon and strip whitespace
-                    return [t.strip() for t in decoded.split(';') if t.strip()]
-    except Exception as e:
-        print(f"EXIF error in '{path}': {e}")
-    return []
+        # Search for the XMP block. It usually starts with "<x:xmpmeta"
+        # We are looking for bytes that mark the beginning of the XML block with XMP data
+        xmp_start = data.find(b'<x:xmpmeta')
+        if xmp_start == -1:
+            return tags # XMP block not found
+
+        # Find the end of the XMP block
+        xmp_end = data.find(b'</x:xmpmeta>')
+        if xmp_end == -1:
+            return tags # End of XMP block not found
+
+        # Extract the XML data
+        xmp_data = data[xmp_start:xmp_end + len(b'</x:xmpmeta>')]
+        
+        # Parse the XML data.
+        # Defusedxml is safer, but ElementTree works for this use case
+        root = ET.fromstring(xmp_data)
+
+        # Traverse all 'description' elements in the XML tree.
+        # By default, tags are stored within 'rdf:Description'
+        for desc in root.findall('.//rdf:Description', namespaces):
+            # Find the 'dc:subject' tags inside 'rdf:Description'
+            subject = desc.find('dc:subject', namespaces)
+            if subject is not None:
+                # Tags are stored inside 'rdf:Bag'
+                bag = subject.find('rdf:Bag', namespaces)
+                if bag is not None:
+                    # Iterate through all 'rdf:li' elements
+                    for li in bag.findall('rdf:li', namespaces):
+                        # Append the tag (text from the 'rdf:li' element)
+                        tags.append(li.text)
+    
+    except ET.ParseError:
+        # Return an empty list in case of a parsing error
+        pass
+    except Exception:
+        # Return an empty list in case of other errors
+        pass
+        
+    return tags
 
 
 def main():
@@ -114,7 +148,7 @@ def main():
                 break
 
         # Get tags from EXIF and check if any match categories
-        tags = get_tags(str(file))
+        tags = get_xmp_tags(str(file))
         tag_categories = [tag for tag in tags if tag in cat_keys]
         invalid_tags = [tag for tag in tags if tag not in cat_keys]
 
@@ -139,6 +173,7 @@ def main():
 
         # Prepare JS object and Python log string
         js_obj = f"{{date: '{date}', catg: {matched_category}, name: '{name}'}},"
+
         python_log = f"{status} {js_obj}"
 
         # Write JS object to output file
@@ -146,7 +181,11 @@ def main():
 
         # @sup Log
         if not YEAR or date.startswith(f'{YEAR}'):
-            print(python_log)
+            if ALL_MODE:
+                print(python_log)
+            elif not tags or invalid_tags:
+                print(python_log)
+
 
     # Write footer
     output.write(']')
