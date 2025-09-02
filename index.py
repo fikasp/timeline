@@ -6,8 +6,8 @@ from pathlib import Path
 
 YEAR = 0
 
-ALL_MODE = False
-# ALL_MODE = True
+# ALL_MODE = False
+ALL_MODE = True
 
 categories = {
     'Atrakcje': ['Muzeum', 'Wystawa'],
