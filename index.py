@@ -4,7 +4,7 @@ import unicodedata
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-YEAR = 2007
+YEAR = 0
 
 # ALL_MODE = False
 ALL_MODE = True
