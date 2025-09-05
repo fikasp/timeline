@@ -1,7 +1,8 @@
 import os
 from PIL import Image
 
-YEAR = 2008
+YEAR = 2014
+
 
 def get_jpg_files(input_folder_path):
     """
