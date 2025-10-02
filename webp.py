@@ -1,9 +1,17 @@
 import os
 from PIL import Image
 
+#------------------------
+# @g CONFIG
+#------------------------
 YEAR = 2009
 
+#------------------------
+# @g FUNCTIONS
+#------------------------
 
+# @b Get jpg files
+#------------------------
 def get_jpg_files(input_folder_path):
     """
     Get a set of JPG filenames without extensions from the input folder.
@@ -16,6 +24,8 @@ def get_jpg_files(input_folder_path):
     return jpg_files
 
 
+# @b Get wepb folder
+#------------------------
 def get_webp_folder(input_folder_path):
     """
     Create a 'webp' subfolder inside the input folder if it doesn't exist.
@@ -26,6 +36,8 @@ def get_webp_folder(input_folder_path):
     return webp_folder_path
 
 
+# @b Convert images
+#------------------------
 def convert_images(input_folder_path, webp_folder_path, jpg_files):
     """
     Convert JPG images to WebP format resized to 120x90 with quality 60,
@@ -61,6 +73,8 @@ def convert_images(input_folder_path, webp_folder_path, jpg_files):
             print(f'🟡 Skipping: {webp_filename} already exists.')
 
 
+# @b Cleanup webp files
+#------------------------
 def cleanup_webp_files(webp_folder_path, jpg_files):
     """
     Remove WebP files in the 'webp' folder that do not have corresponding JPG files.
@@ -76,7 +90,8 @@ def cleanup_webp_files(webp_folder_path, jpg_files):
                 except Exception as e:
                     print(f'Error deleting {webp_filename}: {e}')
 
-
+# @b Process folder
+#------------------------
 def process_folder(folder_path):
     """
     Get JPG files, prepare webp folder, convert images, clean orphans.
@@ -95,7 +110,9 @@ def process_folder(folder_path):
     # Cleanup orphan WebP files
     cleanup_webp_files(webp_folder_path, jpg_files)
 
-
+#------------------------
+# @g MAIN
+#------------------------
 def main():
 
     # Print header
