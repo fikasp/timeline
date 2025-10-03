@@ -582,35 +582,20 @@
 		<!--#region @r SCRIPTS -->
 		<!--====================-->
 		<script>
-			// @g LOG
+			// @g Logger
 			//------------------------
-			/**
-			 * @typedef {Object} Log
-			 * @property {function(string):void} divider
-			 * @property {function(string):void} start
-			 * @property {function():void} end
-			 * @property {function():void} init
-			 * @property {function(...any):void} warn
-			 * @property {function(...any):void} error
-			 * @property {function(...any):void} default
-			 * @property {function(...any):void} blue
-			 * @property {function(...any):void} gray
-			 * @property {function(...any):void} orange
-			 * @property {function(...any):void} red
-			 * @property {function(...any):void} white
-			 * @property {function(...any):void} yellow
-			 */
-			/** @type {Log} */
 			const Log = {
-				// Config
-				_config: {
+				// @b Config
+				//------------------------
+				config: {
 					active: true,
-					caller: { active: true, style: 'font-size: 1.05em; font-weight: bold;', showClass: false },
-					location: { active: true, style: 'font-size: 0.85em; font-style: italic; color: dimgray;' },
-					divider: { active: true, style: 'font-size: 1.05em; font-weight: bold;', char: '-', length: 12 },
-					group: { active: true, style: 'font-size: 1.1em; font-weight: bold;', collapsed: false },
+					maxDepth: Infinity,
+					location: { active: false, style: 'font-size: 0.9em; font-style: italic; color: dimgray;' },
+					divider: { active: false, style: 'font-size: 1.1em; font-weight: bold;', char: '-', length: 12 },
+					group: { active: true, style: 'font-size: 1.2em; font-weight: bold;', collapsed: false },
+					depth: { active: true, char: ' ' },
 				},
-				_styles: {
+				styles: {
 					blue: { active: true, style: 'color: steelblue;' },
 					gray: { active: true, style: 'color: gray;' },
 					orange: { active: true, style: 'color: orange;' },
@@ -619,21 +604,38 @@
 					yellow: { active: true, style: 'color: yellow;' },
 				},
 
-				// Helpers
+				// @b Private
+				//------------------------
+
+				// Depth
+				_depth: 0,
+
+				// Should log
+				_shouldLog() {
+					return this.config.active && this._depth <= this.config.maxDepth
+				},
+
+				// Get indent
+				_getIndent() {
+					return this.config.depth.active ? this.config.depth.char.repeat(this._depth) : ''
+				},
+
+				// Get caller info
 				_getCallerInfo: (idx) => {
 					const line = new Error().stack?.split('\n')[idx]?.trim() || ''
 					const match = line.match(/at\s+(.+?)\s+\((.+)\)/) || line.match(/^(.+?)@(.+)/)
-					if (!match) return { caller: '', className: '', location: '' }
+					if (!match) return { caller: '', location: '' }
 
 					const fullName = match[1]
 					const parts = fullName.split('.')
 					const caller = parts.pop()
-					const className = parts.length > 0 ? parts.join('.') : ''
 					const fullPath = match[2] || match[1]
 					const loc = fullPath.match(/([^\/\\]+):(\d+):\d+/)
 					const location = loc ? `${loc[1]}:${loc[2]}` : ''
-					return { caller, className, location }
+					return { caller, location }
 				},
+
+				// Format args
 				_formatArgs: (args) =>
 					args
 						.map((a) =>
@@ -641,92 +643,145 @@
 						)
 						.join(', '),
 
-				// Styled
-				styled(mode, ...args) {
-					if (!this._config.active || !this._styles[mode]?.active) return
-					const { caller, className, location } = this._getCallerInfo(4)
-					const content = this._formatArgs(args)
-					const style = this._styles[mode].style
+				// Enter with style
+				_enterWithStyle(color, ...data) {
+					if (!this.config.active || !this.styles[color]?.active) return
 
-					let message = ''
-					let styles = []
+					const indent = this._getIndent()
+					const { caller, location } = this._getCallerInfo(4)
 
-					if (this._config.caller.active) {
-						const fullCaller = className && this._config.caller.showClass ? `${className}.${caller}` : caller
-						message += `%c${fullCaller}%c(${content})`
-						styles.push(`${style}${this._config.caller.style}`, style)
-					} else {
-						message += `%c(${content})`
-						styles.push(style)
+					if (this._depth <= this.config.maxDepth) {
+						const formatted = data.length > 0 ? this._formatArgs(data) : ''
+						const message = `${indent}→ ${caller}(${formatted})`
+						console.log(`%c${message}`, this.styles[color].style)
+
+						if (this.config.location.active) {
+							console.log(`${indent}%c→ ${location}`, this.config.location.style)
+						}
 					}
-					if (this._config.location.active) {
-						message += `\n%c${location}`
-						styles.push(this._config.location.style)
+					this._depth++
+				},
+
+				// Start with style
+				_startWithStyle(color, text = null) {
+					if (!this._shouldLog() || !this.config.group.active || !this.styles[color]?.active) return
+
+					const indent = this._getIndent()
+					const displayText = text !== null ? text : this._getCallerInfo(5).caller
+					const method = this.config.group.collapsed ? console.groupCollapsed : console.group
+
+					const combinedStyle = `${this.config.group.style} ${this.styles[color].style}`
+					method(`${indent}%c${displayText}`, combinedStyle)
+				},
+
+				// Styled
+				_styled(mode, ...args) {
+					if (!this._shouldLog() || !this.styles[mode]?.active) return
+					const { location } = this._getCallerInfo(4)
+					const content = this._formatArgs(args)
+					const style = this.styles[mode].style
+					const indent = this._getIndent()
+
+					let message = `${indent}%c${content}`
+					let styles = [style]
+
+					if (this.config.location.active) {
+						message += `\n${indent}%c→ ${location}`
+						styles.push(this.config.location.style)
 					}
 					console.log(message, ...styles)
 				},
 
+				// @b Public
+				//------------------------
+
+				// Enter
+				enter(...data) {
+					if (!this.config.active) return
+
+					const indent = this._getIndent()
+					const { caller, location } = this._getCallerInfo(3)
+
+					if (this._depth <= this.config.maxDepth) {
+						const formatted = data.length > 0 ? this._formatArgs(data) : ''
+						console.log(`${indent}→ ${caller}(${formatted})`)
+
+						if (this.config.location.active) {
+							console.log(`${indent}%c→ ${location}`, this.config.location.style)
+						}
+					}
+					this._depth++
+				},
+
+				// Exit
+				exit() {
+					if (!this.config.active) return
+					this._depth = Math.max(0, this._depth - 1)
+				},
+
+				// Start
+				start(text = null) {
+					if (!this._shouldLog() || !this.config.group.active) return
+
+					const indent = this._getIndent()
+					const displayText = text !== null ? text : this._getCallerInfo(3).caller
+					const method = this.config.group.collapsed ? console.groupCollapsed : console.group
+
+					method(`${indent}%c${displayText}`, `${this.config.group.style} color: yellow;`)
+				},
+
+				// End
+				end() {
+					if (!this.config.active || !this.config.group.active) return
+					console.groupEnd()
+				},
+
 				// Default
 				default(...args) {
-					if (!this._config.active) return
-					console.log(...args)
-					if (this._config.location.active) {
+					if (!this._shouldLog()) return
+					const indent = this._getIndent()
+					console.log(indent, ...args)
+					if (this.config.location.active) {
 						const { location } = this._getCallerInfo(3)
-						console.log(`%c${location}`, this._config.location.style)
+						console.log(`${indent}%c↑ ${location}`, this.config.location.style)
 					}
 				},
 
 				// Error
 				error(...args) {
-					if (!this._config.active) return
-					console.error(...args)
-					if (this._config.location.active) {
-						const { location } = this._getCallerInfo(3)
-						console.log(`%c${location}`, this._config.location.style)
-					}
+					if (!this._shouldLog()) return
+					const indent = this._getIndent()
+					console.error(indent, ...args)
 				},
 
 				// Warn
 				warn(...args) {
-					if (!this._config.active) return
-					console.warn(...args)
-					if (this._config.location.active) {
-						const { location } = this._getCallerInfo(3)
-						console.log(`%c${location}`, this._config.location.style)
-					}
+					if (!this._shouldLog()) return
+					const indent = this._getIndent()
+					console.warn(indent, ...args)
 				},
 
 				// Divider
 				divider(text = '') {
-					if (!this._config.active || !this._config.divider.active) return
+					if (!this._shouldLog() || !this.config.divider.active) return
 
-					const char = this._config.divider.char
-					const style = this._config.divider.style
+					const char = this.config.divider.char
+					const style = this.config.divider.style
+					const indent = this._getIndent()
 
 					if (text) {
-						console.log(`%c${text}\n${char.repeat(text.length)}`, style)
+						console.log(`${indent}%c${text}\n${indent}${char.repeat(text.length)}`, style)
 					} else {
-						console.log(`%c${char.repeat(this._config.divider.length)}`, style)
+						console.log(`${indent}%c${char.repeat(this.config.divider.length)}`, style)
 					}
-				},
-
-				// Start
-				start(text = 'Logs') {
-					if (!this._config.active || !this._config.group.active) return
-					const method = this._config.group.collapsed ? console.groupCollapsed : console.group
-					method(`%c${text}`, this._config.group.style)
-				},
-
-				// End
-				end() {
-					if (!this._config.active || !this._config.group.active) return
-					console.groupEnd()
 				},
 
 				// Init
 				init() {
-					Object.keys(this._styles).forEach((mode) => {
-						this[mode] = (...args) => this.styled(mode, ...args)
+					Object.keys(this.styles).forEach((color) => {
+						this[color] = (...args) => this._styled(color, ...args)
+						this.start[color] = (text = null) => this._startWithStyle(color, text)
+						this.enter[color] = (...data) => this._enterWithStyle(color, ...data)
 					})
 				},
 			}
@@ -822,6 +877,7 @@
 			//------------------------
 			class Header {
 				constructor(props) {
+					Log.enter()
 					// Props
 					this.cat = props.cat // Categories
 					this.root = props.root // Root DOM element
@@ -883,17 +939,19 @@
 					])
 
 					this.init() // Initialization
+					Log.exit()
 				}
 
 				// @b Init
 				//------------------------
 				init = () => {
-					Log.yellow()
+					Log.enter('Header')
 					this.prepareCategories() // Prepare the categories
 					this.prepareMonths() // Prepare the months
 					this.prepareYears() // Prepare the years
 					this.prepareGrid() // Prepare the grid size
 					this.prepareTime() // Prepare the time intervals
+					Log.exit()
 				}
 
 				// @b Add listeners
@@ -991,32 +1049,34 @@
 				// @b Show hide menu
 				//------------------------
 				showHideMenu = () => {
-					Log.start('Show/hide menu')
-					Log.blue() // Print function name
+					Log.start()
+					Log.enter()
 
 					this.headerDiv.classList.toggle('hide') // Toggle hide class on header div
 					this.isMenuOpen = !this.isMenuOpen // Toggle isMenuOpen flag
 
 					this.setState({ isMenuOpen: this.isMenuOpen }) // Set state in main class
 					this.changeMargin() // Update margins
+					Log.exit()
 					Log.end()
 				}
 
 				// @b Prepares categories
 				//------------------------
 				prepareCategories = () => {
-					Log.white() // Print function name
+					Log.enter()
 
 					DOM.createOption(this.selectCategory, this.filters.all) // Create "All" option
 					this.cat.forEach((category) => {
 						DOM.createOption(this.selectCategory, category) // Create category options
 					})
+					Log.exit()
 				}
 
 				// @b Prepare months
 				//------------------------
 				prepareMonths = () => {
-					Log.white() // Print function name
+					Log.enter()
 
 					DOM.createOption(this.selectMonth, this.filters.none) // Create "None" option
 					// ARW.createOption(this.selectMonth, this.filters.compact, this.filters.compact, true) // Create "Compact" option
@@ -1027,23 +1087,24 @@
 						.forEach((month) => {
 							DOM.createOption(this.selectMonth, month, this.months[month]) // Create month options
 						})
+					Log.exit()
 				}
 
 				// @b Prepare years
 				//------------------------
 				prepareYears = () => {
-					Log.white() // Print function name
-
+					Log.enter()
 					DOM.createOption(this.selectYear, this.filters.none) // Create "None" option
 					DOM.createOption(this.selectYear, this.filters.compact, this.filters.compact, true) // Create "Compact" option
 					DOM.createOption(this.selectYear, this.filters.auto) // Create "Auto" option
 					DOM.createOption(this.selectYear, this.filters.all) // Create "All" option
+					Log.exit()
 				}
 
 				// @b Prepare grid
 				//------------------------
 				prepareGrid = () => {
-					Log.white() // Print function name
+					Log.enter()
 
 					// Create grid size options
 					Object.keys(this.grid).forEach((grid) => {
@@ -1056,12 +1117,13 @@
 					})
 					// Set initial grid size
 					this.root.style.setProperty('--gridSize', `${this.gridInit}`)
+					Log.exit()
 				}
 
 				// @b Prepare time
 				//------------------------
 				prepareTime = () => {
-					Log.white() // Print function name
+					Log.enter()
 
 					// Create time intevals options
 					Object.keys(this.time)
@@ -1074,17 +1136,18 @@
 								this.time[time] == this.timeInit ? true : false // selected status
 							)
 						})
+					Log.exit()
 				}
 
 				// @b Set category
 				//------------------------
 				setCategory = () => {
 					const filterCategory = this.selectCategory.value // Get the selected category value from the select input
-					Log.start('Set category')
-					Log.blue(filterCategory) // Print function name
-
+					Log.start()
+					Log.enter()
 					this.setState({ filterCategory: filterCategory }) // Set state in main class
 					this.updateData() // Update data and gallery
+					Log.exit()
 					Log.end()
 				}
 
@@ -1092,8 +1155,8 @@
 				//------------------------
 				setMonths = () => {
 					const filterMonth = this.selectMonth.value // Get the selected month value from the select input
-					Log.start('Set months')
-					Log.blue(filterMonth) // Print function name
+					Log.start()
+					Log.enter(filterMonth)
 
 					this.setState({ filterMonth: filterMonth }) // Set state of filter month
 
@@ -1105,6 +1168,7 @@
 						this.setState({ isMonthsVisible: true })
 					}
 					this.updateData() // Update data and gallery
+					Log.exit()
 					Log.end()
 				}
 
@@ -1112,8 +1176,8 @@
 				//------------------------
 				setYear = () => {
 					const filterYear = this.selectYear.value // Get the selected year value from the select input
-					Log.start('Set year')
-					Log.blue(filterYear) // Print function name
+					Log.start()
+					Log.enter(filterYear)
 
 					this.setState({ filterYear: filterYear }) // Set state of filter year
 
@@ -1135,6 +1199,7 @@
 						this.setState({ isYearsCollapsed: true })
 					}
 					this.updateData() // Update data and gallery
+					Log.exit()
 					Log.end()
 				}
 
@@ -1142,7 +1207,8 @@
 				//------------------------
 				setGrid = () => {
 					const size = this.selectGrid.value // Get the grid size value from the select input
-					Log.blue(size) // Print function name
+					Log.start()
+					Log.enter(size)
 
 					this.setState({ grid: size }) // Set state in main class
 
@@ -1157,16 +1223,20 @@
 					} else {
 						this.root.style.setProperty('--fontSize', `14px`)
 					}
+					Log.exit()
+					Log.end()
 				}
 
 				// @b Set time
 				//------------------------
 				setTime = () => {
 					const time = this.selectTime.value // Get the time value from the select input
-					Log.blue(time) // Print function name
-
+					Log.start()
+					Log.enter(time)
 					this.setState({ time: time }) // Set state in main class
 					this.updateTime() // Update time in gallery
+					Log.exit()
+					Log.end()
 				}
 			}
 
@@ -1175,6 +1245,7 @@
 			//------------------------
 			class Gallery {
 				constructor(props) {
+					Log.enter()
 					this.setState = props.setState
 
 					// Properties
@@ -1201,9 +1272,10 @@
 					this.photo.addEventListener('touchstart', (e) => this.touchstart(e))
 					this.photo.addEventListener('touchmove', (e) => this.touchmove(e))
 					this.photo.addEventListener('touchend', (e) => this.touchend(e))
-					this.photoPrevious.addEventListener('click', (e) => this.setPreviousPhoto(e))
-					this.photoNext.addEventListener('click', (e) => this.setNextPhoto(e))
+					this.photoPrevious.addEventListener('click', (e) => this.setNextPhoto(e))
+					this.photoNext.addEventListener('click', (e) => this.setPreviousPhoto(e))
 					this.gallery.addEventListener('scroll', (e) => this.updateVisibility())
+					Log.exit()
 				}
 
 				// @b Touch handlers
@@ -1222,16 +1294,16 @@
 					const deltaX = this.touchEndX - this.touchStartX
 					Log.gray('touch:', deltaX)
 					if (deltaX > 50) {
-						this.setPreviousPhoto(e)
-					} else if (deltaX < -50) {
 						this.setNextPhoto(e)
+					} else if (deltaX < -50) {
+						this.setPreviousPhoto(e)
 					}
 				}
 
 				// @b Prepare gallery
 				//------------------------
 				prepareGallery = (data, state) => {
-					Log.white() // Print function name
+					Log.enter()
 
 					// Set data and state
 					this.data = data
@@ -1308,6 +1380,7 @@
 						this.yearValues.forEach((yearValue) => (yearValue.dataset.open = 'false'))
 						this.monthValues.forEach((monthValue) => (monthValue.dataset.open = 'false'))
 					}
+					Log.exit()
 				}
 
 				// @b Build gallery box
@@ -1396,7 +1469,7 @@
 				// @b Update visilibity
 				//------------------------
 				updateVisibility = () => {
-					Log.white() // Print function name
+					Log.enter.gray()
 
 					const top = this.marginTop + 30
 
@@ -1420,12 +1493,14 @@
 							month.classList.remove('gallery_month-value--fixed')
 						}
 					})
+					Log.exit()
 				}
 
 				// @b Show hide year
 				//------------------------
 				showHideYear = (e) => {
-					Log.blue() // Print function name
+					Log.start()
+					Log.enter()
 
 					const yearValue = e.target // Get selected year value
 
@@ -1454,12 +1529,14 @@
 					})
 					// Update the visibility
 					this.updateVisibility()
+					Log.exit()
+					Log.end()
 				}
 
 				// @b Set actove photo
 				//------------------------
 				setActivePhoto = () => {
-					Log.white(this.index) // Print function name
+					Log.enter(this.index)
 
 					// Iterate over each gallery box
 					this.boxes.forEach((box) => {
@@ -1471,12 +1548,13 @@
 							box.classList.remove('gallery_current')
 						}
 					})
+					Log.exit()
 				}
 
 				// @b Set photo
 				//------------------------
 				setPhoto = (id) => {
-					Log.white(id) // Print function name
+					Log.enter(id)
 
 					if (id == 0) {
 						// Check if the photo is the first one
@@ -1528,40 +1606,51 @@
 					// Add the event listeners to the photo image
 					this.photoImage.addEventListener('load', this.onPhotoLoad)
 					this.photoImage.addEventListener('error', this.onPhotoError)
+					Log.exit()
 				}
 
-				// @b Set previous photo
+				// @b Set next photo
 				//------------------------
-				setPreviousPhoto = (e) => {
-					Log.blue() // Print function name
+				setNextPhoto = (e) => {
+					Log.start()
+					Log.enter()
 
 					e?.stopPropagation()
 					if (this.index > 0) {
 						// Check if the photo is not the first one
 						this.index = parseInt(this.index) - 1 // Decrement the index by 1
 						this.setPhoto(this.index) // Set the photo based on the new index
+						this.setActivePhoto()
 					}
+					Log.exit()
+					Log.end()
 				}
 
-				// @b Set next photo
+				// @b Set previous photo
 				//------------------------
-				setNextPhoto = (e) => {
-					Log.blue() // Print function name
+				setPreviousPhoto = (e) => {
+					Log.start()
+					Log.enter()
 
 					e?.stopPropagation()
 					if (this.index < this.data.length - 1) {
 						// Check if the photo is not the last one
 						this.index = parseInt(this.index) + 1 // Increment the index by 1
 						this.setPhoto(this.index) // Set the photo based on the new index
+						this.setActivePhoto()
 					}
+					Log.exit()
+					Log.end()
 				}
 
 				// @b Show backward
 				//------------------------
 				showBackward = (e) => {
-					Log.blue() // Print function name
+					Log.start()
+					Log.enter()
 
 					this.presentation = 'backward'
+					clearTimeout(this.presentationTimeout)
 					this.photo.classList.remove('none') // Remove 'none' class to make the photo visible
 					this.photo.classList.add('show') // Add 'show' class to animate showing the photo
 					this.setState({ isPhotoOpen: true }) // Update the state to indicate that the photo is open
@@ -1570,14 +1659,18 @@
 						this.index = 0 // Set the index to the first photo if it is not set
 					}
 					this.setPhoto(this.index) // Set the photo based on the index
+					Log.exit()
+					Log.end()
 				}
 
 				// @b Show forward
 				//------------------------
 				showForward = (e) => {
-					Log.blue() // Print function name
+					Log.start()
+					Log.enter()
 
 					this.presentation = 'forward'
+					clearTimeout(this.presentationTimeout)
 					this.photo.classList.remove('none') // Remove 'none' class to make the photo visible
 					this.photo.classList.add('show') // Add 'show' class to animate showing the photo
 					this.setState({ isPhotoOpen: true }) // Update the state to indicate that the photo is open
@@ -1586,6 +1679,8 @@
 						this.index = this.data.length - 1 // Set the index to the last photo if it is not set
 					}
 					this.setPhoto(this.index) // Set the photo based on the index
+					Log.exit()
+					Log.end()
 				}
 
 				// @b Show continue
@@ -1594,7 +1689,7 @@
 					if (this.presentation === 'forward') {
 						this.presentationTimeout = setTimeout(() => {
 							if (this.index > 0) {
-								this.setPreviousPhoto() // Set the previous photo
+								this.setNextPhoto() // Set the previous photo
 							} else {
 								this.hidePhoto() // Hide the photo if there are no more previous photos
 							}
@@ -1602,7 +1697,7 @@
 					} else if (this.presentation === 'backward') {
 						this.presentationTimeout = setTimeout(() => {
 							if (this.index < this.data.length - 1) {
-								this.setNextPhoto() // Set the previous photo
+								this.setPreviousPhoto() // Set the previous photo
 							} else {
 								this.hidePhoto() // Hide the photo if there are no more next photos
 							}
@@ -1613,8 +1708,8 @@
 				// @b Show photo
 				//------------------------
 				showPhoto = (e) => {
-					Log.start('Show photo')
-					Log.blue() // Print function name
+					Log.start()
+					Log.enter()
 					setTimeout(() => {
 						this.photo.classList.remove('none') // Remove 'none' class to make the photo visible
 						this.photo.classList.add('show') // Add 'show' class to animate showing the photo
@@ -1626,18 +1721,15 @@
 						this.index = e.target.closest('.gallery_box').id // Get the index of the clicked gallery box
 					}
 
-					Log.white(this.index) // Print function name
-
 					this.setPhoto(this.index) // Set the photo based on the index
+					Log.exit()
 					Log.end()
 				}
 
 				// @b Hide photo
 				//------------------------
 				hidePhoto = () => {
-					Log.start('Hide photo')
-					Log.blue() // Print function name
-
+					Log.start()
 					this.setActivePhoto() // Set the active photo
 					this.setState({ isPhotoOpen: false }) // Update the state to indicate that the photo is closed
 					clearTimeout(this.presentationTimeout) // Clear presentation timeout
@@ -1659,6 +1751,7 @@
 			//------------------------
 			class Main {
 				constructor(cat, data) {
+					Log.enter()
 					this.cat = [...cat] // Copy the categories array
 					this.data = [...data] // Copy the data array
 
@@ -1729,29 +1822,32 @@
 					this.header.buttonForward.addEventListener('click', (e) => this.gallery.showForward(e))
 					// Initialize the application
 					this.init()
+					Log.exit()
 				}
 
 				// @b Init
 				//------------------------
 				init = () => {
-					Log.yellow()
+					Log.enter('Main')
 					this.changeMargin() // Change the margin and height of the view based on the header visibility
 					this.prepareData() // Prepare the data by adding additional properties and sorting it
 					this.updateData() // Update the data and triggers gallery update
+					Log.exit()
 				}
 
 				// @b Set state
 				//------------------------
 				setState = (newState) => {
-					Log.orange(newState) // Print function name
+					// Log.orange(newState) // Print function name
+					Log.enter.blue(newState)
 					this.state = { ...this.state, ...newState } // Update state
+					Log.exit()
 				}
 
 				// @b Check keys
 				//------------------------
 				checkKeys = (e) => {
-					Log.orange(e.key) // Print function name
-
+					Log.enter.orange(e.key)
 					if (e.key === 'F2') {
 						// Toggle menu visibility and focus elements
 						if (!this.header.isMenuOpen) {
@@ -1769,12 +1865,10 @@
 						this.gallery.showForward(e) // Show the presentation forward
 					}
 					if (e.key === 'ArrowLeft') {
-						this.gallery.setPreviousPhoto(e) // Show the previous photo
-						this.gallery.setActivePhoto() // Set the active photo item
+						this.gallery.setNextPhoto(e) // Show the previous photo
 					}
 					if (e.key === 'ArrowRight') {
-						this.gallery.setNextPhoto(e) // Show the next photo
-						this.gallery.setActivePhoto() // Set the active photo item
+						this.gallery.setPreviousPhoto(e) // Show the next photo
 					}
 					if (e.key === 'Enter') {
 						this.gallery.showPhoto() // Show the current photo
@@ -1782,25 +1876,30 @@
 					if (e.key === 'Escape') {
 						this.gallery.hidePhoto(e) // Hide the current photo
 					}
+					Log.exit()
 				}
 
 				// @b Check wheel
 				//------------------------
 				checkWheel = (e) => {
+					// Log.start()
+					// Log.enter()
 					if (this.state.isPhotoOpen) {
 						// Check if photo is open
 						if (e.deltaY > 0) {
-							this.gallery.setNextPhoto(e) // Show the next photo if scroll down
+							this.gallery.setPreviousPhoto(e) // Show the next photo if scroll down
 						} else {
-							this.gallery.setPreviousPhoto(e) // Show the previous photo if scroll up
+							this.gallery.setNextPhoto(e) // Show the previous photo if scroll up
 						}
 					}
+					// Log.exit()
+					// Log.end()
 				}
 
 				// @b Change margin
 				//------------------------
 				changeMargin = () => {
-					Log.white() // Print function name
+					Log.enter()
 
 					const windowHeight = window.innerHeight // Get the height of the window
 					const headerHeight = this.header.headerDiv.offsetHeight // Get the height of the header
@@ -1817,12 +1916,13 @@
 						this.root.style.setProperty('--marginTop', `0px`) // Set the margin top to 0
 						this.gallery.marginTop = 0 // Update the gallery's margin top to 0
 					}
+					Log.exit()
 				}
 
 				// @b Prepare data
 				//------------------------
 				prepareData = () => {
-					Log.white()
+					Log.enter()
 					this.data.map((item) => {
 						// Modify each item in the data array
 						const splitedDate = item.date.split('-') // Split the date into year and month
@@ -1845,12 +1945,13 @@
 							return b.name.localeCompare(a.name, 'pl', { sensitivity: 'base' })
 						}
 					})
+					Log.exit()
 				}
 
 				// @b Filter data
 				//------------------------
 				filterData = () => {
-					Log.white() // Print function name
+					Log.enter()
 
 					let filteredData = this.data // Initialize filteredData with the original data
 
@@ -1873,13 +1974,14 @@
 					}
 
 					filteredData.forEach((item, index) => (item.id = index)) // Assign unique ids to each filtered item
+					Log.exit()
 					return filteredData // Return the filtered data
 				}
 
 				// @b Update data
 				//------------------------
 				updateData = () => {
-					Log.white()
+					Log.enter()
 					Log.default(this.state) // Log the current state
 
 					const filteredData = this.filterData() // Get the filtered data based on the current state
@@ -1887,12 +1989,12 @@
 					this.gallery.prepareGallery(filteredData, this.state) // Prepare the gallery with the filtered data and current state
 					this.gallery.updateVisibility() // Update the visibility of year and month elements in the gallery
 					this.gallery.setActivePhoto() // Set the active item for the current item in the gallery
+					Log.exit()
 				}
 
 				// @b Update time
 				//------------------------
 				updateTime = () => {
-					Log.white() // Print function name
 					this.gallery.time = this.state.time // Set gallery time
 				}
 			}
@@ -1904,8 +2006,9 @@
 				static init = () => {
 					Log.init()
 					Log.start('App init')
-					Log.yellow()
+					Log.enter('App')
 					new Main(cat, data)
+					Log.exit()
 					Log.end()
 				}
 			}
