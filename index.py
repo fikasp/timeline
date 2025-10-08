@@ -4,7 +4,11 @@ import unicodedata
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-YEAR = 2018
+#------------------------
+# @g CONFIG
+#------------------------
+
+YEAR = 2025
 
 # ALL_MODE = False
 ALL_MODE = True
@@ -28,6 +32,9 @@ categories = {
     'Znajomi': ['Znajomi'],
 }
 
+#------------------------
+# @g FUNCTIONS
+#------------------------
 
 def normalize_filename(s):
     """Normalize filename by removing accents and converting to lowercase."""
@@ -91,6 +98,9 @@ def get_xmp_tags(image_path: str) -> list[str]:
         
     return tags
 
+#------------------------
+# @g MAIN
+#------------------------
 
 def main():
     print("📷 JPG to JS converter:")

@@ -1707,4 +1707,11 @@ const data = [
 {date: '2025-08-24.2', catg: ['Gastronomia'], name: 'Restauracja Chopin'},
 {date: '2025-08-29.0', catg: ['Rodzina'], name: 'Planszówki u Rafała'},
 {date: '2025-08-30.0', catg: ['Rowery'], name: 'Rower Wola Justowska'},
+{date: '2025-09-15.0', catg: ['Gastronomia'], name: 'Pizza Hut'},
+{date: '2025-09-20.0', catg: ['Rowery'], name: 'Rower Kurdwanów'},
+{date: '2025-09-21.0', catg: ['Spacery'], name: 'Rynek Myślenicki'},
+{date: '2025-09-27.0', catg: ['Wyjazdy'], name: 'Rekolekcje w Gródku'},
+{date: '2025-09-28.0', catg: ['Spacery'], name: 'Czerwony Klasztor'},
+{date: '2025-10-03.1', catg: ['Koncerty'], name: 'Koncert w filharmonii'},
+{date: '2025-10-03.2', catg: ['Gastronomia'], name: 'Restauracja Hawełka'},
 ]
