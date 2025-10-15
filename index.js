@@ -1723,4 +1723,10 @@ const data = [
 {date: '2025-10-03.1', catg: ['Koncerty'], name: 'Koncert w filharmonii'},
 {date: '2025-10-03.2', catg: ['Gastronomia'], name: 'Restauracja Hawełka'},
 {date: '2025-10-10.0', catg: ['Koncerty'], name: 'Koncert u Jezuitów'},
+{date: '2025-10-11.1', catg: ['Miasta'], name: 'Skoczów'},
+{date: '2025-10-11.2', catg: ['Gastronomia'], name: 'Kebab Red Chili'},
+{date: '2025-10-11.3', catg: ['Wyjazdy'], name: 'Motel na Skarpie'},
+{date: '2025-10-12.1', catg: ['Miasta'], name: 'Bielsko-Biała'},
+{date: '2025-10-12.2', catg: ['Góry'], name: 'Klimczok'},
+{date: '2025-10-12.3', catg: ['Gastronomia'], name: 'Da Grasso'},
 ]
