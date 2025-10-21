@@ -1729,4 +1729,10 @@ const data = [
 {date: '2025-10-12.1', catg: ['Miasta'], name: 'Bielsko-Biała'},
 {date: '2025-10-12.2', catg: ['Góry'], name: 'Klimczok'},
 {date: '2025-10-12.3', catg: ['Gastronomia'], name: 'Da Grasso'},
+{date: '2025-10-17.1', catg: ['Koncerty'], name: 'Chopin u Zmartwychwstańców'},
+{date: '2025-10-17.2', catg: ['Rodzina'], name: 'Spotkanie u Karoliny'},
+{date: '2025-10-18.0', catg: ['Spacery'], name: 'Ojców'},
+{date: '2025-10-19.1', catg: ['Spacery'], name: 'Zawadka'},
+{date: '2025-10-19.2', catg: ['Rodzina'], name: 'Urodziny Anielki'},
+{date: '2025-10-20.0', catg: ['Spacery'], name: 'Planty'},
 ]
