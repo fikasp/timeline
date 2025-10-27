@@ -1735,4 +1735,7 @@ const data = [
 {date: '2025-10-19.1', catg: ['Spacery'], name: 'Zawadka'},
 {date: '2025-10-19.2', catg: ['Rodzina'], name: 'Urodziny Anielki'},
 {date: '2025-10-20.0', catg: ['Spacery'], name: 'Planty'},
+{date: '2025-10-24.0', catg: ['Domówki'], name: 'Planszówki z Tomkiem'},
+{date: '2025-10-26.1', catg: ['Rowery'], name: 'Rower Park Kolejowy'},
+{date: '2025-10-26.2', catg: ['Gastronomia'], name: 'Kawiarnia Czarodziej'},
 ]
