@@ -1738,4 +1738,9 @@ const data = [
 {date: '2025-10-24.0', catg: ['Domówki'], name: 'Planszówki z Tomkiem'},
 {date: '2025-10-26.1', catg: ['Rowery'], name: 'Rower Park Kolejowy'},
 {date: '2025-10-26.2', catg: ['Gastronomia'], name: 'Kawiarnia Czarodziej'},
+{date: '2025-10-31.0', catg: ['Koncerty'], name: 'Koncert u Karmelitów'},
+{date: '2025-11-01.1', catg: ['Kościoły'], name: 'Kościół Karmelitów Bosych'},
+{date: '2025-11-01.2', catg: ['Spacery'], name: 'Cmentarz Rakowicki'},
+{date: '2025-11-02.1', catg: ['Spacery'], name: 'Lipka Myślenicka'},
+{date: '2025-11-02.2', catg: ['Rodzina'], name: 'Urodziny Przemka'},
 ]
