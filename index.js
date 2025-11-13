@@ -1743,4 +1743,8 @@ const data = [
 {date: '2025-11-01.2', catg: ['Spacery'], name: 'Cmentarz Rakowicki'},
 {date: '2025-11-02.1', catg: ['Spacery'], name: 'Lipka Myślenicka'},
 {date: '2025-11-02.2', catg: ['Rodzina'], name: 'Urodziny Przemka'},
+{date: '2025-11-04.0', catg: ['Koncerty'], name: 'Koncert u Karmelitów'},
+{date: '2025-11-07.0', catg: ['Koncerty'], name: 'Koncert u Dominikanów'},
+{date: '2025-11-08.0', catg: ['Rodzina'], name: 'Urodziny Wikusi'},
+{date: '2025-11-10.0', catg: ['Spektakle'], name: 'Kino MOS'},
 ]
