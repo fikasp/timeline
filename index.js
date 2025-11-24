@@ -1748,4 +1748,6 @@ const data = [
 {date: '2025-11-08.0', catg: ['Rodzina'], name: 'Urodziny Wikusi'},
 {date: '2025-11-10.0', catg: ['Spektakle'], name: 'Kino MOS'},
 {date: '2025-11-14.0', catg: ['Domówki'], name: 'Planszówki z Krysią'},
+{date: '2025-11-21.0', catg: ['Gastronomia'], name: 'Sphinx z Klaudiuszami'},
+{date: '2025-11-22.0', catg: ['Koncerty'], name: 'Koncert w Mariackim'},
 ]
