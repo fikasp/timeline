@@ -1707,7 +1707,6 @@ const data = [
 {date: '2025-08-24.2', catg: ['Gastronomia'], name: 'Restauracja Chopin'},
 {date: '2025-08-29.0', catg: ['Rodzina'], name: 'Planszówki u Rafała'},
 {date: '2025-08-30.0', catg: ['Rowery'], name: 'Rower Wola Justowska'},
-{date: '2025-09-07.0', catg: ['Wyjazdy'], name: 'Antyczna Przygoda'},
 {date: '2025-09-08.0', catg: ['Miasta'], name: 'Meteory'},
 {date: '2025-09-09.0', catg: ['Miasta'], name: 'Ateny'},
 {date: '2025-09-10.0', catg: ['Miasta'], name: 'Epidaurus'},
@@ -1751,9 +1750,4 @@ const data = [
 {date: '2025-11-14.0', catg: ['Domówki'], name: 'Planszówki z Krysią'},
 {date: '2025-11-21.0', catg: ['Gastronomia'], name: 'Sphinx z Klaudiuszami'},
 {date: '2025-11-22.0', catg: ['Koncerty'], name: 'Koncert w Mariackim'},
-{date: '2025-11-29.0', catg: ['Domówki'], name: 'Odwiedziny Modelów'},
-{date: '2025-12-06.1', catg: ['Narty'], name: 'Kotelnica'},
-{date: '2025-12-06.2', catg: ['Miasta'], name: 'Zakopane'},
-{date: '2025-12-06.3', catg: ['Gastronomia'], name: 'Sphinx'},
-{date: '2025-12-07.0', catg: ['Rodzina'], name: 'Urodziny Asi'},
 ]

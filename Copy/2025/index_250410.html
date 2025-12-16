@@ -1,0 +1,1760 @@
+<!-- @sup HEAD -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Timeline</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- favicon -->
+  <link rel="icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEREREREREREREREREREREREAAAAAAAAREQAAAAAAABERAAAAAAAAEREAAAAAAAAREQAAAAAAABERAAAAAAAAEREAAAAAAAAREQAAAAAAABERAAAAAAAAEREAAAAAAAAREQAAAAAAABERAAAAAAAAEREREREREREREREREREREREAAAAAAAAAAD/8AAA//AAAP/wAAD/8AAA//AAAP/wAAD/8AAA//AAAP/wAAD/8AAA//AAAP/wAAAAAAAAAAAAA" type="image/png">
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+  <script src="index.js"></script>
+
+  <!-- @sup STYLE -->
+  <style>
+    /* @sub general */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #222 #333;
+      }
+    *::-webkit-scrollbar {
+      width: 10px
+    }
+    *::-webkit-scrollbar-track {
+      background-color: #333;
+      border-radius: 20px;
+    }
+    *::-webkit-scrollbar-thumb {
+      background-color: #222;
+      border-radius: 20px;
+    } 
+    html {
+      color: #fff;
+      background: #000;
+      font-family: verdana, sans-serif;
+      font-size: 14px;
+      --accent: #444;
+      --gridSize: 0;
+      --yearHeight: 45px;
+      --viewHeight: 0px;
+      --marginTop: 0px;
+      --fontSize: 8px;
+    }
+
+    /* @sub header */
+    .header {
+      z-index: 2;
+      background-color: black;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 5px 80px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease-out;
+      box-shadow: 0 0 10px 0 black;
+      gap: 5px;
+    }
+    @media (max-width: 640px) {
+      .header {
+        display:  grid;
+        grid-template-columns: auto auto;
+        padding: 8px;
+      }
+    }
+    .header.hide {
+      transform: translateY(-120%);
+    }
+    .header_pair {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 5px 0px;
+      max-width: 250px;
+      width: 100%;
+    } 
+    .header_pair-span {
+      max-width: 400px;
+    }
+    @media (max-width: 640px) {
+      .header_pair-span {
+        grid-column: span 2;
+        max-width: 100%;
+        width: 100%;
+      }
+      .header_pair {
+        flex-wrap: nowrap;
+      }
+    }
+    .header_label {
+      flex-grow: 0;
+      min-width: 67px;
+      text-align: center;
+      padding: 5px;
+    }
+      @media (max-width: 640px) {
+        .header_label {
+          text-align: left;
+        }
+      }
+    .header_buttons {
+      display: flex;
+      flex-grow: 1;
+      gap: 3px;
+    }
+    .header_button {
+      width: 46px;
+      padding: 5px;
+      flex-grow: 1;
+      background-color: white;
+      border: none;
+      border-radius: 1px;
+      transition: .2s;
+    }
+    .header_button:hover {
+      background-color: gray;
+    }
+    .header_button div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .header_select {
+      flex-grow: 1;
+      flex-shrink: 1;
+      text-align: center;
+      font-family: verdana;
+      padding: 3px;
+      width: 100px;
+      color: #000;
+      background: #fff;
+      border-radius: 2px;
+      transition: .2s;
+    }
+    .header_option {
+      padding: 5px;
+      background: white;
+      color: black;
+    }
+    .header_bars {
+      z-index: 3;
+      position: fixed;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      background-color: rgb(0, 0, 0, 50%);
+      transition: 0.5s
+    }
+    .header_bars:hover {
+      background-color: rgb(0, 0, 0, 100%);
+    }
+    /* @sub gallery */
+    .gallery {
+      z-index: 1;
+      position: fixed;
+      margin-top: 0;
+      left: 0;
+      top: var(--marginTop);
+      width: 100%;
+      max-height: calc(100vh - var(--marginTop));
+      transition: all 0.3s ease-out;
+      overflow: auto;
+    }
+    /* gallery year */
+    .gallery_year {
+      display: flex;
+      background-color: #000;
+      padding: 2px 0px;
+      min-height: 45px;
+    }
+    .gallery_year:first-child {
+      padding-top: 0;
+    }
+    .gallery_year:last-child {
+      padding-bottom: 0;
+    }
+    .gallery_year-timeline {
+      position: relative;
+      background-color: #222;
+      min-width: 77px;
+    }
+    .gallery_year-value {
+      cursor: pointer;
+      transition: color 0.3s;
+      font-weight: bold;
+      font-size: 20px;
+      padding: 10px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .gallery_year-value:hover {
+      color: #ccc;
+    }
+    .gallery_year-value--fixed {
+      position: fixed;
+      top: var(--marginTop)
+    }
+    .gallery_year-content {
+      display: flex;
+      flex-direction: column;
+      grid-column-gap: 2px;
+      grid-row-gap: 5px;
+      background-color: #111;
+      flex-grow: 1;
+    }
+    .gallery_year-content--hidden {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-flow: dense;
+      height: var(--yearHeight);
+      overflow: hidden;
+    }
+    .gallery_year-content--hidden .gallery_box {
+      filter: sepia(1);
+    }
+    .gallery_year-content--hidden .gallery_box:hover {
+      filter: sepia(0);
+    }
+    .gallery_year-content--hidden .gallery_month:nth-child(1) { grid-column: 12 }
+    .gallery_year-content--hidden .gallery_month:nth-child(2) { grid-column: 11 }
+    .gallery_year-content--hidden .gallery_month:nth-child(3) { grid-column: 10 }
+    .gallery_year-content--hidden .gallery_month:nth-child(4) { grid-column: 9 }
+    .gallery_year-content--hidden .gallery_month:nth-child(5) { grid-column: 8 }
+    .gallery_year-content--hidden .gallery_month:nth-child(6) { grid-column: 7 }
+    .gallery_year-content--hidden .gallery_month:nth-child(7) { grid-column: 6 }
+    .gallery_year-content--hidden .gallery_month:nth-child(8) { grid-column: 5 }
+    .gallery_year-content--hidden .gallery_month:nth-child(9) { grid-column: 4 }
+    .gallery_year-content--hidden .gallery_month:nth-child(10) { grid-column: 3 }
+    .gallery_year-content--hidden .gallery_month:nth-child(11) { grid-column: 2 }
+    .gallery_year-content--hidden .gallery_month:nth-child(12) { grid-column: 1 }
+
+    .gallery_year-content--hidden .gallery_month-timeline {
+      display: none;
+    }
+    .gallery_year-content--hidden .gallery_month-content {
+      display: flex;
+      flex-direction: column;
+    }
+    @media (max-width: 640px) {
+      .gallery_year-content--hidden .gallery_text {
+        display: none;
+      }
+    }
+
+    /* gallery month */
+    .gallery_month {
+      display: flex;
+      width: 100%;
+      background: #161616;
+      padding: 0px;
+    }
+    .gallery_month-timeline {
+      position: relative;
+      background-color: #111;
+      min-width: 40px;
+    }
+    .gallery_month-value {
+      padding: 14px 10px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .gallery_month-value--fixed {
+      position: sticky;
+    }
+    .gallery_month-content {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--gridSize),1fr));
+      gap: 2px;
+    }
+    /* gallery grid */
+    .gallery_grid {
+      display: grid;
+      object-fit: cover;
+      grid-template-columns: repeat(auto-fill, minmax(var(--gridSize),1fr));
+      gap: 2px;
+    }
+    .gallery_box {
+      display: flex;
+      position: relative;
+      transition: filter 0.3s;
+    }
+    .gallery_box:hover {
+      filter: sepia(0);
+    }
+    .gallery_box:hover .gallery_text {
+      opacity: 1;
+    }
+    .gallery_text {
+      position: absolute;
+      padding: 8px 5px;
+      width: 100%;
+      text-align: center;
+      text-shadow: 0 0 5px #000;
+      top: 0px;
+      transition: opacity 0.3s ease-out;
+      cursor: pointer;
+      white-space: pre-line;
+      font-size: var(--fontSize);
+      opacity: 0;
+    }
+    .gallery_img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+    }
+    .gallery_current {
+      filter: sepia(1)
+    }
+
+    /* @sub photo */
+    .photo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      z-index: 3;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+    .photo_arrow {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      position: absolute;
+      font-size: 30px;
+      text-shadow: 0 0 3px #000;
+      color: #888;
+      transition: 1s;
+      z-index: 3;
+      }
+      .photo_arrow:hover {
+        color: white;
+        text-shadow: 0 0 20px var(--accent);
+      }
+    .photo_next {
+      padding: 0 10px 0 90px;
+      right: 8px;
+      top: 0;
+    }
+    .photo_previous {
+      padding: 0 90px 0 10px;
+      left: 8px;
+      top: 0;
+    }
+    .photo_close {
+      z-index: 10000;
+      height: auto;
+      font-size: 30px;
+      padding: 10px;
+      right: 5px;
+      top: 0px;
+    }
+    .photo_group {
+      display: flex;
+      position: relative;
+      max-width: calc(100vw - 100px);
+      max-height: calc(100vh - 30px);
+      min-width: 300px;
+      min-height: 30px;
+      object-fit: cover;
+      box-shadow: 0 0 30px #111;
+      background-color: rgba(0,0,0,0.5);
+      transition: 0.5s;
+      }
+    .photo_image {
+      position: relative;
+      max-width: calc(100vw - 100px);
+      max-height: calc(100vh - 30px);
+      object-fit: cover;
+      transition: 0.5s;
+    }
+    .photo_name {
+      font-size: 1.2rem;
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      bottom: 5px;
+      left: 0;
+      padding: 5px 15px;
+      text-shadow: 0 0 10px #000;
+      color: #fff;
+      z-index: 3;
+    }
+    @media (max-height: 600px) {
+      .photo_group {
+        max-height: 100vh;
+      }
+      .photo_image {
+        max-height: 100vh;
+      }
+    }
+    @media (max-width: 1200px) {
+      .photo_group {
+        max-width: 100vw;
+      }
+      .photo_image {
+        max-width: 100vw;
+      }
+      .photo_name {
+        position: fixed;
+      }
+    }
+    @keyframes show { 
+      from {
+        opacity: 0
+      } to {
+        opacity: 1
+      }
+    }
+    @keyframes hide {
+      from {
+        opacity: 1
+      } to {
+        opacity: 0
+      }
+    }
+    .none {
+      display: none;
+    }
+    .show {
+      animation: show 0.5s;
+    }
+    .hide {
+      animation: hide 0.5s;
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- @sup HTML -->
+  <!-- @sub HEADER -->
+  <div class="header_bars">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+  <div class="header hide" tabindex="1">
+    <!-- Category -->
+    <div class="header_pair">
+      <label class="header_label" for="category">Katg:</label>
+      <select class="header_select" id="category"></select>
+    </div>
+    <!-- Month -->
+    <div class="header_pair">
+      <label class="header_label" for="month">Miesiąc:</label>
+      <select class="header_select" id="month"></select>
+    </div>
+    <!-- Year -->
+    <div class="header_pair">
+      <label class="header_label" for="year">Rok:</label>
+      <select class="header_select" id="year"></select>
+    </div>
+    <!-- Grid -->
+    <div class="header_pair">
+      <label class="header_label" for="grid">Siatka:</label>
+      <select class="header_select" id="grid"></select>
+    </div>
+    <!-- Time -->
+    <div class="header_pair">
+      <label class="header_label" for="time">Czas:</label>
+      <select class="header_select" id="time"></select>
+    </div>
+    <!-- Presentation -->
+    <div class="header_pair">
+      <label class="header_label" for="time">Pokaz:</label>
+      <div class="header_buttons">
+        <button class="header_button" id="backward">
+          <div><i class="fa-solid fa-angle-left"></i></div>
+        </button>
+        <button class="header_button" id="forward">
+          <div><i class="fa-solid fa-angle-right"></i></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- @sub GALLERY -->
+  <div class="gallery" tabindex="0"></div>
+
+  <!-- @sub PHOTO -->
+  <div class="photo none">
+    <!-- Arrow close -->
+    <div class="photo_arrow photo_close">
+      <i class="fa-solid fa-xmark"></i>
+    </div>
+    <!-- Arrow previous -->
+    <div class="photo_arrow photo_previous">
+      <i class="fa-solid fa-angle-left"></i>
+    </div>
+    <!-- Arrow next -->
+    <div class="photo_arrow photo_next">
+      <i class="fa-solid fa-angle-right"></i>
+    </div>
+    <div class="photo_group">
+      <!-- Image, name -->
+      <img class="photo_image">
+      <div class="photo_name"></div>
+    </div>
+  </div>
+
+  <script>
+  // @sup SCRIPTS
+  
+  /** 
+   * The ARW class provides utility functions for creating HTML elements and working with functions.
+   * 
+  @class */ class ARW 
+	{
+    /**
+     * Creates a new HTML element and configures it based on the provided options.
+     * @param {object} options - An object containing the element configuration options.
+     * @param {string} options.type - The type of the element to be created. Defaults to "div".
+     * @param {HTMLElement} options.parent - The parent to which the created element should be appended.
+     * @param {Array<HTMLElement|string|number>} options.children - An array of elements or strings representing the children to be appended to the element.
+     * @param {Object<string, function>} options.listeners - An object containing event listeners. Each key-value pair represents an event name and the corresponding event handler function.
+     * @param {Object<string, string>} options.dataset - An object containing key-value pairs to be set as data-* attributes.
+     * @param {Object<string, string>} options.attributes - Additional options for configuring the element.
+     * @returns {HTMLElement} The created HTML element.  
+     * 
+    @func */ static createElement = ({type="div", parent, children, listeners, dataset, ...attributes}) =>
+    {      
+      const element = document.createElement(type) // Create the element
+      
+      if (parent) { // Check if parent element is provided
+        parent.appendChild(element) // Append the element to the parent
+      }      
+      if (dataset) { // Check if dataset is provided
+        Object.entries(dataset).forEach(([key, value]) => { // Iterate over the entries of the dataset object
+          element.dataset[key] = value // Set data attributes on the element using the key-value pairs
+        })
+      }      
+      if (attributes) { // Check if additional attributes are provided
+        Object.entries(attributes).forEach(([key, value]) => { // Iterate over the entries of the attributes object
+          element.setAttribute(key, value) // Set additional attributes on the element using the key-value pairs
+        })
+      }       
+      if (listeners) { // Check if event listeners are provided
+        Object.entries(listeners).forEach(([key, value]) => { // Iterate over the entries of the listeners object
+          element.addEventListener(key, value) // Attach event listeners to the element using the key-value pairs
+        })
+      }      
+      if (children) { // Check if children are provided
+        if (!Array.isArray(children)) children = [children] // Ensure children is an array
+        children.forEach(child => { // Iterate over each child
+          if (typeof child === 'string' || typeof child === 'number') { // Check if child is a string or number
+            element.appendChild(document.createTextNode(child)); // Append text node to element
+          } else if (child instanceof HTMLElement) { // Check if child is an HTMLElement
+            element.appendChild(child); // Append child element to element
+          }
+        })
+      }      
+      return element // Return the created element
+    }
+
+		/** 
+     * Creates an option element and appends it to the specified parent element.
+     * @param {HTMLElement} parent - The parent element to which the option element will be appended.
+     * @param {string} value - The value attribute of the option element.
+     * @param {string} [content=value] - The content of the option element (default: value).
+     * 
+    @func */ static createOption = (parent, value, content=value, selected=false) =>
+		{
+      // Create an option element using the createElement method
+      const option = this.createElement({
+        type: 'option',
+        class: 'header_option',
+        parent: parent,
+        children: content,
+        value: value
+      })
+      // Set the 'selected' attribute if 'selected' parameter is true
+      if (selected) { 
+        option.selected = true
+      }
+    }
+    
+    /** 
+     * Prints the name of a function along with an optional value.
+     * @param {Function} callback - The callback function whose name will be printed.
+     * @param {*} value - An optional value to be displayed along with the function name (default: "").
+     *
+    @func */ static printFuncName = (callback, value) =>
+		{
+      // Get the name of the callback function.
+      const functionName = callback.name
+
+      // Set the function value to the provided value or an empty string if not provided.
+      let functionValue = ""
+      if (value) {
+        if (value instanceof Object) {
+          functionValue = `${Object.keys(value)}: ${Object.values(value)}`
+        } else {
+          functionValue = value
+        }
+      } 
+      // Print the function name along with the value to the console.
+      console.log(`${functionName}(${functionValue})`);
+    }
+  }
+
+  /**
+   * Class representing application header.
+   * Manages the categories, months, years, grid and time.
+    * 
+  @class */ class Header 
+  {
+    /**
+     * Constructs a new instance of the Header class.
+     * @param {object} props - The properties object.
+     */
+    constructor(props) {
+      // Props
+      this.cat = props.cat // Categories
+      this.root = props.root // Root DOM element
+      this.filters = props.filters // Filters
+      this.grid = props.grid // Grid size
+      this.time = props.time // Time
+      this.gridInit = props.gridInit // Initial grid size
+      this.timeInit = props.timeInit // Initial time
+      this.setState = props.setState // Function to set state
+      this.changeMargin = props.changeMargin // Function to change margin
+      this.updateData = props.updateData // Function to update data
+      this.updateTime = props.updateTime // Function to update time
+
+      this.isMenuOpen = false // Menu open/close flag
+
+      // Months
+      this.months = {
+        '01' : "Styczeń",
+        '02' : "Luty",
+        '03' : "Marzec",
+        '04' : "Kwiecień",
+        '05' : "Maj", 
+        '06' : "Czerwiec",
+        '07' : "Lipiec",
+        '08' : "Sierpień",
+        '09' : "Wrzesień",
+        '10' : "Październik",
+        '11' : "Listopad",
+        '12' : "Grudzień"
+      }
+
+      // Handles
+      this.headerDiv = document.querySelector('.header') // Header div
+      this.headerBars = document.querySelector('.header_bars') // Menu button
+      this.selectCategory = document.querySelector('#category') // Category select list 
+      this.selectMonth = document.querySelector('#month') // Month select list
+      this.selectYear = document.querySelector('#year') // Year select list
+      this.selectGrid = document.querySelector('#grid') // Grid size select list
+      this.selectTime = document.querySelector('#time') // Time select list
+      this.buttonBackward = document.querySelector('#backward') // Button for backward presentation
+      this.buttonForward = document.querySelector('#forward') // Button for forward presentation
+
+      // listeners
+      this.headerDiv.addEventListener("touchstart", (e) => this.touchstart(e))
+      this.headerDiv.addEventListener("touchmove", (e) => this.touchmove(e))
+      this.headerDiv.addEventListener("touchend", (e) => this.touchend(e))
+      this.headerBars.addEventListener('click', () => this.showHideMenu()) // Click event for menu button
+      this.selectCategory.addEventListener('change', () => this.setCategory()) // Change event for category select
+      this.selectMonth.addEventListener('change', () => this.setMonths()) // Change event for month select
+      this.selectYear.addEventListener('change', () => this.setYear()) // Change event for year select
+      this.selectGrid.addEventListener('change', () => this.setGrid()) // Change event for grid size select
+      this.selectTime.addEventListener('change', () => this.setTime()) // Change event for time select
+
+      this.init() // Initialization
+    } 
+
+    /** 
+     * Initializes the header.
+     * 
+    @func */ init = () =>
+		{
+      this.prepareCategories() // Prepare the categories
+      this.prepareMonths() // Prepare the months
+      this.prepareYears() // Prepare the years
+      this.prepareGrid() // Prepare the grid size
+      this.prepareTime() // Prepare the time intervals
+    }
+
+    /**
+     * Touch event handlers for hiding menu.
+    */
+    // Touch start event handler
+    touchstart = (e) => {
+      this.touchStartY = e.touches[0].pageY
+      this.touchEndY = this.touchStartY
+    }
+    // Touch move event handler
+    touchmove = (e) => {
+      this.touchEndY = e.touches[0].pageY
+    }
+    // Touch end event handler
+    touchend = (e) => {
+      const deltaY = this.touchEndY - this.touchStartY
+      console.log("touch:", deltaY)
+      if (deltaY < -50) {
+        this.showHideMenu()
+      } 
+    }
+    
+    /** 
+     * Shows or hides the menu.
+     * 
+    @func */ showHideMenu = () =>
+		{
+      ARW.printFuncName(this.showHideMenu) // Print function name
+      
+      this.headerDiv.classList.toggle('hide') // Toggle hide class on header div     
+      this.isMenuOpen = !this.isMenuOpen // Toggle isMenuOpen flag
+      
+      this.setState({isMenuOpen: this.isMenuOpen}) // Set state in main class
+      this.changeMargin() // Update margins
+    }
+
+    /** 
+     * Prepares the categories.
+     * 
+    @func */ prepareCategories = () =>
+		{
+      ARW.printFuncName(this.prepareCategories) // Print function name
+      
+      ARW.createOption(this.selectCategory, this.filters.all) // Create "All" option    
+      this.cat.forEach(category => {
+        ARW.createOption(this.selectCategory, category) // Create category options
+      })
+    }
+
+    /** 
+     * Prepares the months.
+     * 
+    @func */ prepareMonths = () =>
+		{      
+      ARW.printFuncName(this.prepareMonths) // Print function name
+      
+      ARW.createOption(this.selectMonth, this.filters.none) // Create "None" option
+      // ARW.createOption(this.selectMonth, this.filters.compact, this.filters.compact, true) // Create "Compact" option
+      // ARW.createOption(this.selectMonth, this.filters.catalog) // Create "Catalog" option
+      ARW.createOption(this.selectMonth, this.filters.all, this.filters.all, true) // Create "All" option
+      
+      Object.keys(this.months).sort().forEach(month => {
+        ARW.createOption(this.selectMonth, month, this.months[month]) // Create month options
+      })
+    }
+
+    /** 
+     * Prepares the years.
+     * 
+    @func */ prepareYears = () =>
+		{      
+      ARW.printFuncName(this.prepareYears) // Print function name
+      
+      ARW.createOption(this.selectYear, this.filters.none) // Create "None" option      
+      ARW.createOption(this.selectYear, this.filters.min, this.filters.min, true) // Create "Min" option      
+      ARW.createOption(this.selectYear, this.filters.max) // Create "Max" option
+      ARW.createOption(this.selectYear, this.filters.auto) // Create "Auto" option
+      ARW.createOption(this.selectYear, this.filters.grid) // Create "Grid" option
+    }
+
+    /** 
+     * Prepares the grid size.
+     * 
+    @func */ prepareGrid = () =>
+		{      
+      ARW.printFuncName(this.prepareGrid) // Print function name
+      
+      // Create grid size options
+      Object.keys(this.grid).forEach(grid => {
+        ARW.createOption( 
+          this.selectGrid, // parent
+          this.grid[grid], // value
+          grid,            // content
+          this.grid[grid] == this.gridInit ? true : false // selected status
+        )
+      })      
+      // Set initial grid size
+      this.root.style.setProperty('--gridSize', `${this.gridInit}`) 
+    }
+
+    /** 
+     * Prepares the time intervals.
+     * 
+    @func */ prepareTime = () =>
+		{
+      ARW.printFuncName(this.prepareTime) // Print function name
+
+      // Create time intevals options
+      Object.keys(this.time).sort().forEach(time => {
+        ARW.createOption(
+          this.selectTime, // parent
+          this.time[time], // value
+          `${time.slice(1)} s`, // content
+          this.time[time] == this.timeInit ? true : false // selected status
+        )
+      })
+    }
+
+    /**
+     * Sets the selected category for filtering data.
+     * 
+    @func */ setCategory = () =>
+    {      
+      const filterCategory = this.selectCategory.value // Get the selected category value from the select input 
+      ARW.printFuncName(this.setCategory, filterCategory) // Print function name
+
+      this.setState({filterCategory: filterCategory}) // Set state in main class     
+      this.updateData() // Update data and gallery
+    }
+
+    /**
+     * Sets the selected month for filtering data.
+     * 
+    @func */ setMonths = () =>
+    {
+      
+      const filterMonth = this.selectMonth.value // Get the selected month value from the select input 
+      ARW.printFuncName(this.setMonths, filterMonth) // Print function name
+
+      this.setState({filterMonth: filterMonth}) // Set state of filter month
+
+      // Set state of months visible
+      const {all, compact, catalog} = this.filters
+      if (![all, compact, catalog].includes(filterMonth)) { 
+        this.setState({isMonthsVisible: false})
+      } else {
+        this.setState({isMonthsVisible: true})
+      }      
+      this.updateData() // Update data and gallery
+    }
+
+		/**
+     * Sets the selected year for filtering data.
+     * 
+    @func */ setYear = () =>
+		{			
+      const filterYear = this.selectYear.value // Get the selected year value from the select input
+      ARW.printFuncName(this.setYear, filterYear) // Print function name
+
+      this.setState({filterYear: filterYear}) // Set state of filter year
+
+      // Set yearHeight property on the root element
+      if (filterYear == this.filters.min) {
+        this.root.style.setProperty('--yearHeight', `45px`)
+      } else if (filterYear == this.filters.max) {
+        this.root.style.setProperty('--yearHeight', `200px`)
+      } else if (filterYear == this.filters.auto) {
+        this.root.style.setProperty('--yearHeight', `auto`)
+      }
+
+      // Set state of years visible and collapsed
+      if (filterYear == this.filters.none) {
+        this.setState({isYearsVisible: false})
+      } else if (filterYear == this.filters.grid){
+        this.setState({isYearsVisible: true})
+        this.setState({isYearsCollapsed: false})
+      } else {
+        this.setState({isYearsVisible: true})
+        this.setState({isYearsCollapsed: true})
+      }      
+      this.updateData() // Update data and gallery
+
+
+
+    }
+
+    /**
+     * Sets the grid size for the gallery.
+     * 
+    @func */ setGrid = () =>
+    {
+      const size = this.selectGrid.value // Get the grid size value from the select input      
+      ARW.printFuncName(this.setGrid, size) // Print function name
+      
+      this.setState({grid: size}) // Set state in main class
+
+      // Set the --gridSize property on the root element
+      this.root.style.setProperty('--gridSize', `${size}`)
+
+      // Set the --fontSize property on the root element
+      if(size == this.grid.S) {
+        this.root.style.setProperty('--fontSize', `6px`)
+      } else if (size == this.grid.M){
+        this.root.style.setProperty('--fontSize', `9px`)
+      } else {
+        this.root.style.setProperty('--fontSize', `14px`)
+      }
+    }
+
+    /** 
+     * Sets the time for the gallery.
+     * 
+    @func */ setTime = () =>
+    {      
+      const time = this.selectTime.value // Get the time value from the select input
+      ARW.printFuncName(this.setTime, time) // Print function name
+                  
+      this.setState({time: time}) // Set state in main class     
+      this.updateTime() // Update time in gallery
+    }    
+  }
+
+  /**
+   * Class representing a photo gallery.
+   * Manages the display of photos, navigation and user interactions.
+   *
+  @class */ class Gallery 
+	{  
+    /**
+     * Constructs a new instance of the Gallery class.
+     * @param {object} props - The properties object.
+     */
+    constructor(props) {
+      // Function to set initial state
+      this.setState = props.setState
+
+      // Properties
+      this.index = 0
+      this.marginTop = 0
+      this.presentation = "none"
+      this.presentationTimeout
+      this.loadingTimeout
+      this.time
+      this.touchStartX 
+      this.touchEndX
+
+      // Handles
+      this.photo = document.querySelector('.photo')
+      this.photoGroup = document.querySelector('.photo_group')
+      this.photoName = document.querySelector('.photo_name')
+      this.photoImage = document.querySelector('.photo_image')
+      this.photoPrevious = document.querySelector('.photo_previous')
+      this.photoNext = document.querySelector('.photo_next')
+      this.gallery = document.querySelector('.gallery');
+      
+      // Listeners
+      this.photo.addEventListener("click", (e) => this.hidePhoto(e))
+      this.photo.addEventListener("touchstart", (e) => this.touchstart(e))
+      this.photo.addEventListener("touchmove", (e) => this.touchmove(e))
+      this.photo.addEventListener("touchend", (e) => this.touchend(e))
+      this.photoPrevious.addEventListener("click", (e) => this.setPreviousPhoto(e))
+      this.photoNext.addEventListener("click", (e) => this.setNextPhoto(e))
+      this.gallery.addEventListener("scroll", (e) => this.updateVisibility())
+
+    }
+    
+    /**
+     * Touch event handlers for swiping left and right.
+    */
+   // Touch start event handler
+    touchstart = (e) => {
+      this.touchStartX = e.touches[0].pageX
+      this.touchEndX = this.touchStartX
+    }
+    // Touch move event handler
+    touchmove = (e) => {
+      this.touchEndX = e.touches[0].pageX
+    }
+    // Touch end event handler
+    touchend = (e) => {
+      const deltaX = this.touchEndX - this.touchStartX
+      console.log("touch:", deltaX)
+      if (deltaX > 50) {
+        this.setPreviousPhoto(e)
+      } else if (deltaX < -50) {
+        this.setNextPhoto(e)
+      }
+    }
+
+    /**
+     * Prepares the gallery with the provided data and state.
+     * @param {Array} data - The gallery data.
+     * @param {Object} state - The state of the gallery.
+     *
+    @func */ prepareGallery = (data, state) =>
+		{      
+     	ARW.printFuncName(this.prepareGallery) // Print function name
+
+      // Set data and state
+      this.data = data
+      this.isMonthsVisible = state.isMonthsVisible
+      this.isYearsVisible = state.isYearsVisible
+      this.isYearsCollapsed = state.isYearsCollapsed
+      this.time = state.time
+
+      // Clear gallery
+      this.gallery.innerHTML = ""
+      this.gallery.classList.remove("gallery_grid")
+ 
+      // Get years from 1986 to the current year
+      const startYear = 2005
+      const currentYear = new Date().getFullYear()
+      const years = Array.from({ length: currentYear - startYear + 1 }, (_, i) => (startYear + i).toString())
+      const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'))
+
+      // Prepare data by year and month
+      const dataByYear = data.reduce((acc, item) => {
+        if (!acc[item.year]) acc[item.year] = {}
+        if (!acc[item.year][item.month]) acc[item.year][item.month] = []
+        acc[item.year][item.month].push(item)
+        return acc
+      }, {})
+      console.log(dataByYear)
+
+      // Iterate over all years
+      years.reverse().forEach(year => {
+        let yearContainer
+
+        if (this.isYearsVisible) {
+          yearContainer = this.buildYearBox(this.gallery, year)
+        } else {
+          yearContainer = this.gallery
+        }
+
+        // Iterate over all months
+        [...months].reverse().forEach(month => {
+          const items = dataByYear[year]?.[month] || []
+          let monthContainer
+
+          if (this.isMonthsVisible & this.isYearsVisible) {
+            if (items.length > 0) {
+              monthContainer = this.buildMonthBox(yearContainer, month, year)
+            } else {
+              monthContainer = this.buildMonthBox(yearContainer)
+            }
+          } else {
+            monthContainer = yearContainer
+            yearContainer.classList.add("gallery_grid")
+          }
+
+          // Add items to the month container
+          if (items.length > 0) {
+            items.forEach(item => {
+              const desc = `${item.date} \n${item.name}`;
+              const path = `${item.year}/${item.date} - ${item.name}.jpg`;
+              this.buildGalleryBox(monthContainer, desc, path, item.id);
+            })
+          } 
+        })
+      })
+
+      // Get all boxex, years and months
+      this.boxes = document.querySelectorAll(".gallery_box")
+      this.monthValues = document.querySelectorAll(".gallery_month-value")
+      this.yearValues = document.querySelectorAll(".gallery_year-value")
+      this.yearBoxes = document.querySelectorAll(".gallery_year-content")
+
+      // Collapse years if necessary
+      if (this.isYearsCollapsed) {
+        this.yearBoxes.forEach(yearBox => 
+          yearBox.classList.add("gallery_year-content--hidden")
+        )        
+        this.yearValues.forEach(yearValue => 
+          yearValue.dataset.open = "false"
+        )
+        this.monthValues.forEach(monthValue => 
+          monthValue.dataset.open = "false"
+        )
+      }
+    }
+
+    /**
+     * Builds a gallery box and adds it to the specified parent element.
+     * @param {HTMLElement} parent - The parent element to attach the box to.
+     * @param {string} desc - The description of the box.
+     * @param {string} path - The path to the image of the box.
+     * @param {string} id - The ID of the box.
+     *
+    @func */ buildGalleryBox = (parent, desc, path, id) =>
+		{
+      ARW.createElement({
+        parent: parent,
+        class: "gallery_box",
+        id: id,
+        dataset: {
+          desc: desc.replace("\n", " - "), 
+          src: path
+        },
+        listeners: {
+          click: (e) => this.showPhoto(e)
+        },
+        children: [
+          ARW.createElement({
+            type: "img",
+            class: "gallery_img",
+            alt: desc,
+            src: path.replace(/(\/)([^/]+)\.([^/.]+)$/, '$1webp/$2.webp'),
+          }),
+          ARW.createElement({
+            class: "gallery_text",
+            children: [desc]
+          })
+        ]
+      })
+    }
+
+    /**
+     * Builds a year box and adds it to the specified parent element.
+     * @func
+     * @param {HTMLElement} parent - The parent element to attach the box to.
+     * @param {string} year - The year value of the box.
+     * @returns {HTMLElement} - The right content element of the year box.
+     *
+    @func */ buildYearBox = (parent, year) =>
+		{
+      const yearTimeline = ARW.createElement({
+        class: "gallery_year-timeline",
+        children: ARW.createElement({
+          class: "gallery_year-value",
+          id: year,
+          dataset: {
+            open: "true"
+          },
+          listeners: {
+            click: (e) => this.showHideYear(e)
+          },
+          children: year
+        })
+      })
+      const yearContent = ARW.createElement({
+        class: "gallery_year-content",
+        id: year
+      })     
+      const yearBox = ARW.createElement({
+        class: "gallery_year",
+        children: [yearTimeline, yearContent],
+        parent: parent
+      })
+      return yearContent
+    }
+
+    /**
+     * Builds a month box and adds it to the specified parent element.
+     * @func
+     * @param {HTMLElement} parent - The parent element to attach the box to.
+     * @param {string} month - The month value of the box.
+     * @param {string} year - The year value of the box.
+     * @returns {HTMLElement} - The right content element of the month box.
+     *
+    @func */ buildMonthBox = (parent, month, year) =>
+		{
+      const monthTimeline = ARW.createElement({
+        class: "gallery_month-timeline",
+        children: ARW.createElement({
+          class: "gallery_month-value",
+          children: month,
+          dataset: {
+            open: "true"
+          },
+          id: year
+        })
+      })
+      const monthContent = ARW.createElement({
+        class: "gallery_month-content",
+      })
+      const monthBox = ARW.createElement({
+        class: "gallery_month",
+        children: [monthTimeline, monthContent],
+        parent: parent
+      })
+			return monthContent
+    }
+
+    /**
+     * Updates the visibility of year and month values based on scrolling position.
+     *
+    @func */ updateVisibility = () =>
+		{      
+      ARW.printFuncName(this.updateVisibility) // Print function name
+
+      const top = this.marginTop + 30
+
+      // Iterate over each year values
+      this.yearValues.forEach(year=> {
+        const rect = year.parentNode.getBoundingClientRect()
+        // Check if the year element is within the visible range and open
+        if (rect.top < top && rect.bottom > top && year.dataset.open == "true") {
+          year.classList.add("gallery_year-value--fixed")
+        } else {
+          year.classList.remove("gallery_year-value--fixed")
+        }
+      });
+      // Iterate over each month value
+      this.monthValues.forEach(month=> {
+        const rect = month.parentNode.getBoundingClientRect()
+        // Check if the month element is within the visible range and open
+        if (rect.top < top && rect.bottom > top && month.dataset.open == "true") {
+          month.classList.add("gallery_month-value--fixed")
+        } else {
+          month.classList.remove("gallery_month-value--fixed")
+        }
+      });
+    }
+
+    /**
+     * Toggles the visibility of a year box and its associated month boxes.
+     * @param {Event} e - The event object.
+     *
+    @func */ showHideYear = (e) =>
+    {      
+			ARW.printFuncName(this.showHideYear) // Print function name
+
+      const yearValue = e.target // Get selected year value
+      
+      // Toggle dataset about year value visibility of selected year
+      if (yearValue.dataset.open == "false") { 
+        yearValue.dataset.open = "true"
+      } else {
+        yearValue.dataset.open = "false"
+      }
+
+      // Toggle dataset about months values visibility of selected year
+      this.monthValues.forEach(monthValue => {
+        if(monthValue.id == yearValue.id) {
+          
+          if (monthValue.dataset.open == "false") { 
+            monthValue.dataset.open = "true"
+          } else {
+            monthValue.dataset.open = "false"
+          }
+        }
+      })
+      // Toggle visibility of the year section
+      this.yearBoxes.forEach(yearBox => {
+        if(yearBox.id == yearValue.id) {           
+          yearBox.classList.toggle("gallery_year-content--hidden") 
+        }
+      })
+      // Update the visibility 
+      this.updateVisibility() 
+    }
+
+    /**
+     * Sets the border style for the currently selected box.
+     *
+    @func */ setActivePhoto = () =>
+		{
+      ARW.printFuncName(this.setActivePhoto, this.index) // Print function name
+
+      // Iterate over each gallery box
+      this.boxes.forEach(box => {
+        if (box.id == this.index) {
+          // Add the "gallery_current" class to highlight the current box
+          box.classList.add("gallery_current") 
+        } else {
+          // Remove the "gallery_current" class from other boxes
+          box.classList.remove("gallery_current") 
+        }
+      })
+    }
+		
+    /**
+     * Sets the photo and navigation buttons for the specified ID.
+     * @param {string} id - The ID of the photo.
+     *
+    @func */ setPhoto = (id) =>
+		{
+      ARW.printFuncName(this.setPhoto, id) // Print function name
+
+      if (id == 0) { // Check if the photo is the first one
+        this.photoPrevious.classList.add("none") // Hide the previous photo button
+      } else {
+        this.photoPrevious.classList.remove("none") // Show the previous photo button
+      }
+
+      if (id == this.data.length - 1) { // Check if the photo is the last one
+        this.photoNext.classList.add("none") // Hide the next photo button
+      } else {
+        this.photoNext.classList.remove("none") // Show the next photo button
+      }
+
+      const imgBox = document.getElementById(id) // Get the image box element
+      this.photoImage.setAttribute("src", imgBox?.dataset.src) // Set the source attribute of the photo image
+
+      // Remove previous event listeners to avoid duplication
+      this.photoImage.removeEventListener("load", this.onPhotoLoad)
+      this.photoImage.removeEventListener("error", this.onPhotoError)
+
+      // Clear any existing loading timer
+      if (this.loadingTimeout) {
+        clearTimeout(this.loadingTimeout)
+      }
+
+      // Timer for showing loading message
+      this.loadingTimeout = setTimeout(() => {
+        console.log("Loading photo...")
+        this.photoName.textContent = "Ładowanie zdjęcia..."
+      }, 500)
+
+      // Define the event listener for the load event
+      this.onPhotoLoad = () => {
+        console.log("Photo loaded successfully...")
+        clearTimeout(this.loadingTimeout) // Clear the loading timer
+        this.photoName.textContent = imgBox?.dataset.desc // Update photo name with description
+        this.showContinue() // Continue the presentation
+      };
+
+      // Define the event listener for the error event
+      this.onPhotoError = () => {
+        clearTimeout(this.loadingTimeout) // Clear the loading timer
+        this.photoName.textContent = "Zdjęcie jest niedostępne." // Update photo name on error
+        this.showContinue() // Continue the presentation
+      }
+
+      // Add the event listeners to the photo image
+      this.photoImage.addEventListener("load", this.onPhotoLoad)
+      this.photoImage.addEventListener("error", this.onPhotoError)
+    }
+    
+    /**
+     * Sets the previous photo in the gallery.
+     * @param {Event} e - The event object.
+     *
+    @func */ setPreviousPhoto = (e) =>
+		{
+      ARW.printFuncName(this.setPreviousPhoto) // Print function name
+
+      e?.stopPropagation()
+      if (this.index > 0) { // Check if the photo is not the first one
+        this.index = parseInt(this.index) - 1 // Decrement the index by 1
+        this.setPhoto(this.index) // Set the photo based on the new index
+      } 
+    }
+
+    /**
+     * Sets the next photo in the gallery.
+     * @param {Event} e - The event object.
+     *
+    @func */ setNextPhoto = (e) =>
+		{   
+      ARW.printFuncName(this.setNextPhoto) // Print function name
+
+      e?.stopPropagation()
+      if (this.index < this.data.length - 1) { // Check if the photo is not the last one
+        this.index = parseInt(this.index) + 1 // Increment the index by 1
+        this.setPhoto(this.index) // Set the photo based on the new index
+      } 
+    }
+
+    /**
+     * Shows the previous photo in the gallery.
+     * @param {Event} e - The event object.
+     *
+    @func */ showBackward = (e) =>
+		{
+      ARW.printFuncName(this.showBackward) // Print function name
+
+      this.presentation = "backward"
+      this.photo.classList.remove("none") // Remove 'none' class to make the photo visible
+      this.photo.classList.add("show") // Add 'show' class to animate showing the photo
+      this.setState({isPhotoOpen : true}) // Update the state to indicate that the photo is open
+      
+      if(!this.index) {
+        this.index = 0; // Set the index to the first photo if it is not set
+      }
+      this.setPhoto(this.index) // Set the photo based on the index
+    }
+    
+    /**
+     * Shows the next photo in the gallery.
+     * @param {Event} e - The event object.
+     *
+    @func */ showForward = (e) =>
+		{
+      ARW.printFuncName(this.showForward) // Print function name
+      
+      this.presentation = "forward"
+      this.photo.classList.remove("none") // Remove 'none' class to make the photo visible
+      this.photo.classList.add("show") // Add 'show' class to animate showing the photo        
+      this.setState({isPhotoOpen : true}) // Update the state to indicate that the photo is open
+      
+      if(!this.index) {
+        this.index = this.data.length - 1; // Set the index to the last photo if it is not set
+      }
+      this.setPhoto(this.index) // Set the photo based on the index
+    }
+
+    /**
+     * Resumes the presentation.
+     *
+     @func */ showContinue = () => {
+      console.log("Presentation", this.presentation)
+      if (this.presentation === "forward") {
+        this.presentationTimeout = setTimeout(() => {
+          if (this.index > 0) {
+            this.setPreviousPhoto() // Set the previous photo
+            
+          } else {
+            this.hidePhoto() // Hide the photo if there are no more previous photos
+          }
+        }, this.time)
+  
+      } else if (this.presentation === "backward") {
+        this.presentationTimeout = setTimeout(() => {
+          if (this.index < this.data.length - 1) {
+            this.setNextPhoto() // Set the previous photo
+          } else {
+            this.hidePhoto() // Hide the photo if there are no more next photos
+          }
+        }, this.time) 
+      }
+    }
+
+    /**
+     * Shows the selected photo in a modal.
+     * @param {Event} e - The event object.
+     *
+    @func */ showPhoto = (e) =>
+		{   
+      setTimeout(() => {
+        this.photo.classList.remove("none") // Remove 'none' class to make the photo visible
+        this.photo.classList.add("show") // Add 'show' class to animate showing the photo        
+
+      }, 100);
+
+      this.setState({isPhotoOpen : true}) // Update the state to indicate that the photo is open
+
+      if(e){
+        this.index = e.target.closest(".gallery_box").id; // Get the index of the clicked gallery box
+      }
+      
+      ARW.printFuncName(this.showPhoto, this.index) // Print function name
+
+      this.setPhoto(this.index) // Set the photo based on the index
+    }
+
+    /**
+     * Hides the displayed photo modal.
+     * @param {Event} e - The event object.
+     *
+    @func */ hidePhoto = () =>
+		{      
+      ARW.printFuncName(this.hidePhoto) // Print function name
+      
+      this.setActivePhoto() // Set the active photo  
+      this.setState({isPhotoOpen : false}) // Update the state to indicate that the photo is closed     
+      clearTimeout(this.presentationTimeout) // Clear presentation timeout
+
+      this.presentation = "none"
+      this.photoName.textContent = "" // Clear the photo name
+      this.photo.classList.add("hide") // Add 'hide' class to animate hiding the photo
+      setTimeout(() => {
+        this.photo.classList.add("none") // Add 'none' class to remove visibility of the photo
+        this.photo.classList.remove("show") // Remove 'show' class
+        this.photo.classList.remove("hide") // Remove 'hide' class
+      }, 400); // Wait for the animation to finish before removing the classes
+    }
+  }
+  
+  /**
+   * Class representing the main application.
+   * Manages the state, initialization, event listeners and data manipulation.
+   *
+  @class */ class Main 
+  {
+    /**
+      * Constructs a new Main instance.
+      * @param {Array} cat - The array of categories.
+      * @param {Array} data - The array of data objects.
+      */
+    constructor(cat, data){
+      this.cat = [...cat] // Copy the categories array
+      this.data = [...data] // Copy the data array
+
+      // Common filters
+      this.filters = {
+        none: "Brak",
+        min: "Kompaktowo",
+        max: "Szeroko",
+        auto: "Automatycznie",
+        all: "Wszystko",
+        catalog: "Katalogowo",
+        compact: "Kompaktowo",
+        grid: "Siatka"
+      }
+      // Grid sizes
+      this.grid = {
+        S: "60px",
+        M: "96px",
+        L: "150px",
+        XL: "210px",
+      }
+      // Time intervals
+      this.time = {
+        T0 : 200,
+        T1 : 1000,
+        T2 : 2000,
+        T4 : 4000
+      }
+
+      // Set initial state
+      this.state = {
+        isMenuOpen: false, 
+        isPhotoOpen: false,
+        isMonthsVisible: true,
+        isYearsVisible: true,
+        isYearsCollapsed: true,
+        filterCategory: this.filters.all, 
+        filterMonth: this.filters.all,
+        filterYear: this.filters.min,
+        grid: this.grid.S,
+        time: this.time.T1
+      }
+
+      // Get root application element
+      this.root = document.querySelector('html');
+
+      // Create instance of Gallery
+      this.gallery = new Gallery({
+        setState: this.setState,
+      })
+
+      // Create instance of Header
+      this.header = new Header({
+        cat: cat,
+        root: this.root,
+        filters: this.filters, 
+        grid: this.grid,
+        time: this.time,
+        gridInit: this.state.grid,
+        timeInit: this.state.time,
+        setState: this.setState, 
+        changeMargin: this.changeMargin, 
+        updateData: this.updateData,
+        updateTime: this.updateTime,
+      })
+
+      // Add event listeners
+      window.addEventListener('keyup', (e) => this.checkKeys(e))
+      window.addEventListener('resize', (e) => this.changeMargin(e))
+      window.addEventListener('wheel', (e) => this.checkWheel(e))
+      this.header.buttonBackward.addEventListener('click', (e) => this.gallery.showBackward(e))
+      this.header.buttonForward.addEventListener('click', (e) => this.gallery.showForward(e))
+      // Initialize the application
+      this.init()
+    }
+
+    /**
+     * Initializes the main application.
+     *
+    @func */ init = () =>
+		{
+      this.changeMargin() // Change the margin and height of the view based on the header visibility
+      this.prepareData() // Prepare the data by adding additional properties and sorting it
+      this.updateData() // Update the data and triggers gallery update
+    }
+
+    /**
+     * Sets the state of the application.
+     * @param {Object} newState - The new state object.
+     *
+    @func */ setState = (newState) =>
+		{      
+      ARW.printFuncName(this.setState, newState) // Print function name
+
+      this.state = {...this.state, ...newState} // Update state
+    }
+
+    /**
+     * Checks the keyboard keys pressed and performs corresponding actions.
+     * @param {Event} e - The keyup event object.
+     *
+    @func */ checkKeys = (e) =>
+		{      
+      ARW.printFuncName(this.checkKeys, e.key) // Print function name
+
+      if (e.key === "F2") {
+        // Toggle menu visibility and focus elements
+        if(!this.header.isMenuOpen) {
+          this.header.showHideMenu()
+          this.header.headerDiv.focus()
+        } else {
+          this.gallery.gallery.focus()
+          this.header.showHideMenu()
+        }
+      }
+      if (e.key === "F8") {        
+        this.gallery.showBackward(e) // Show the presentation backward
+      }
+      if (e.key === "F9") {        
+        this.gallery.showForward(e) // Show the presentation forward
+      }
+      if (e.key === "ArrowLeft") {        
+        this.gallery.setPreviousPhoto(e) // Show the previous photo
+        this.gallery.setActivePhoto() // Set the active photo item
+      }
+      if (e.key === "ArrowRight") {        
+        this.gallery.setNextPhoto(e) // Show the next photo
+        this.gallery.setActivePhoto() // Set the active photo item
+      }
+      if (e.key === "Enter") {        
+        this.gallery.showPhoto() // Show the current photo
+      }
+			if (e.key === "Escape") {        
+        this.gallery.hidePhoto(e) // Hide the current photo
+      }
+    }
+    
+    /**
+     * Checks the mouse wheel movement and performs corresponding actions.
+     * @param {Event} e - The wheel event object.
+     *
+    @func */ checkWheel = (e) =>
+		{
+      if (this.state.isPhotoOpen) { // Check if photo is open
+        if (e.deltaY > 0) {
+          this.gallery.setNextPhoto(e) // Show the next photo if scroll down
+        } else {
+          this.gallery.setPreviousPhoto(e) // Show the previous photo if scroll up
+        }
+      }
+    }
+
+    /**
+     * Changes the margin and height of the view based on the header visibility.
+     *
+    @func */ changeMargin = () =>
+		{      
+			ARW.printFuncName(this.changeMargin) // Print function name
+
+      const windowHeight = window.innerHeight // Get the height of the window
+      const headerHeight = this.header.headerDiv.offsetHeight // Get the height of the header
+      const viewHeight = windowHeight - headerHeight // Calculate the remaining height for the view
+
+      if (this.state.isMenuOpen) { // If the menu is open
+        this.root.style.setProperty('--viewHeight', `${viewHeight}px`) // Set the view height with the calculated value
+        this.root.style.setProperty('--marginTop', `${headerHeight}px`) // Set the margin top with the header height
+        this.gallery.marginTop = headerHeight // Update the gallery's margin top value
+      } else { // If the menu is closed
+        this.root.style.setProperty('--viewHeight', `${windowHeight}px`) // Set the view height to the full window height
+        this.root.style.setProperty('--marginTop', `0px`) // Set the margin top to 0
+        this.gallery.marginTop = 0 // Update the gallery's margin top to 0
+      }
+    }
+
+    /**
+     * Prepares the data by adding additional properties and sorting it.
+     *
+    @func */ prepareData = () =>
+		{      
+      ARW.printFuncName(this.prepareData) // Print function name
+
+      this.data.map(item => { // Modify each item in the data array
+        const splitedDate = item.date.split("-") // Split the date into year and month
+        item.year = splitedDate[0] // Assign the year to the item's year property
+        if (splitedDate[1]) { // If the month exists
+          item.month = splitedDate[1] // Assign the month to the item's month property
+        } else {
+          item.month = "" // Otherwise, assign an empty string to the month property
+        }
+      })
+
+      // Sort the data array by date in descending order, and then by name in descending order
+      this.data.sort((a, b) => {
+        if (a.date > b.date) {
+          return -1
+        } else if (a.date < b.date) {
+          return 1
+        } else {
+          return b.name.localeCompare(a.name, 'pl', { sensitivity: 'base' })
+        }
+      })
+    }
+
+    /**
+     * Filters the data based on the current state and returns the filtered data.
+     * @returns {Array} - The filtered data array.
+     *
+    @func */ filterData = () => 
+		{      
+      ARW.printFuncName(this.filterData) // Print function name
+
+      let filteredData = this.data // Initialize filteredData with the original data
+      
+      const { filterCategory, filterMonth, filterYear } = this.state // Destructure filters from state
+      const { all, catalog, compact, min, medium, max, none } = this.filters // Destructure common filters
+
+      // Filter by category
+      if(filterCategory != all) {
+        filteredData = filteredData.filter(item => {
+          return item.catg.some(cat => cat == filterCategory) // Filter items where the category matches filterCategory
+        })
+      }
+      // Filter by month
+      if(filterMonth == compact) {
+        filteredData = filteredData.filter(item => !item.name.includes('/'))
+      } else if (filterMonth == catalog) {
+        filteredData = filteredData.filter(item => item.name.includes('/'))
+      } else if(filterMonth != all && filterMonth != none) {
+        filteredData = filteredData.filter(item => {
+          return item.month == filterMonth 
+        })
+      }
+
+      filteredData.forEach((item, index) => item.id = index) // Assign unique ids to each filtered item
+      return filteredData // Return the filtered data
+    }
+
+    /**
+     * Updates the data and triggers gallery update.
+     *
+    @func */ updateData = () =>
+		{      
+			ARW.printFuncName(this.updateData) // Print function name
+      console.log(this.state) // Log the current state
+
+      const filteredData = this.filterData() // Get the filtered data based on the current state
+      this.gallery.index = 0 // Reset the gallery index to the first item
+      this.gallery.prepareGallery(filteredData, this.state) // Prepare the gallery with the filtered data and current state
+      this.gallery.updateVisibility() // Update the visibility of year and month elements in the gallery
+      this.gallery.setActivePhoto() // Set the active item for the current item in the gallery
+    }
+
+    /**
+     * Updates the interval time.
+     *
+    @func */ updateTime = () =>
+		{      
+			ARW.printFuncName(this.updateTime) // Print function name
+      this.gallery.time = this.state.time // Set gallery time
+    }
+  }
+
+  /**
+   * The main application class.
+   * 
+  @class */ class App 
+  {
+    static init = () =>
+		 {
+      console.log("App started...");
+
+      new Main(cat, data);
+    }
+  }
+
+	// Initialize the application.
+  App.init()
+
+  // @sup TESTS
+
+  </script>
+</body>
+</html>
