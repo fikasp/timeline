@@ -1756,4 +1756,6 @@ const data = [
 {date: '2025-12-06.2', catg: ['Miasta'], name: 'Zakopane'},
 {date: '2025-12-06.3', catg: ['Gastronomia'], name: 'Sphinx'},
 {date: '2025-12-07.0', catg: ['Rodzina'], name: 'Urodziny Asi'},
+{date: '2025-12-19.0', catg: ['Spektakle'], name: 'Koncert w filharmonii'},
+{date: '2025-12-22.0', catg: ['Znajomi'], name: 'Spotkanie opłatkowe'},
 ]
