@@ -1758,4 +1758,7 @@ const data = [
 {date: '2025-12-07.0', catg: ['Rodzina'], name: 'Urodziny Asi'},
 {date: '2025-12-19.0', catg: ['Spektakle'], name: 'Koncert w filharmonii'},
 {date: '2025-12-22.0', catg: ['Znajomi'], name: 'Spotkanie opłatkowe'},
+{date: '2025-12-24.0', catg: [], name: 'Wigilia w Brzezince'},
+{date: '2025-12-25.0', catg: [], name: 'Boże Narodzenie na Sądowej'},
+{date: '2025-12-26.0', catg: [], name: 'Boże Narodzenie w Myślenicach'},
 ]
