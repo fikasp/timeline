@@ -1763,4 +1763,6 @@ const data = [
 {date: '2025-12-26.0', catg: ['Rodzina'], name: 'Boże Narodzenie w Myślenicach'},
 {date: '2025-12-31.1', catg: ['Gastronomia'], name: 'Sphinx na Rynku Głównym'},
 {date: '2025-12-31.2', catg: ['Domówki'], name: 'Sylwester na Staszica'},
+// 2026
+{date: '2026-01-03.0', catg: ['Spektakle'], name: 'Kino Mikro'},
 ]
