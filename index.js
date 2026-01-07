@@ -1765,4 +1765,5 @@ const data = [
 {date: '2025-12-31.2', catg: ['Domówki'], name: 'Sylwester na Staszica'},
 // 2026
 {date: '2026-01-03.0', catg: ['Spektakle'], name: 'Kino Mikro'},
+{date: '2026-01-06.0', catg: [], name: 'Urodziny Antosia'},
 ]
