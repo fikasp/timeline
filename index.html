@@ -390,7 +390,6 @@
 			.photo_arrow {
 				display: flex;
 				align-items: center;
-				height: 100%;
 				position: absolute;
 				font-size: 30px;
 				text-shadow: 0 0 3px #000;
@@ -403,11 +402,13 @@
 				text-shadow: 0 0 20px var(--accent);
 			}
 			.photo_next {
+				height: 100%;
 				padding: 0 10px 0 90px;
 				right: 8px;
 				top: 0;
 			}
 			.photo_previous {
+				height: 100%;
 				padding: 0 90px 0 10px;
 				left: 8px;
 				top: 0;
@@ -419,6 +420,20 @@
 				padding: 10px;
 				right: 5px;
 				top: 0px;
+			}
+			.photo_play {
+				font-size: 24px;
+				padding: 0 6px;
+				left: 10px;
+				top: 13px;
+				z-index: 100;
+			}
+			.photo_pause {
+				font-size: 24px;
+				padding: 0 6px;
+				left: 10px;
+				top: 13px;
+				z-index: 100;
 			}
 			.photo_group {
 				display: flex;
@@ -558,6 +573,14 @@
      @g PHOTO
     ------------------------->
 		<div class="photo none">
+			<!-- Arrow play -->
+			<div class="photo_arrow photo_play">
+				<i class="fa-solid fa-play"></i>
+			</div>
+			<!-- Arrow pause -->
+			<div class="photo_arrow photo_pause none">
+				<i class="fa-solid fa-pause"></i>
+			</div>
 			<!-- Arrow close -->
 			<div class="photo_arrow photo_close">
 				<i class="fa-solid fa-xmark"></i>
@@ -1252,6 +1275,7 @@
 					this.index = 0
 					this.marginTop = 0
 					this.presentation = 'none'
+					this.isPlaying = false
 					this.presentationTimeout
 					this.loadingTimeout
 					this.time
@@ -1265,6 +1289,8 @@
 					this.photoImage = document.querySelector('.photo_image')
 					this.photoPrevious = document.querySelector('.photo_previous')
 					this.photoNext = document.querySelector('.photo_next')
+					this.photoPlay = document.querySelector('.photo_play')
+					this.photoPause = document.querySelector('.photo_pause')
 					this.gallery = document.querySelector('.gallery')
 
 					// Listeners
@@ -1274,6 +1300,8 @@
 					this.photo.addEventListener('touchend', (e) => this.touchend(e))
 					this.photoPrevious.addEventListener('click', (e) => this.setNextPhoto(e))
 					this.photoNext.addEventListener('click', (e) => this.setPreviousPhoto(e))
+					this.photoPlay.addEventListener('click', (e) => this.resumePresentation(e))
+					this.photoPause.addEventListener('click', (e) => this.pausePresentation(e))
 					this.gallery.addEventListener('scroll', (e) => this.updateVisibility())
 					Log.exit()
 				}
@@ -1649,8 +1677,11 @@
 					Log.start()
 					Log.enter()
 
+					this.isPlaying = true
 					this.presentation = 'backward'
 					clearTimeout(this.presentationTimeout)
+					this.photoPlay.classList.add('none')
+					this.photoPause.classList.remove('none')
 					this.photo.classList.remove('none') // Remove 'none' class to make the photo visible
 					this.photo.classList.add('show') // Add 'show' class to animate showing the photo
 					this.setState({ isPhotoOpen: true }) // Update the state to indicate that the photo is open
@@ -1669,8 +1700,11 @@
 					Log.start()
 					Log.enter()
 
+					this.isPlaying = true
 					this.presentation = 'forward'
 					clearTimeout(this.presentationTimeout)
+					this.photoPlay.classList.add('none')
+					this.photoPause.classList.remove('none')
 					this.photo.classList.remove('none') // Remove 'none' class to make the photo visible
 					this.photo.classList.add('show') // Add 'show' class to animate showing the photo
 					this.setState({ isPhotoOpen: true }) // Update the state to indicate that the photo is open
@@ -1686,6 +1720,9 @@
 				// @b Show continue
 				//------------------------
 				showContinue = () => {
+					if (this.presentation === 'none' || !this.isPlaying) return
+					clearTimeout(this.presentationTimeout)
+
 					if (this.presentation === 'forward') {
 						this.presentationTimeout = setTimeout(() => {
 							if (this.index > 0) {
@@ -1710,6 +1747,8 @@
 				showPhoto = (e) => {
 					Log.start()
 					Log.enter()
+					this.photoPlay.classList.add('none')
+					this.photoPause.classList.add('none')
 					setTimeout(() => {
 						this.photo.classList.remove('none') // Remove 'none' class to make the photo visible
 						this.photo.classList.add('show') // Add 'show' class to animate showing the photo
@@ -1733,8 +1772,11 @@
 					this.setActivePhoto() // Set the active photo
 					this.setState({ isPhotoOpen: false }) // Update the state to indicate that the photo is closed
 					clearTimeout(this.presentationTimeout) // Clear presentation timeout
-
+					
+					this.isPlaying = false
 					this.presentation = 'none'
+					this.photoPlay.classList.add('none')
+					this.photoPause.classList.add('none')
 					this.photoName.textContent = '' // Clear the photo name
 					this.photo.classList.add('hide') // Add 'hide' class to animate hiding the photo
 					setTimeout(() => {
@@ -1742,6 +1784,34 @@
 						this.photo.classList.remove('show') // Remove 'show' class
 						this.photo.classList.remove('hide') // Remove 'hide' class
 					}, 400) // Wait for the animation to finish before removing the classes
+					Log.end()
+				}
+
+				// @b Pause presentation
+				//------------------------
+				pausePresentation = (e) => {
+					Log.start()
+					e?.stopPropagation()
+					this.isPlaying = false
+					clearTimeout(this.presentationTimeout)
+
+					this.photoPlay.classList.remove('none')
+					this.photoPause.classList.add('none')
+					Log.end()
+				}
+
+				// @b Resume presentation
+				//------------------------
+				resumePresentation = (e) => {
+					Log.start()
+					e?.stopPropagation()
+
+					if (this.presentation !== 'none') {
+						this.isPlaying = true
+						this.photoPlay.classList.add('none')
+						this.photoPause.classList.remove('none')
+						this.showContinue()
+					}
 					Log.end()
 				}
 			}
