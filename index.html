@@ -1,6 +1,6 @@
 <!-- @p TIMELINE
 ------------------------->
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
 		<!--====================-->
@@ -531,13 +531,13 @@
 				<select class="header_select" id="category"></select>
 			</div>
 			<!-- Month -->
-			<div class="header_pair">
+			<!-- <div class="header_pair">
 				<label class="header_label" for="month">Miesiąc:</label>
 				<select class="header_select" id="month"></select>
-			</div>
+			</div> -->
 			<!-- Year -->
 			<div class="header_pair">
-				<label class="header_label" for="year">Rok:</label>
+				<label class="header_label" for="year">Układ:</label>
 				<select class="header_select" id="year"></select>
 			</div>
 			<!-- Grid -->
@@ -551,7 +551,7 @@
 				<select class="header_select" id="time"></select>
 			</div>
 			<!-- Presention -->
-			<div class="header_pair">
+			<!-- <div class="header_pair">
 				<label class="header_label" for="time">Pokaz:</label>
 				<div class="header_buttons">
 					<button class="header_button" id="backward">
@@ -561,7 +561,7 @@
 						<div><i class="fa-solid fa-angle-right"></i></div>
 					</button>
 				</div>
-			</div>
+			</div> -->
 		</div>
 
 		<!------------------------
@@ -662,7 +662,7 @@
 				_formatArgs: (args) =>
 					args
 						.map((a) =>
-							a instanceof HTMLElement ? `[${a.tagName}]` : typeof a === 'object' ? JSON.stringify(a, null, 2) : a
+							a instanceof HTMLElement ? `[${a.tagName}]` : typeof a === 'object' ? JSON.stringify(a, null, 2) : a,
 						)
 						.join(', '),
 
@@ -936,12 +936,12 @@
 					this.headerDiv = document.querySelector('.header') // Header div
 					this.headerBars = document.querySelector('.header_bars') // Menu button
 					this.selectCategory = document.querySelector('#category') // Category select list
-					this.selectMonth = document.querySelector('#month') // Month select list
+					// this.selectMonth = document.querySelector('#month') // Month select list
 					this.selectYear = document.querySelector('#year') // Year select list
 					this.selectGrid = document.querySelector('#grid') // Grid size select list
 					this.selectTime = document.querySelector('#time') // Time select list
-					this.buttonBackward = document.querySelector('#backward') // Button for backward presentation
-					this.buttonForward = document.querySelector('#forward') // Button for forward presentation
+					// this.buttonBackward = document.querySelector('#backward') // Button for backward presentation
+					// this.buttonForward = document.querySelector('#forward') // Button for forward presentation
 
 					// Listeners
 					this.headerDiv.addEventListener('touchstart', (e) => this.touchstart(e))
@@ -949,13 +949,13 @@
 					this.headerDiv.addEventListener('touchend', (e) => this.touchend(e))
 					this.headerBars.addEventListener('click', () => this.showHideMenu()) // Click event for menu button
 					this.selectCategory.addEventListener('change', () => this.setCategory()) // Change event for category select
-					this.selectMonth.addEventListener('change', () => this.setMonths()) // Change event for month select
+					// this.selectMonth.addEventListener('change', () => this.setMonths()) // Change event for month select
 					this.selectYear.addEventListener('change', () => this.setYear()) // Change event for year select
 					this.selectGrid.addEventListener('change', () => this.setGrid()) // Change event for grid size select
 					this.selectTime.addEventListener('change', () => this.setTime()) // Change event for time select
 					this.addListenersToSelects([
 						this.selectCategory,
-						this.selectMonth,
+						// this.selectMonth,
 						this.selectYear,
 						this.selectGrid,
 						this.selectTime,
@@ -994,7 +994,7 @@
 								startX = touch.pageX
 								startY = touch.pageY
 							},
-							{ passive: true }
+							{ passive: true },
 						)
 
 						select.addEventListener(
@@ -1021,7 +1021,7 @@
 									}
 								}
 							},
-							{ passive: true }
+							{ passive: true },
 						)
 
 						// Scroll
@@ -1046,7 +1046,7 @@
 									select.dispatchEvent(new Event('change'))
 								}
 							},
-							{ passive: false }
+							{ passive: false },
 						)
 					})
 				}
@@ -1135,7 +1135,7 @@
 							this.selectGrid, // parent
 							this.grid[grid], // value
 							grid, // content
-							this.grid[grid] == this.gridInit ? true : false // selected status
+							this.grid[grid] == this.gridInit ? true : false, // selected status
 						)
 					})
 					// Set initial grid size
@@ -1156,7 +1156,7 @@
 								this.selectTime, // parent
 								this.time[time], // value
 								`${time.slice(1)} s`, // content
-								this.time[time] == this.timeInit ? true : false // selected status
+								this.time[time] == this.timeInit ? true : false, // selected status
 							)
 						})
 					Log.exit()
@@ -1300,7 +1300,7 @@
 					this.photo.addEventListener('touchend', (e) => this.touchend(e))
 					this.photoPrevious.addEventListener('click', (e) => this.setNextPhoto(e))
 					this.photoNext.addEventListener('click', (e) => this.setPreviousPhoto(e))
-					this.photoPlay.addEventListener('click', (e) => this.resumePresentation(e))
+					this.photoPlay.addEventListener('click', (e) => this.startPresentation(e))
 					this.photoPause.addEventListener('click', (e) => this.pausePresentation(e))
 					this.gallery.addEventListener('scroll', (e) => this.updateVisibility())
 					Log.exit()
@@ -1747,8 +1747,13 @@
 				showPhoto = (e) => {
 					Log.start()
 					Log.enter()
-					this.photoPlay.classList.add('none')
-					this.photoPause.classList.add('none')
+					if (!this.isPlaying) {
+						this.photoPlay.classList.remove('none')
+						this.photoPause.classList.add('none')
+					} else {
+						this.photoPlay.classList.add('none')
+						this.photoPause.classList.remove('none')
+					}
 					setTimeout(() => {
 						this.photo.classList.remove('none') // Remove 'none' class to make the photo visible
 						this.photo.classList.add('show') // Add 'show' class to animate showing the photo
@@ -1772,7 +1777,7 @@
 					this.setActivePhoto() // Set the active photo
 					this.setState({ isPhotoOpen: false }) // Update the state to indicate that the photo is closed
 					clearTimeout(this.presentationTimeout) // Clear presentation timeout
-					
+
 					this.isPlaying = false
 					this.presentation = 'none'
 					this.photoPlay.classList.add('none')
@@ -1802,12 +1807,19 @@
 
 				// @b Resume presentation
 				//------------------------
-				resumePresentation = (e) => {
+				startPresentation = (e) => {
 					Log.start()
 					e?.stopPropagation()
 
 					if (this.presentation !== 'none') {
 						this.isPlaying = true
+						this.photoPlay.classList.add('none')
+						this.photoPause.classList.remove('none')
+						this.showContinue()
+					} else {
+						this.isPlaying = true
+						this.presentation = 'forward'
+						clearTimeout(this.presentationTimeout)
 						this.photoPlay.classList.add('none')
 						this.photoPause.classList.remove('none')
 						this.showContinue()
@@ -1888,8 +1900,8 @@
 					window.addEventListener('keyup', (e) => this.checkKeys(e))
 					window.addEventListener('resize', (e) => this.changeMargin(e))
 					window.addEventListener('wheel', (e) => this.checkWheel(e))
-					this.header.buttonBackward.addEventListener('click', (e) => this.gallery.showBackward(e))
-					this.header.buttonForward.addEventListener('click', (e) => this.gallery.showForward(e))
+					// this.header.buttonBackward.addEventListener('click', (e) => this.gallery.showBackward(e))
+					// this.header.buttonForward.addEventListener('click', (e) => this.gallery.showForward(e))
 					// Initialize the application
 					this.init()
 					Log.exit()
@@ -1945,6 +1957,13 @@
 					}
 					if (e.key === 'Escape') {
 						this.gallery.hidePhoto(e) // Hide the current photo
+					}
+					if (e.key === ' ') {
+						if (!this.gallery.isPlaying) {
+							this.gallery.startPresentation(e) // Start presentation
+						} else {
+							this.gallery.pausePresentation(e) // Pause presentation
+						}
 					}
 					Log.exit()
 				}
