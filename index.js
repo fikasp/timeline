@@ -1768,5 +1768,6 @@ const data = [
 // 2026
 {date: '2026-01-03.0', catg: ['Spektakle'], name: 'Kino Mikro'},
 {date: '2026-01-06.0', catg: ['Rodzina'], name: 'Urodziny Antosia'},
-{date: '2026-02-01.0', catg: ['Rodzina'], name: 'Urodziny taty'},
+{date: '2026-02-01.0', catg: ['Rodzina'], name: 'Urodziny taty Agnieszki'},
+{date: '2026-02-08.0', catg: ['Rodzina'], name: 'Rocznica ślubu rodziców'},
 ]
