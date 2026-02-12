@@ -28,9 +28,9 @@ const data = [
 {date: '1990-06.0', catg: ['Ogólne'], name: 'Przemuś i Asia'},
 {date: '1990-07.0', catg: ['Ogólne'], name: 'Przemuś'},
 // 1991
-{date: '1991-06.0', catg: ['Ogólne'], name: 'Przedszkole'},
+{date: '1991-12.0', catg: ['Ogólne'], name: 'Przedszkole'},
 // 1992
-{date: '1992-06.0', catg: ['Ogólne'], name: 'Przedszkole'},
+{date: '1992-12.0', catg: ['Ogólne'], name: 'Przedszkole'},
 // 1993
 {date: '1993-03.1', catg: ['Ogólne'], name: 'Lisowie'},
 {date: '1993-03.2', catg: ['Ogólne'], name: 'Lisowie'},
@@ -182,11 +182,12 @@ const data = [
 {date: '2003-07.0', catg: ['Ogólne'], name: 'Rodzinka'},
 {date: '2003-08.0', catg: ['Ogólne'], name: 'Rodzinka'},
 {date: '2003-09.0', catg: ['Ogólne'], name: 'Międzylesie'},
-{date: '2003-10.0', catg: ['Ogólne'], name: 'Artur'},
+{date: '2003-10.0', catg: [], name: 'Liceum'},
 // 2004
 {date: '2004-01.0', catg: ['Ogólne'], name: 'Natalia'},
 {date: '2004-02.0', catg: ['Ogólne'], name: 'Natalia'},
 {date: '2004-03.0', catg: ['Ogólne'], name: 'Natalia'},
+{date: '2004-10.0', catg: [], name: 'Liceum'},
 {date: '2004-10.1', catg: ['Wyjazdy'], name: 'Wisła'},
 {date: '2004-10.2', catg: ['Wyjazdy'], name: 'Wisła'},
 {date: '2004-10.3', catg: ['Wyjazdy'], name: 'Wisła'},
@@ -222,7 +223,7 @@ const data = [
 {date: '2006-04-16.0', catg: ['Rodzina'], name: 'Wielkanoc w Myślenicach'},
 {date: '2006-04-17.0', catg: ['Rodzina'], name: 'Wielkanoc w Wierzbanowej'},
 {date: '2006-04-29.0', catg: ['Znajomi'], name: 'Parapetówka u Mateusza'},
-{date: '2006-05-05.0', catg: ['Ogólne'], name: 'Rozstanie z Natalią'},
+{date: '2006-05-05.0', catg: [], name: 'Rozstanie z Natalią'},
 {date: '2006-05-21.0', catg: ['Uroczystości'], name: 'Pierwsza Komunia Rafała'},
 {date: '2006-05-28.0', catg: ['Kościoły'], name: 'Msza na Błoniach'},
 {date: '2006-06-02.0', catg: ['Znajomi'], name: 'Gra w bilarda'},
