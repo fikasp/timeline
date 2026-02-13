@@ -8,7 +8,7 @@ from pathlib import Path
 # @g CONFIG
 #------------------------
 
-YEAR = 2026
+YEAR = 0
 
 # ALL_MODE = False
 ALL_MODE = True
