@@ -1768,4 +1768,6 @@ const data = [
 {date: '2026-01-06.0', catg: ['Rodzina'], name: 'Urodziny Antosia'},
 {date: '2026-02-01.0', catg: ['Rodzina'], name: 'Urodziny taty Agnieszki'},
 {date: '2026-02-08.0', catg: ['Rodzina'], name: 'Rocznica ślubu rodziców'},
+{date: '2026-02-14.0', catg: ['Narty'], name: 'Narty Kluszkowce'},
+{date: '2026-02-15.0', catg: ['Gastronomia'], name: 'Restauracja indyjska'},
 ]
