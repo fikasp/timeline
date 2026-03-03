@@ -1770,4 +1770,6 @@ const data = [
 {date: '2026-02-08.0', catg: ['Rodzina'], name: 'Rocznica ślubu rodziców'},
 {date: '2026-02-14.0', catg: ['Narty'], name: 'Narty Kluszkowce'},
 {date: '2026-02-15.0', catg: ['Gastronomia'], name: 'Restauracja indyjska'},
+{date: '2026-02-27.0', catg: ['Znajomi'], name: 'Spotkanie w biurze'},
+{date: '2026-03-01.0', catg: ['Spacery'], name: 'Park Wincentego'},
 ]
