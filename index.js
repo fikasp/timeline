@@ -1772,4 +1772,5 @@ const data = [
 {date: '2026-02-15.0', catg: ['Gastronomia'], name: 'Restauracja indyjska'},
 {date: '2026-02-27.0', catg: ['Znajomi'], name: 'Spotkanie w biurze'},
 {date: '2026-03-01.0', catg: ['Spacery'], name: 'Park Wincentego'},
+{date: '2026-03-08.0', catg: ['Spacery'], name: 'Park Jordana'},
 ]

@@ -119,7 +119,7 @@ def main():
     print("📷 JPG to WEBP Converter:")
 
     # Process folder
-    process_folder(f'b:/Prywatne/Lifebook/Timeline/{YEAR}/')
+    process_folder(f'A:/Prywatne/Lifebook/Timeline/{YEAR}/')
 
     # Print footer
     print('🏆 Conversion done!')
