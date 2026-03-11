@@ -1665,6 +1665,7 @@ const data = [
 {date: '2025-06-25.0', catg: ['Koncerty'], name: 'Koncert u Dominikanów'},
 {date: '2025-06-28.0', catg: ['Znajomi'], name: 'Dwudziestolecie matury'},
 {date: '2025-06-29.0', catg: ['Znajomi'], name: 'Ognisko HKN w Brzezince'},
+{date: '2025-07-01.0', catg: ['Ogólne'], name: 'Zmiana biura na Staszica'},
 {date: '2025-07-04.0', catg: ['Spektakle'], name: 'Cinema City IMAX'},
 {date: '2025-07-06.0', catg: ['Rowery'], name: 'Rower Czyżyny'},
 {date: '2025-07-09.0', catg: ['Kościoły'], name: 'Sanktuarium JPII'},
