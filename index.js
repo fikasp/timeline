@@ -1772,6 +1772,10 @@ const data = [
 {date: '2026-02-14.0', catg: ['Narty'], name: 'Narty Kluszkowce'},
 {date: '2026-02-15.0', catg: ['Gastronomia'], name: 'Restauracja indyjska'},
 {date: '2026-02-27.0', catg: ['Znajomi'], name: 'Spotkanie w biurze'},
-{date: '2026-03-01.0', catg: ['Spacery'], name: 'Park Wincentego'},
+{date: '2026-03-01.1', catg: ['Kościoły'], name: 'Kościół NMP z Lourdes'},
+{date: '2026-03-01.2', catg: ['Spacery'], name: 'Park Wincentego'},
 {date: '2026-03-08.0', catg: ['Spacery'], name: 'Park Jordana'},
+{date: '2026-03-13.0', catg: ['Domówki'], name: 'Planszówki'},
+{date: '2026-03-14.1', catg: ['Spektakle'], name: 'Teatr Groteska'},
+{date: '2026-03-14.2', catg: ['Gastronomia'], name: 'Pizzeria Dominos'},
 ]
