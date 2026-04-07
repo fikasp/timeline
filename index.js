@@ -1786,4 +1786,8 @@ const data = [
 {date: '2026-03-21.3', catg: ['Gastronomia'], name: 'Często Gęsto'},
 {date: '2026-03-22.1', catg: ['Spacery'], name: 'Unity Centre'},
 {date: '2026-03-22.2', catg: ['Rodzina'], name: 'Spotkanie u dziadków'},
+{date: '2026-04-03.0', catg: ['Spacery'], name: 'Dróżki Kalwaryjskie'},
+{date: '2026-04-05.1', catg: ['Spacery'], name: 'Krzemionka'},
+{date: '2026-04-05.2', catg: ['Rodzina'], name: 'Wielkanoc w Brzezince'},
+{date: '2026-04-06.0', catg: ['Rodzina'], name: 'Wielkanoc w Myślenicach'},
 ]
