@@ -1790,4 +1790,5 @@ const data = [
 {date: '2026-04-05.1', catg: ['Spacery'], name: 'Krzemionka'},
 {date: '2026-04-05.2', catg: ['Rodzina'], name: 'Wielkanoc w Brzezince'},
 {date: '2026-04-06.0', catg: ['Rodzina'], name: 'Wielkanoc w Myślenicach'},
+{date: '2026-04-12.0', catg: ['Spacery'], name: 'Zakrzówek'},
 ]
