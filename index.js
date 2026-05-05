@@ -1791,4 +1791,8 @@ const data = [
 {date: '2026-04-05.2', catg: ['Rodzina'], name: 'Wielkanoc w Brzezince'},
 {date: '2026-04-06.0', catg: ['Rodzina'], name: 'Wielkanoc w Myślenicach'},
 {date: '2026-04-12.0', catg: ['Spacery'], name: 'Zakrzówek'},
+{date: '2026-04-18.1', catg: ['Miasta'], name: 'Kolbuszowa'},
+{date: '2026-04-18.2', catg: ['Miasta'], name: 'Opatów'},
+{date: '2026-04-18.3', catg: ['Gastronomia'], name: 'Pizzeria Fuoco'},
+{date: '2026-04-19.0', catg: ['Rodzina'], name: 'Urodziny Mareczka'},
 ]
