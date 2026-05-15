@@ -1795,4 +1795,6 @@ const data = [
 {date: '2026-04-18.2', catg: ['Miasta'], name: 'Opatów'},
 {date: '2026-04-18.3', catg: ['Gastronomia'], name: 'Pizzeria Fuoco'},
 {date: '2026-04-19.0', catg: ['Rodzina'], name: 'Urodziny Mareczka'},
+{date: '2026-05-04.1', catg: ['Koncerty'], name: 'Koncert u Karmelitów Bosych'},
+{date: '2026-05-04.2', catg: ['Spacery'], name: 'Park Kurka'},
 ]
