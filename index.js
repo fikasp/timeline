@@ -1795,6 +1795,12 @@ const data = [
 {date: '2026-04-18.2', catg: ['Miasta'], name: 'Opatów'},
 {date: '2026-04-18.3', catg: ['Gastronomia'], name: 'Pizzeria Fuoco'},
 {date: '2026-04-19.0', catg: ['Rodzina'], name: 'Urodziny Mareczka'},
-{date: '2026-05-04.1', catg: ['Koncerty'], name: 'Koncert u Karmelitów Bosych'},
+{date: '2026-04-24.0', catg: ['Spektakle'], name: 'Kino Paradox'},
+{date: '2026-04-26.1', catg: ['Kościoły'], name: 'Kościół Kazimierza'},
+{date: '2026-04-26.2', catg: ['Spacery'], name: 'Planty'},
+{date: '2026-05-04.1', catg: ['Koncerty'], name: 'Karmelici Bosi'},
 {date: '2026-05-04.2', catg: ['Spacery'], name: 'Park Kurka'},
+{date: '2026-05-10.1', catg: ['Kościoły'], name: 'Kościół Bernardynów'},
+{date: '2026-05-10.2', catg: ['Spacery'], name: 'Bulwar Inflancki'},
+{date: '2026-05-17.0', catg: ['Rodzina'], name: 'Ciocia Ewa'},
 ]
