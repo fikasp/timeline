@@ -1809,4 +1809,9 @@ const data = [
 {date: '2026-05-10.1', catg: ['Kościoły'], name: 'Kościół Bernardynów'},
 {date: '2026-05-10.2', catg: ['Spacery'], name: 'Bulwar Inflancki'},
 {date: '2026-05-17.0', catg: ['Rodzina'], name: 'Ciocia Ewa'},
+{date: '2026-05-22.0', catg: ['Koncerty'], name: 'Filharmonia'},
+{date: '2026-05-23.1', catg: ['Miasta'], name: 'Tymbark'},
+{date: '2026-05-23.2', catg: ['Góry'], name: 'Łopień'},
+{date: '2026-05-23.3', catg: ['Atrakcje'], name: 'Termy Chochołowskie'},
+{date: '2026-05-24.0', catg: ['Rodzina'], name: 'Myślenice'},
 ]
