@@ -1119,8 +1119,8 @@
 					Log.enter()
 					DOM.createOption(this.selectYear, this.filters.none) // Create "None" option
 					DOM.createOption(this.selectYear, this.filters.compact, this.filters.compact, true) // Create "Compact" option
-					DOM.createOption(this.selectYear, this.filters.auto) // Create "Auto" option
-					DOM.createOption(this.selectYear, this.filters.all) // Create "All" option
+					DOM.createOption(this.selectYear, this.filters.vertical) // Create "Vertical" option
+					DOM.createOption(this.selectYear, this.filters.horizontal) // Create "Horizontal" option
 					Log.exit()
 				}
 
@@ -1207,14 +1207,14 @@
 					// Set yearHeight property on the root element
 					if (filterYear == this.filters.compact) {
 						this.root.style.setProperty('--yearHeight', `45px`)
-					} else if (filterYear == this.filters.auto) {
+					} else if (filterYear == this.filters.vertical) {
 						this.root.style.setProperty('--yearHeight', `auto`)
 					}
 
 					// Set state of years visible and collapsed
 					if (filterYear == this.filters.none) {
 						this.setState({ isYearsVisible: false })
-					} else if (filterYear == this.filters.all) {
+					} else if (filterYear == this.filters.horizontal) {
 						this.setState({ isYearsVisible: true })
 						this.setState({ isYearsCollapsed: false })
 					} else {
@@ -1843,6 +1843,8 @@
 						all: 'Wszystko',
 						auto: 'Automatycznie',
 						compact: 'Kompaktowo',
+						horizontal: 'Poziomo',
+						vertical: 'Pionowo'
 					}
 					// Grid sizes
 					this.grid = {
