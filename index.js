@@ -1814,4 +1814,6 @@ const data = [
 {date: '2026-05-23.2', catg: ['Góry'], name: 'Łopień'},
 {date: '2026-05-23.3', catg: ['Atrakcje'], name: 'Termy Chochołowskie'},
 {date: '2026-05-24.0', catg: ['Rodzina'], name: 'Myślenice'},
+{date: '2026-05-29.0', catg: ['Domówki'], name: 'Planszówki na Staszica'},
+{date: '2026-05-30.0', catg: ['Rodzina'], name: 'Spotkanie u Ani i Roberta'},
 ]
