@@ -1816,4 +1816,7 @@ const data = [
 {date: '2026-05-24.0', catg: ['Rodzina'], name: 'Myślenice'},
 {date: '2026-05-29.0', catg: ['Domówki'], name: 'Planszówki na Staszica'},
 {date: '2026-05-30.0', catg: ['Rodzina'], name: 'Spotkanie u Ani i Roberta'},
+{date: '2026-05-31.1', catg: ['Spacery'], name: 'Plac Sikorskiego'},
+{date: '2026-05-31.2', catg: ['Kościoły'], name: 'Kościół Sercanek'},
+{date: '2026-05-31.3', catg: ['Gastronomia'], name: 'Restauracja Mythos'},
 ]
