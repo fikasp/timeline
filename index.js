@@ -1819,4 +1819,5 @@ const data = [
 {date: '2026-05-31.1', catg: ['Spacery'], name: 'Plac Sikorskiego'},
 {date: '2026-05-31.2', catg: ['Kościoły'], name: 'Kościół Sercanek'},
 {date: '2026-05-31.3', catg: ['Gastronomia'], name: 'Restauracja Mythos'},
+{date: '2026-06-13.0', catg: ['Koncerty'], name: 'Koncert w Mariackim'},
 ]
