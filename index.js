@@ -1822,4 +1822,5 @@ const data = [
 {date: '2026-06-13.0', catg: ['Koncerty'], name: 'Koncert w Mariackim'},
 {date: '2026-06-20.0', catg: ['Rowery'], name: 'Rower Bronowice'},
 {date: '2026-06-21.0', catg: ['Koncerty'], name: 'Koncert u Szczepana'},
+{date: '2026-06-26.0', catg: ['Koncerty'], name: 'Koncert u Szczepana'},
 ]
