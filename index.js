@@ -1826,5 +1826,6 @@ const data = [
 {date: '2026-06-27.0', catg: ['Rodzina', 'Uroczystości'], name: 'Ślub Beatki Sypek'},
 {date: '2026-06-28.0', catg: ['Rowery'], name: 'Rower Tonie'},
 {date: '2026-06-30.0', catg: ['Koncerty'], name: 'Koncert u Karmelitów'},
+{date: '2026-07-24.0', catg: ['Znajomi'], name: 'Spotkanie z Arturem'},
 {date: '2026-07-26.0', catg: ['Rodzina'], name: 'Imieniny taty'},
 ]
