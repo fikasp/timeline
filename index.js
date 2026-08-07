@@ -1828,4 +1828,5 @@ const data = [
 {date: '2026-06-30.0', catg: ['Koncerty'], name: 'Koncert u Karmelitów'},
 {date: '2026-07-24.0', catg: ['Znajomi'], name: 'Spotkanie z Arturem'},
 {date: '2026-07-26.0', catg: ['Rodzina'], name: 'Imieniny taty'},
+{date: '2026-08-02.0', catg: ['Rodzina'], name: 'Urodziny Agusi'},
 ]
