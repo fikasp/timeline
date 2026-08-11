@@ -109,11 +109,11 @@ def main():
     cat_keys = list(categories.keys())
 
     # Set input and output paths
-    input_path = Path(__file__).parent.resolve()
-    output_path = input_path / 'index.js'
+    input_path = Path(__file__).parent.parent.resolve()
+    output_path = input_path / 'Code/index.js'
 
     # Remove hidden attribute from output file if it exists
-    subprocess.run(['attrib', '-H', output_path])
+    # subprocess.run(['attrib', '-H', output_path])
 
     # Open output file for writing with UTF-8 encoding
     output = open(output_path, 'w', encoding='utf8')
@@ -204,7 +204,7 @@ def main():
     output.close()
 
     # Reapply hidden attribute to output file
-    subprocess.run(['attrib', '+H', output_path])
+    # subprocess.run(['attrib', '+H', output_path])
 
     print('🏆 Conversion done!')
 
