@@ -1829,4 +1829,6 @@ const data = [
 {date: '2026-07-24.0', catg: ['Znajomi'], name: 'Spotkanie z Arturem'},
 {date: '2026-07-26.0', catg: ['Rodzina'], name: 'Imieniny taty'},
 {date: '2026-08-02.0', catg: ['Rodzina'], name: 'Urodziny Agusi'},
+{date: '2026-08-08.0', catg: ['Rowery'], name: 'Rower Ruszcza'},
+{date: '2026-08-09.0', catg: ['Rodzina'], name: 'Grill Brzezinka'},
 ]
