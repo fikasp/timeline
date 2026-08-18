@@ -1831,4 +1831,9 @@ const data = [
 {date: '2026-08-02.0', catg: ['Rodzina'], name: 'Urodziny Agusi'},
 {date: '2026-08-08.0', catg: ['Rowery'], name: 'Rower Ruszcza'},
 {date: '2026-08-09.0', catg: ['Rodzina'], name: 'Grill Brzezinka'},
+{date: '2026-08-15.0', catg: ['Rowery'], name: 'Rower Ruczaj'},
+{date: '2026-08-16.1', catg: ['Koncerty'], name: 'Koncert u Pijarów'},
+{date: '2026-08-16.2', catg: ['Rodzina'], name: 'Odwiedziny u dziadków'},
+{date: '2026-08-16.3', catg: ['Spacery'], name: 'Grzegórzki'},
+{date: '2026-08-16.4', catg: ['Gastronomia'], name: 'Sioux'},
 ]
