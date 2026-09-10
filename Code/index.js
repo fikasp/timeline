@@ -1836,4 +1836,9 @@ const data = [
 {date: '2026-08-16.2', catg: ['Rodzina'], name: 'Odwiedziny u dziadków'},
 {date: '2026-08-16.3', catg: ['Spacery'], name: 'Grzegórzki'},
 {date: '2026-08-16.4', catg: ['Gastronomia'], name: 'Sioux'},
+{date: '2026-08-22.0', catg: ['Góry'], name: 'Przysłop Miętusi'},
+{date: '2026-08-23.1', catg: ['Spacery', 'Rodzina'], name: 'Lanckorona'},
+{date: '2026-08-23.2', catg: ['Rodzina', 'Znajomi'], name: 'Odwiedziny u Zapotocznych'},
+{date: '2026-08-29.0', catg: ['Koncerty'], name: 'Koncert w Mariackim'},
+{date: '2026-08-30.0', catg: ['Rowery'], name: 'Rower Nowa Huta'},
 ]
