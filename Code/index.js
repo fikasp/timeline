@@ -1886,4 +1886,9 @@ const data = [
 {date: '2026-09-05.0', catg: ['Miasta'], name: 'Bratysława'},
 {date: '2026-09-06.0', catg: ['Spacery'], name: 'Park Szymborskiej'},
 {date: '2026-09-13.0', catg: ['Rowery'], name: 'Rower Podgórze'},
+{date: '2026-09-19.1', catg: ['Spektakle'], name: 'Kino Kika'},
+{date: '2026-09-19.2', catg: ['Kościoły'], name: 'Kościół Redemptorystów'},
+{date: '2026-09-19.3', catg: ['Spacery'], name: 'Park Bednarskiego'},
+{date: '2026-09-20.1', catg: ['Koncerty'], name: 'Koncert u Pijarów'},
+{date: '2026-09-20.2', catg: ['Gastronomia'], name: 'Restauracja Stodoła'},
 ]
