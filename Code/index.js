@@ -1891,4 +1891,7 @@ const data = [
 {date: '2026-09-19.3', catg: ['Spacery'], name: 'Park Bednarskiego'},
 {date: '2026-09-20.1', catg: ['Koncerty'], name: 'Koncert u Pijarów'},
 {date: '2026-09-20.2', catg: ['Gastronomia'], name: 'Restauracja Stodoła'},
+{date: '2026-09-26.0', catg: ['Wyjazdy'], name: 'Rekolekcje w Gródku'},
+{date: '2026-09-27.1', catg: ['Góry'], name: 'Skiełek'},
+{date: '2026-09-27.2', catg: ['Gastronomia'], name: 'Pizzeria Apollo'},
 ]
