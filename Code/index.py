@@ -13,6 +13,8 @@ YEAR = 0
 # ALL_MODE = False
 ALL_MODE = True
 
+OUTPUT_FILE = 'Code/Data/index.js'
+
 categories = {
     'Atrakcje': ['Muzeum', 'Wystawa'],
     'Gastronomia': ['Kawiarnia', 'Restauracja'],
@@ -110,7 +112,7 @@ def main():
 
     # Set input and output paths
     input_path = Path(__file__).parent.parent.resolve()
-    output_path = input_path / 'Code/index.js'
+    output_path = input_path / OUTPUT_FILE
 
     # Remove hidden attribute from output file if it exists
     # subprocess.run(['attrib', '-H', output_path])
