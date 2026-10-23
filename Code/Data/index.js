@@ -1908,4 +1908,9 @@ const data = [
 {date: '2026-10-08.3', catg: ['Góry'], name: 'Połonina Caryńska'},
 {date: '2026-10-09.0', catg: ['Miasta'], name: 'Zagórz'},
 {date: '2026-10-11.0', catg: ['Spacery'], name: 'Las Wolski'},
+{date: '2026-10-16.0', catg: ['Spektakle'], name: 'Kino Paradox'},
+{date: '2026-10-17.1', catg: ['Ogólne'], name: 'Inauguracja studiów'},
+{date: '2026-10-17.2', catg: ['Spacery'], name: 'Zimny Dół'},
+{date: '2026-10-18.1', catg: ['Spacery'], name: 'Park Kurka'},
+{date: '2026-10-18.2', catg: ['Koncerty'], name: 'Koncert u Pijarów'},
 ]
