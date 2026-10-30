@@ -1913,4 +1913,9 @@ const data = [
 {date: '2026-10-17.2', catg: ['Spacery'], name: 'Zimny Dół'},
 {date: '2026-10-18.1', catg: ['Spacery'], name: 'Park Kurka'},
 {date: '2026-10-18.2', catg: ['Koncerty'], name: 'Koncert u Pijarów'},
+{date: '2026-10-21.0', catg: ['Spacery'], name: 'Planty'},
+{date: '2026-10-22.0', catg: ['Koncerty'], name: 'Koncert w Mariackim'},
+{date: '2026-10-24.0', catg: ['Góry'], name: 'Ojców'},
+{date: '2026-10-25.1', catg: ['Rodzina'], name: 'Urodziny Anielki'},
+{date: '2026-10-25.2', catg: ['Kościoły'], name: 'Kościół w Tenczynie'},
 ]
