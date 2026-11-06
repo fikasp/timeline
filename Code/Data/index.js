@@ -1918,4 +1918,6 @@ const data = [
 {date: '2026-10-24.0', catg: ['Góry'], name: 'Ojców'},
 {date: '2026-10-25.1', catg: ['Rodzina'], name: 'Urodziny Anielki'},
 {date: '2026-10-25.2', catg: ['Kościoły'], name: 'Kościół w Tenczynie'},
+{date: '2026-10-29.0', catg: ['Koncerty'], name: 'Koncert u Karmelitów'},
+{date: '2026-11-01.0', catg: ['Rodzina'], name: 'Czterdziestka'},
 ]
