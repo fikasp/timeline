@@ -1727,6 +1727,7 @@ const data = [
 {date: '2025-09-28.0', catg: ['Spacery'], name: 'Czerwony Klasztor'},
 {date: '2025-10-03.1', catg: ['Koncerty'], name: 'Koncert w filharmonii'},
 {date: '2025-10-03.2', catg: ['Gastronomia'], name: 'Restauracja Hawełka'},
+{date: '2025-10-04.0', catg: ['Rodzina'], name: 'Rocznica ślubu'},
 {date: '2025-10-10.0', catg: ['Koncerty'], name: 'Koncert u Jezuitów'},
 {date: '2025-10-11.1', catg: ['Miasta'], name: 'Skoczów'},
 {date: '2025-10-11.2', catg: ['Gastronomia'], name: 'Kebab Red Chili'},
