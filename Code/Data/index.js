@@ -1925,4 +1925,6 @@ const data = [
 {date: '2026-11-06.0', catg: ['Koncerty'], name: 'Koncert w filharmonii'},
 {date: '2026-11-15.1', catg: ['Ogólne'], name: 'Studia podyplomowe'},
 {date: '2026-11-15.2', catg: ['Koncerty'], name: 'Koncert u Franciszkanów'},
+{date: '2026-11-20.0', catg: ['Znajomi'], name: 'Spotkanie z Arturem'},
+{date: '2026-11-21.0', catg: ['Koncerty'], name: 'Koncert w Mariackim'},
 ]
